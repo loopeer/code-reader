@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.loopeer.codereader.ui.view.DrawerLayout
+    android:id="@+id/drawer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <include
+        layout="@layout/content_code_read"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <HorizontalScrollView
+        android:id="@+id/left_sheet"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/directory_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/medium_padding"
+            android:nestedScrollingEnabled="false"
+            android:background="@android:color/white"/>
+
+    </HorizontalScrollView>
+
+
+</com.loopeer.codereader.ui.view.DrawerLayout>

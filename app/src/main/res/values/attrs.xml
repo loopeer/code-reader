@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BottomSheetBehavior.Params">
+        <attr name="behavior_peekWidth" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="NestHorizontalScrollView">
+        <attr name="fillViewport" format="boolean"/>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.loopeer.codereader.ui.view.NestHorizontalScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:overScrollMode="never"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".ui.activity.MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello WorldGet ready for the next version of Android! Test your apps on Nexus and other devices. Support new system behaviors to save power and memory. Extend your apps with multi-window UI, direct reply notifications and more.!"/>
+</com.loopeer.codereader.ui.view.NestHorizontalScrollView>
