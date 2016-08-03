@@ -11,22 +11,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <HorizontalScrollView
+    <com.loopeer.codereader.ui.view.NestHorizontalScrollView
         android:id="@+id/left_sheet"
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:padding="@dimen/medium_padding"
+        android:background="@android:color/white">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/directory_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="@dimen/medium_padding"
-            android:nestedScrollingEnabled="false"
-            android:background="@android:color/white"/>
+            android:nestedScrollingEnabled="true"/>
 
-    </HorizontalScrollView>
+    </com.loopeer.codereader.ui.view.NestHorizontalScrollView>
 
 
 </com.loopeer.codereader.ui.view.DrawerLayout>

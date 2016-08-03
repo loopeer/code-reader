@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import com.loopeer.codereader.model.DirectoryNode;
 import com.loopeer.codereader.ui.adapter.DirectoryAdapter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +29,14 @@ public class DirectoryNavDelegate {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(mDirectoryAdapter);
         //ToDo
+
         mDirectoryAdapter.updateData(setTestData());
     }
 
     private List<DirectoryNode> setTestData() {
         List<DirectoryNode> nodes = new ArrayList<>();
+        File file = new File("");
+
         for (int i = 0; i < 40; i++) {
             nodes.add(new DirectoryNode("maimRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));n"));
             //maimRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));n

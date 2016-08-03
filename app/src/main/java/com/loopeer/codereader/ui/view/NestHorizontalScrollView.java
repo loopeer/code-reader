@@ -214,7 +214,7 @@ public class NestHorizontalScrollView  extends FrameLayout implements NestedScro
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
-        return (nestedScrollAxes & ViewCompat.SCROLL_AXIS_HORIZONTAL) == 0;
+        return (nestedScrollAxes & ViewCompat.SCROLL_AXIS_HORIZONTAL) != 0;
     }
 
     @Override
