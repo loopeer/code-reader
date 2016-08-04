@@ -1,7 +1,9 @@
-package com.loopeer.codereader.ui.activity;
+package com.loopeer.codereader;
 
 import android.content.Context;
 import android.content.Intent;
+
+import com.loopeer.codereader.ui.activity.CodeReadActivity;
 
 public class Navigator {
 

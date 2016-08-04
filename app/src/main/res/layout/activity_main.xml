@@ -12,6 +12,7 @@
     tools:context=".ui.activity.MainActivity">
 
     <TextView
+        android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello WorldGet ready for the next version of Android! Test your apps on Nexus and other devices. Support new system behaviors to save power and memory. Extend your apps with multi-window UI, direct reply notifications and more.!"/>

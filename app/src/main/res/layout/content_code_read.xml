@@ -13,4 +13,9 @@
     tools:context="com.loopeer.codereader.ui.activity.CodeReadActivity"
     tools:showIn="@layout/app_bar_code_read">
 
+    <FrameLayout
+        android:id="@+id/container_code_read"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 </RelativeLayout>

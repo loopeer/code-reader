@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.model.DirectoryNode;
+import com.loopeer.codereader.ui.view.DirectoryNavDelegate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +23,11 @@ import butterknife.ButterKnife;
 public class DirectoryAdapter extends RecyclerViewAdapter<DirectoryNode> {
 
     DirectoryNode mNodeRoot;
+    private DirectoryNavDelegate.FileClickListener mFileClickListener;
 
-    public DirectoryAdapter(Context context) {
+    public DirectoryAdapter(Context context, DirectoryNavDelegate.FileClickListener fileClickListener) {
         super(context);
+        mFileClickListener = fileClickListener;
     }
 
     public void setNodeRoot(DirectoryNode root) {
@@ -83,8 +86,12 @@ public class DirectoryAdapter extends RecyclerViewAdapter<DirectoryNode> {
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                var1.openChild = !var1.openChild;
-                updateData(adaptNodes());
+                if (var1.isDirectory) {
+                    var1.openChild = !var1.openChild;
+                    updateData(adaptNodes());
+                } else {
+                    mFileClickListener.doOpenFile(var1);
+                }
             }
         };
         viewHolder.itemView.setOnClickListener(clickListener);

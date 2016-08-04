@@ -6,18 +6,22 @@ import android.support.v7.widget.RecyclerView;
 
 import com.loopeer.codereader.model.DirectoryNode;
 import com.loopeer.codereader.ui.adapter.DirectoryAdapter;
-import com.loopeer.codereader.utils.FileUtils;
+import com.loopeer.codereader.utils.FileCache;
 
 public class DirectoryNavDelegate {
+
+    public interface FileClickListener{
+        void doOpenFile(DirectoryNode node);
+    }
 
     private RecyclerView mRecyclerView;
     private DirectoryAdapter mDirectoryAdapter;
     private Context mContext;
 
-    public DirectoryNavDelegate(RecyclerView recyclerView) {
+    public DirectoryNavDelegate(RecyclerView recyclerView, FileClickListener listener) {
         mRecyclerView = recyclerView;
         mContext = recyclerView.getContext();
-        mDirectoryAdapter = new DirectoryAdapter(recyclerView.getContext());
+        mDirectoryAdapter = new DirectoryAdapter(recyclerView.getContext(), listener);
         setUpRecyclerView();
         setTestData();
     }
@@ -25,14 +29,12 @@ public class DirectoryNavDelegate {
     private void setUpRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(mDirectoryAdapter);
-        //ToDo
-
         mDirectoryAdapter.setNodeRoot(setTestData());
     }
 
     private DirectoryNode setTestData() {
-        DirectoryNode directoryNode = FileUtils.getFileDirectoryNode(mContext);
-        return directoryNode.pathNodes.get(0);
+        DirectoryNode directoryNode = FileCache.getInstance().getFileDirectoryNode();
+        return directoryNode;
     }
 
 }

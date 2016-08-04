@@ -10,6 +10,7 @@ public class DirectoryNode extends BaseModel implements Comparable{
     public boolean openChild;
     public int depth;
     public String displayName;
+    public String absolutePath;
 
     public DirectoryNode() {
     }
