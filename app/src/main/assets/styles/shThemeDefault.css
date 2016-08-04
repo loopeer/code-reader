@@ -80,7 +80,7 @@
   color: blue !important;
 }
 .syntaxhighlighter .keyword {
-  color: #006699 !important;
+  color: #9a2456 !important;/*006699*/
 }
 .syntaxhighlighter .preprocessor {
   color: gray !important;

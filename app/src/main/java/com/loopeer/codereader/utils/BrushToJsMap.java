@@ -135,6 +135,13 @@ public class BrushToJsMap {
         list.add("xhtml");
         list.add("xaml");
         mapping.put("Xml", list);
+        list = new ArrayList();
+        list.add("gradle");
+        mapping.put("Gradle", list);
+        list = new ArrayList();
+        list.add("txt");
+        list.add("bat");
+        mapping.put("NoF", list);
         /*Iterator iterator = G.settings.customFileToJSMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry localEntry = (Map.Entry) ((Iterator) list).next();
