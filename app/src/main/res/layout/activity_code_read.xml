@@ -16,15 +16,20 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@android:color/white"
+        android:clipToPadding="false"
         android:fitsSystemWindows="true"
-        android:padding="@dimen/medium_padding"
-        android:background="@android:color/white">
+        android:paddingLeft="@dimen/medium_padding"
+        android:paddingRight="@dimen/medium_padding">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/directory_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:nestedScrollingEnabled="true"/>
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="true"
+            android:paddingLeft="@dimen/medium_padding"
+            android:paddingTop="@dimen/medium_padding"/>
 
     </com.loopeer.codereader.ui.view.NestHorizontalScrollView>
 

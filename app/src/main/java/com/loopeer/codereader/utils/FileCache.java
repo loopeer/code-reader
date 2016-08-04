@@ -1,5 +1,7 @@
 package com.loopeer.codereader.utils;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Environment;
 
 import com.loopeer.codereader.CodeReaderApplication;
@@ -10,13 +12,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class FileCache {
+    private static String EXTERNAL_STORAGE_PERMISSION = "android.permission.WRITE_EXTERNAL_STORAGE";
     private static FileCache instance;
     private static String cachePath = Environment.getExternalStorageDirectory() + "/CodeReader/repo/";
     private File cacheDir;
     public final String cacheDirPath = "/repo/";
 
     private FileCache() {
-        if (hasSDCard() && StorageUtils.hasExternalStoragePermission(CodeReaderApplication.getAppContext())) {
+        if (hasSDCard() && hasExternalStoragePermission(CodeReaderApplication.getAppContext())) {
             cacheDir = createFilePath(cachePath);
         } else {
             cacheDir = createFilePath(CodeReaderApplication.getAppContext().getCacheDir() + cacheDirPath);
@@ -68,5 +71,10 @@ public class FileCache {
             }
         }
         return directoryNode;
+    }
+
+    public static boolean hasExternalStoragePermission(Context context) {
+        int perm = context.checkCallingOrSelfPermission(EXTERNAL_STORAGE_PERMISSION);
+        return perm == PackageManager.PERMISSION_GRANTED;
     }
 }
