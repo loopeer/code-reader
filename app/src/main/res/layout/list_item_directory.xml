@@ -12,7 +12,7 @@
         android:id="@+id/img_directory_open_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_triangle_close"
+        android:src="@drawable/selector_directory_open_close"
         android:layout_marginRight="@dimen/default_padding"
         />
 
@@ -20,8 +20,9 @@
         android:id="@+id/text_directory_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_file_directory"
+        android:drawableLeft="@drawable/ic_directory_path"
         android:drawablePadding="@dimen/default_padding"
+        android:maxLines="1"
         android:gravity="center_vertical"
         android:textColor="@color/text_color_directory"
         android:textSize="@dimen/text_size_small"
