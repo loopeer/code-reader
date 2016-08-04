@@ -1,0 +1,9 @@
+@font-face {
+    font-family: "Courier";
+    src: url("file:///android_asset/fonts/cour.ttf") format("truetype");
+}
+
+.syntaxhighlighter,
+.syntaxhighlighter div,
+.syntaxhighlighter code,
+.syntaxhighlighter span { font-family: "Courier" !important; }

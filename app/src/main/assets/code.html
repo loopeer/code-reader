@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>!FILENAME!</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<script type='text/javascript' src='scripts/shCore.js'></script>
+	<script type='text/javascript' src='scripts/shBrush!BRUSHJSFILE!.js'></script>
+
+	<link type='text/css' rel='stylesheet' href='styles/shCore.css'/>
+	<link type='text/css' rel='stylesheet' href='styles/shCore!THEME!.css' id="cssCore" />
+	<link type='text/css' rel='stylesheet' href='styles/shTheme!THEME!.css' id="cssTheme" />
+
+	<script type='text/javascript' src='jquery-1.7.2.min.js'></script>
+	<link type='text/css' rel='stylesheet' href='style.css'/>
+
+    !FONT_SIZE!
+	!STYLE_MONOSPACE!
+
+<script type='text/javascript'>
+!SYNTAXHIGHLIGHTER!
+
+function android_init() {
+    !JS_FIX_HSCROLL!
+
+	Android.doneOpen();
+}
+
+function scrollToLine(lineNumber) {
+	$('html,body').animate({ scrollTop: $('.number' + lineNumber).offset().top }, { duration: 'slow', easing: 'swing'});
+}
+</script>
+</head>
+
+
+<body class='code theme-!THEME!'>
+!CODE!
+</body>
+
+</html>

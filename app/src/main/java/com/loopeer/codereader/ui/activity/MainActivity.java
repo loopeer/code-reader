@@ -9,6 +9,8 @@ import android.view.View;
 
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
+import com.loopeer.codereader.utils.G;
+import com.loopeer.codereader.utils.Settings;
 
 import butterknife.ButterKnife;
 
@@ -21,6 +23,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        G.settings = new Settings(this);
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
