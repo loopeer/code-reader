@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Utils extends UtilsBase {
-    public static String buildHtmlContent(Context paramContext, String paramString1, String paramString2, String paramString3) {
+    public static String buildHtmlContent(Context paramContext, String paramString1, String jsFile, String fileName) {
         for (; ; ) {
             try {
                 InputStream inputStream = paramContext.getAssets().open("code.html");
@@ -28,10 +28,14 @@ public class Utils extends UtilsBase {
                 if (Build.VERSION.SDK_INT < 14) {
                     temp = "$('.syntaxhighlighter').css('overflow', 'visible !important');";
                 }
-                paramString2 = ((String) localObject).replace("!FONT_SIZE!", String.format("<style>.code .syntaxhighlighter { font-size: %.2fpx !important; }</style>", new Object[]{Float.valueOf(G.settings.fontSize)})).replace("!FILENAME!", paramString3).replace("!BRUSHJSFILE!", paramString2).replace("!SYNTAXHIGHLIGHTER!", localStringBuilder.toString()).replace("!JS_FIX_HSCROLL!", temp);
+                jsFile = ((String) localObject).replace("!FONT_SIZE!"
+                        , String.format("<style>.code .syntaxhighlighter { font-size: %.2fpx !important; }</style>"
+                                , new Object[]{Float.valueOf(G.settings.fontSize)})).replace("!FILENAME!"
+                        , fileName).replace("!BRUSHJSFILE!", jsFile).replace("!SYNTAXHIGHLIGHTER!"
+                        , localStringBuilder.toString()).replace("!JS_FIX_HSCROLL!", temp);
                 if (G.settings.monospaceFont) {
                     temp = "<link type='text/css' rel='stylesheet' href='style_monospace.css'/>";
-                    return paramString2.replace("!STYLE_MONOSPACE!", temp).replace("!THEME!", G.settings.theme).replace("!CODE!", paramString1);
+                    return jsFile.replace("!STYLE_MONOSPACE!", temp).replace("!THEME!", G.settings.theme).replace("!CODE!", paramString1);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

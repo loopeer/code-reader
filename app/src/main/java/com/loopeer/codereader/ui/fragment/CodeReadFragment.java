@@ -1,6 +1,8 @@
 package com.loopeer.codereader.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -48,6 +50,18 @@ public class CodeReadFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mWebCodeRead.getSettings().setJavaScriptEnabled(true);
+        mWebCodeRead.getSettings().setSupportZoom(true);
+        mWebCodeRead.getSettings().setBuiltInZoomControls(true);
+        if (Build.VERSION.SDK_INT >= 11) {
+            new Runnable() {
+                @SuppressLint({"NewApi"})
+                public void run() {
+                    mWebCodeRead.getSettings().setDisplayZoomControls(false);
+                }
+            }.run();
+        }
+        //mWebCodeRead.setScrollBarStyle(33554432);
         openFile();
     }
 

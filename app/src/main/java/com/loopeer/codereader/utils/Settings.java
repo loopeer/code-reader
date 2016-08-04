@@ -39,7 +39,7 @@ public class Settings
         this.lastPath = paramSharedPreferences.getString("lastPath", Environment.getExternalStorageDirectory().getPath());
         this.showCloseConfirmation = paramSharedPreferences.getBoolean("showCloseConfirmation", true);
         this.exitOnClose = paramSharedPreferences.getBoolean("exitOnClose", false);
-        this.fontSize = paramSharedPreferences.getFloat("fontSize", 16.0F);
+        this.fontSize = paramSharedPreferences.getFloat("fontSize", 12.0F);
         this.theme = "Default";
         this.customFileToJSMap = new HashMap();
     }

@@ -1,5 +1,5 @@
-body { border: 0; }
-body.code { padding: 0; margin: 0 2px 0 0; }
+body { border: 0px; }
+body.code { padding: 0; margin: 10px 2px 0 0; }
 
 h3 { margin-top: 0; padding-top: 0; }
 a { text-decoration: none; }
@@ -15,4 +15,4 @@ a { text-decoration: none; }
 
 
 /* Alternate lines */
-.theme-Default		.syntaxhighlighter .line.alt1 { background-color: #f8f8f8 !important; }
+.theme-Default		.syntaxhighlighter .line.alt1 { background-color: #ffffff !important; }
