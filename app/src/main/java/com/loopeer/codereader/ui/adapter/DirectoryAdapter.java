@@ -126,7 +126,7 @@ public class DirectoryAdapter extends RecyclerViewAdapter<DirectoryNode> {
             int drawableId = R.drawable.ic_directory_file;
             if (pathNode.isDirectory) {
                 drawableId = R.drawable.ic_directory_path;
-                mImgOpenClose.setVisibility(View.VISIBLE);
+                mImgOpenClose.setVisibility(pathNode.pathNodes.isEmpty() ? View.INVISIBLE : View.VISIBLE);
             } else {
                 mImgOpenClose.setVisibility(View.INVISIBLE);
             }
