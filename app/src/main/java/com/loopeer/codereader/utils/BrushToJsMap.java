@@ -142,6 +142,9 @@ public class BrushToJsMap {
         list.add("txt");
         list.add("bat");
         mapping.put("NoF", list);
+        list = new ArrayList();
+        list.add("pro");
+        mapping.put("Pro", list);
         /*Iterator iterator = G.settings.customFileToJSMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry localEntry = (Map.Entry) ((Iterator) list).next();
