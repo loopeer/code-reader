@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.model.DirectoryNode;
+import com.loopeer.codereader.utils.FileUtils;
 import com.loopeer.codereader.utils.G;
 import com.loopeer.codereader.utils.Utils;
 
@@ -61,11 +62,34 @@ public class CodeReadFragment extends BaseFragment {
                 }
             }.run();
         }
-        //mWebCodeRead.setScrollBarStyle(33554432);
         openFile();
     }
 
-    protected void openFile() {
+    private void openFile() {
+        if (FileUtils.isImageFileType(mNode.absolutePath)) {
+            openImageFile();
+        } else {
+            openCodeFile();
+        }
+    }
+
+    private void openImageFile() {
+        String string = "<html>" +
+                "<body style=\"margin-top: 40px; margin-bottom: 40px; text-align: center; vertical-align: center;\">"
+                + "<img src='file:///"+ mNode.absolutePath +"'>"
+                + "</body></html>";
+         mWebCodeRead.loadDataWithBaseURL(null,string
+                ,"text/html"
+                ,"utf-8"
+                , null);
+    }
+
+    public void openFile(DirectoryNode node) {
+        mNode = node;
+        openFile();
+    }
+
+    protected void openCodeFile() {
         InputStream stream = null;
         try {
             stream = new FileInputStream(mNode.absolutePath);
@@ -130,5 +154,12 @@ public class CodeReadFragment extends BaseFragment {
                 Toast.makeText(getContext(), values[0], Toast.LENGTH_SHORT).show();
             }
         }.execute();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mWebCodeRead.destroy();
+
     }
 }

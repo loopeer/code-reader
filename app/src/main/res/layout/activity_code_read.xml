@@ -18,7 +18,6 @@
         android:layout_gravity="start"
         android:background="@android:color/white"
         android:clipToPadding="false"
-        android:fitsSystemWindows="true"
         android:paddingLeft="@dimen/medium_padding"
         android:paddingRight="@dimen/medium_padding">
 

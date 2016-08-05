@@ -1,6 +1,7 @@
 package com.loopeer.codereader.ui.activity;
 
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +12,7 @@ import com.loopeer.codereader.R;
 import com.loopeer.codereader.model.DirectoryNode;
 import com.loopeer.codereader.ui.fragment.CodeReadFragment;
 import com.loopeer.codereader.ui.view.DirectoryNavDelegate;
+import com.loopeer.codereader.ui.view.DrawerLayout;
 
 import butterknife.BindView;
 
@@ -22,6 +24,10 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
     View mLeftSheet;
     @BindView(R.id.container_code_read)
     FrameLayout mContainer;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+
+    private CodeReadFragment mFragment;
 
     private DirectoryNavDelegate mDirectoryNavDelegate;
 
@@ -59,9 +65,14 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
     }
 
     private void loadCodeData(DirectoryNode node) {
-        CodeReadFragment fragment = CodeReadFragment.newInstance(node);
-        fragment.setArguments(getIntent().getExtras());
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.container_code_read, fragment).commit();
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+        if (mFragment == null) {
+            mFragment = CodeReadFragment.newInstance(node);
+            mFragment.setArguments(getIntent().getExtras());
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container_code_read, mFragment).commit();
+        } else {
+            mFragment.openFile(node);
+        }
     }
 }
