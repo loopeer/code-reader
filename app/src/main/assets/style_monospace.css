@@ -1,6 +1,6 @@
 @font-face {
     font-family: "Courier";
-    src: url("file:///android_asset/fonts/cour.ttf") format("truetype");
+    src: url("file:///android_asset/fonts/Menlo-Regular.ttf") format("truetype");
 }
 
 .syntaxhighlighter,
