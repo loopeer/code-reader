@@ -13,8 +13,6 @@
 			{ regex: SyntaxHighlighter.regexLib.singleLineCComments,	css: 'color1' },		// one line comments
 			{ regex: SyntaxHighlighter.regexLib.doubleQuotedString,		css: 'value' },		// strings
 			{ regex: SyntaxHighlighter.regexLib.singleQuotedString,		css: 'value' },		// strings
-			{ regex: /\b([\d]+(\.[\d]+)?|0x[a-f0-9]+)\b/gi,				css: 'value' },			// numbers
-			{ regex: new RegExp(this.getKeywords(keywords), 'gm'),		css: 'keyword' }		// java keyword
 			];
 
 		this.forHtmlScript({

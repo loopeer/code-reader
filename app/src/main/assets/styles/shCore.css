@@ -181,7 +181,7 @@
   text-decoration: none !important;
 }
 .syntaxhighlighter.printing .plain, .syntaxhighlighter.printing .plain a {
-  color: black !important;
+  color: #333333 !important;
 }
 .syntaxhighlighter.printing .comments, .syntaxhighlighter.printing .comments a {
   color: #008200 !important;
@@ -190,6 +190,10 @@
   color: blue !important;
 }
 .syntaxhighlighter.printing .keyword {
+  color: #9a2456 !important;/*#006699*/
+  font-weight: bold !important;
+}
+.syntaxhighlighter.printing .keyword1 {
   color: #9a2456 !important;/*#006699*/
   font-weight: bold !important;
 }
