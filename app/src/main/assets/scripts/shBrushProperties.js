@@ -8,12 +8,9 @@
 
 		this.regexList = [
 			{ regex: /^=(.*)$/g,				                            css: 'keyword' },			// numbers
+			{ regex: /#.*$/gm,		                                    css: 'color1' },		// strings
 			];
 
-		this.forHtmlScript({
-			left	: /(&lt;|<)%[@!=]?/g,
-			right	: /%(&gt;|>)/g
-		});
 	};
 
 	Brush.prototype	= new SyntaxHighlighter.Highlighter();

@@ -18,6 +18,7 @@ import com.loopeer.codereader.model.DirectoryNode;
 import com.loopeer.codereader.utils.FileUtils;
 import com.loopeer.codereader.utils.G;
 import com.loopeer.codereader.utils.Utils;
+import com.todou.markdownj.MarkdownProcessor;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -68,6 +69,8 @@ public class CodeReadFragment extends BaseFragment {
     private void openFile() {
         if (FileUtils.isImageFileType(mNode.absolutePath)) {
             openImageFile();
+        } else if (FileUtils.isMdFileType(mNode.absolutePath)) {
+            openMdShowFile();
         } else {
             openCodeFile();
         }
@@ -76,11 +79,11 @@ public class CodeReadFragment extends BaseFragment {
     private void openImageFile() {
         String string = "<html>" +
                 "<body style=\"margin-top: 40px; margin-bottom: 40px; text-align: center; vertical-align: center;\">"
-                + "<img src='file:///"+ mNode.absolutePath +"'>"
+                + "<img src='file:///" + mNode.absolutePath + "'>"
                 + "</body></html>";
-         mWebCodeRead.loadDataWithBaseURL(null,string
-                ,"text/html"
-                ,"utf-8"
+        mWebCodeRead.loadDataWithBaseURL(null, string
+                , "text/html"
+                , "utf-8"
                 , null);
     }
 
@@ -144,6 +147,61 @@ public class CodeReadFragment extends BaseFragment {
                 super.onPostExecute(o);
                 if (o != null) {
                     mWebCodeRead.loadDataWithBaseURL("file:///android_asset/", o, "text/html", "UTF-8", "");
+                    return;
+                }
+            }
+
+            @Override
+            protected void onProgressUpdate(String... values) {
+                super.onProgressUpdate(values);
+                Toast.makeText(getContext(), values[0], Toast.LENGTH_SHORT).show();
+            }
+        }.execute();
+    }
+
+    protected void openMdShowFile() {
+        InputStream stream = null;
+        try {
+            stream = new FileInputStream(mNode.absolutePath);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (stream == null)
+            return;
+        final InputStream finalStream = stream;
+        new AsyncTask<String, String, String>() {
+
+            @Override
+            protected String doInBackground(String[] objects) {
+                StringBuilder localStringBuilder = new StringBuilder();
+                try {
+                    BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(finalStream, "UTF-8"));
+                    for (; ; ) {
+                        String str = localBufferedReader.readLine();
+                        if (str == null) {
+                            break;
+                        }
+                        localStringBuilder.append(str);
+                        localStringBuilder.append("\n");
+                    }
+                    return localStringBuilder.toString();
+                } catch (OutOfMemoryError paramAnonymousVarArgs) {
+                    Log.e(TAG, "Unable to open file, out of memory!");
+                    return null;
+                } catch (FileNotFoundException paramAnonymousVarArgs) {
+                    return null;
+                } catch (IOException paramAnonymousVarArgs) {
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String o) {
+                super.onPostExecute(o);
+                if (o != null) {
+                    MarkdownProcessor m = new MarkdownProcessor();
+                    String html = m.markdown(o);
+                    mWebCodeRead.loadDataWithBaseURL("fake://", html, "text/html", "UTF-8", "");
                     return;
                 }
             }

@@ -51,6 +51,12 @@ public class FileUtils {
     private static final int FIRST_PLAYLIST_FILE_TYPE = FILE_TYPE_M3U;
     private static final int LAST_PLAYLIST_FILE_TYPE = FILE_TYPE_WPL;
 
+    // MarkDown file types
+    public static final int FILE_TYPE_MARKDOWN = 44;
+    public static final int FILE_TYPE_MD = 45;
+    private static final int FIRST_MARKDOWNLIST_FILE_TYPE = FILE_TYPE_MARKDOWN;
+    private static final int LAST_MARKDOWNLIST_FILE_TYPE = FILE_TYPE_MD;
+
     //静态内部类
     static class MediaFileType {
 
@@ -107,6 +113,9 @@ public class FileUtils {
         addFileType("PLS", FILE_TYPE_PLS, "audio/x-scpls");
         addFileType("WPL", FILE_TYPE_WPL, "application/vnd.ms-wpl");
 
+        addFileType("MD", FILE_TYPE_MD, "text/markdown");
+        addFileType("MARKDOWN", FILE_TYPE_MARKDOWN, "text/markdown");
+
         // compute file extensions list for native Media Scanner
         StringBuilder builder = new StringBuilder();
         Iterator<String> iterator = sFileTypeMap.keySet().iterator();
@@ -144,6 +153,11 @@ public class FileUtils {
                 fileType <= LAST_PLAYLIST_FILE_TYPE);
     }
 
+    private static boolean isMarkDownFileType(int fileType) {
+        return (fileType >= FIRST_MARKDOWNLIST_FILE_TYPE &&
+                fileType <= LAST_MARKDOWNLIST_FILE_TYPE);
+    }
+
     public static MediaFileType getFileType(String path) {
         int lastDot = path.lastIndexOf(".");
         if (lastDot < 0)
@@ -178,6 +192,14 @@ public class FileUtils {
     public static int getFileTypeForMimeType(String mimeType) {
         Integer value = sMimeTypeMap.get(mimeType);
         return (value == null ? 0 : value.intValue());
+    }
+
+    public static boolean isMdFileType(String path) {
+        MediaFileType type = getFileType(path);
+        if (null != type) {
+            return isMarkDownFileType(type.fileType);
+        }
+        return false;
     }
 
 }

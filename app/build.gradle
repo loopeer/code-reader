@@ -26,5 +26,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:' + support_version
     compile 'com.android.support:design:' + support_version
     compile 'com.jakewharton:butterknife:' + butterknife_version
+//    compile 'org.markdownj:markdownj-core:' + markdownj
+    compile project(':libraries:markdownj')
     apt 'com.jakewharton:butterknife-compiler:' + butterknife_version
 }
