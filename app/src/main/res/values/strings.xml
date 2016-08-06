@@ -1,11 +1,15 @@
 <resources>
-    <string name="app_name">Codereader</string>
+    <string name="app_name">CoReader</string>
     <string name="title_activity_code_read">CodeReadActivity</string>
+
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <!-- main -->
+    <string name="scroll_aware_fab_behavior">com.loopeer.codereader.ui.view.ScrollAwareFABBehavior</string>
 
     <!-- code read -->
     <string name="code_read_not_found_type">无法解析对应文件</string>

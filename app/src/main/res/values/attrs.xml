@@ -7,4 +7,10 @@
     <declare-styleable name="NestHorizontalScrollView">
         <attr name="fillViewport" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="ForegroundRelativeLayout">
+        <attr name="android:foreground" />
+        <attr name="android:foregroundInsidePadding" />
+        <attr name="android:foregroundGravity" />
+    </declare-styleable>
 </resources>

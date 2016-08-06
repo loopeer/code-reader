@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.loopeer.codereader.ui.view.NestHorizontalScrollView
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:overScrollMode="never"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ui.activity.MainActivity">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text"
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.CodeReader.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:popupTheme="@style/Theme.CodeReader.PopupOverlay"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/content_recycler"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello WorldGet ready for the next version of Android! Test your apps on Nexus and other devices. Support new system behaviors to save power and memory. Extend your apps with multi-window UI, direct reply notifications and more.!"/>
-</com.loopeer.codereader.ui.view.NestHorizontalScrollView>
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_folder_white"
+        app:layout_behavior="@string/scroll_aware_fab_behavior"/>
+
+</android.support.design.widget.CoordinatorLayout>
