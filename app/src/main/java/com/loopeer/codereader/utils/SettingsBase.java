@@ -24,7 +24,7 @@ public abstract class SettingsBase {
         }
     }
 
-    protected abstract void firstRunAfterUpdate(Double paramDouble1, Double paramDouble2);
+    protected abstract void firstRunAfterUpdate(String paramDouble1, Double paramDouble2);
 
     protected abstract void firstRunInit();
 
@@ -54,7 +54,8 @@ public abstract class SettingsBase {
             }
             load(preferences);
             if (this.isFirstRunAfterUpdate) {
-                firstRunAfterUpdate(Double.valueOf(this.lastVersion), Double.valueOf(this.version));
+//
+//                firstRunAfterUpdate(String.valueOf(this.lastVersion), Double.valueOf(this.version));
             }
             bool = false;
             return;

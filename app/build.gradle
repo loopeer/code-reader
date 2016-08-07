@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    compileSdkVersion Integer.parseInt(compile_sdk_version)
+    buildToolsVersion build_tools_version
 
     defaultConfig {
         applicationId "com.loopeer.codereader"
-        minSdkVersion 15
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+        versionCode Integer.parseInt(version_code)
+        versionName version_name
     }
     buildTypes {
         release {
@@ -26,7 +26,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:' + support_version
     compile 'com.android.support:design:' + support_version
     compile 'com.jakewharton:butterknife:' + butterknife_version
-//    compile 'org.markdownj:markdownj-core:' + markdownj
-    compile project(':libraries:markdownj')
     apt 'com.jakewharton:butterknife-compiler:' + butterknife_version
+    compile project(':libraries:markdownj')
+    compile project(':libraries:directoryandfilechooser')
 }

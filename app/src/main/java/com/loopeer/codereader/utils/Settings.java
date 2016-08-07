@@ -22,7 +22,9 @@ public class Settings
         super(paramContext);
     }
 
-    protected void firstRunAfterUpdate(Double paramDouble1, Double paramDouble2) {
+    @Override
+    protected void firstRunAfterUpdate(String paramDouble1, Double paramDouble2) {
+
     }
 
     protected void firstRunInit() {

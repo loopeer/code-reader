@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/libraries" />
+            <option value="$PROJECT_DIR$/libraries/directoryandfilechooser" />
             <option value="$PROJECT_DIR$/libraries/markdownj" />
           </set>
         </option>
@@ -18,6 +19,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/libraries" />
+            <option value="$PROJECT_DIR$/libraries/directoryandfilechooser" />
             <option value="$PROJECT_DIR$/libraries/markdownj" />
           </set>
         </option>

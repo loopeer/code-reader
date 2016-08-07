@@ -100,7 +100,7 @@ public class DirectoryAdapter extends RecyclerViewAdapter<DirectoryNode> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.list_item_directory, parent, false);
+        View view = inflater.inflate(R.layout.list_item_directory_chooser, parent, false);
         return new DirectoryViewHolder(view);
     }
 

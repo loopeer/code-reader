@@ -5,12 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
+    android:foreground="?selectableItemBackground"
     android:padding="@dimen/medium_padding">
 
     <ImageView
         android:id="@+id/img_repo_type"
         android:layout_width="36dp"
         android:layout_height="36dp"
+        android:layout_centerVertical="true"
         android:src="@drawable/ic_document_white"
         android:scaleType="centerInside"
         android:background="@drawable/shape_circle_folder"/>

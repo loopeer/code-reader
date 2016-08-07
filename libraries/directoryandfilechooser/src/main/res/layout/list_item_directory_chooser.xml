@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.loopeer.directorychooser.ForegroundLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:foreground="?selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/medium_padding"
+    android:paddingRight="@dimen/medium_padding">
+
+    <TextView
+        android:id="@+id/text_directory_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:maxLines="1"
+        android:drawableLeft="@drawable/ic_directory_file"
+        android:drawablePadding="8dp"/>
+
+    <FrameLayout
+        android:id="@+id/btn_directory_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:clickable="true"
+            android:src="@drawable/selector_file_select"/>
+    </FrameLayout>
+
+</com.loopeer.directorychooser.ForegroundLinearLayout>

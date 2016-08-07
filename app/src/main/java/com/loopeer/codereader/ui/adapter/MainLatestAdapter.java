@@ -24,6 +24,12 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
     public void bindView(Repo var1, int var2, RecyclerView.ViewHolder var3) {
         RepoViewHolder viewHolder = (RepoViewHolder) var3;
         viewHolder.bind(var1);
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override
