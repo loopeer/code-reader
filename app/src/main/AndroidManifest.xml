@@ -26,7 +26,8 @@
             android:label="@string/title_activity_code_read"
             android:theme="@style/Theme.CodeReader.NoActionBar"/>
 
-        <activity android:name="com.loopeer.directorychooser.DirectoryFileChooserActivity"/>
+        <activity android:name="com.loopeer.directorychooser.DirectoryFileChooserActivity"
+                  android:theme="@style/Theme.CodeReader.NoActionBar"/>
     </application>
 
 </manifest>

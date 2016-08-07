@@ -5,10 +5,10 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
@@ -18,14 +18,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DirectoryFileChooserActivity extends AppCompatActivity implements DirectoryFileAdapter.OnNodeSelectListener, DirectoryFileAdapter.OnDirectoryClickListener {
+    public final static String PATH_STACK_NAME_START_OFFSET = "   ";
+    public final static String PATH_STACK_NAME_END_OFFSET = ">";
 
     private RecyclerView mRecyclerView;
     private ViewAnimator mViewAnimator;
     private TextView mTextSelectedPath;
+    private Toolbar mToolbar;
 
     private DirectoryFileAdapter mDirectoryFileAdapter;
     private LinkedList<FileNod> mSelectedNodeStack;
-    private FileNod preSelectedNode;
     private FileNod currentSelectedNode;
 
     @Override
@@ -33,7 +35,10 @@ public class DirectoryFileChooserActivity extends AppCompatActivity implements D
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directory_file_chooser);
 
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle(R.string.select_file);
         mRecyclerView = (RecyclerView) findViewById(R.id.view_recycler);
         mViewAnimator = (ViewAnimator) findViewById(R.id.animator_recycler_content);
         mTextSelectedPath = (TextView) findViewById(R.id.text_chooser_path);
@@ -56,10 +61,6 @@ public class DirectoryFileChooserActivity extends AppCompatActivity implements D
     }
 
     private void initData() {
-        /*FileNod rootNode = DirectoryUtils.getRootNode(this);
-        currentSelectedNode = rootNode;
-        updateLinkedClick();
-        updateContent(rootNode);*/
         updateDataWithNode(DirectoryUtils.getFileDirectory(Environment.getExternalStorageDirectory()));
     }
 
@@ -86,9 +87,9 @@ public class DirectoryFileChooserActivity extends AppCompatActivity implements D
         }
         appendPath(sb, nodeStartPos, nodeEndPos, currentSelectedNode, count);
         SpannableString spannableString = new SpannableString(sb.toString());
-        for (int i = 0; i < count + 1; i++) {
+        for (int i = 0; i < count; i++) {
             final int finalI = i;
-            spannableString.setSpan(new ClickableSpan() {
+            spannableString.setSpan(new ColorClickableSpan(this, android.R.color.white) {
                 @Override
                 public void onClick(View view) {
                     popToPosition(finalI);
@@ -100,11 +101,12 @@ public class DirectoryFileChooserActivity extends AppCompatActivity implements D
     }
 
     private void appendPath(StringBuilder sb, int[] nodeStartPos, int[] nodeEndPos, FileNod node, int i) {
-        int size = node.name.length() + 1;
+        int size = node.name.length() + PATH_STACK_NAME_START_OFFSET.length() + PATH_STACK_NAME_END_OFFSET.length();
         nodeStartPos[i] = sb.length();
         nodeEndPos[i] = sb.length() + size;
+        sb.append(PATH_STACK_NAME_START_OFFSET);
         sb.append(node.name);
-        sb.append(">");
+        sb.append(PATH_STACK_NAME_END_OFFSET);
     }
 
     private void popToPosition(int position) {
@@ -112,7 +114,6 @@ public class DirectoryFileChooserActivity extends AppCompatActivity implements D
         for (int i = mSelectedNodeStack.size(); i > position; i--) {
             node = mSelectedNodeStack.pop();
         }
-        preSelectedNode = mSelectedNodeStack.peek();
         currentSelectedNode = node;
         updateLinkedClick();
         updateContent(node);
@@ -132,7 +133,6 @@ public class DirectoryFileChooserActivity extends AppCompatActivity implements D
 
     private void popSelectedStack() {
         currentSelectedNode = mSelectedNodeStack.pop();
-        preSelectedNode = mSelectedNodeStack.peek();
         updateLinkedClick();
         updateContent(currentSelectedNode);
     }
