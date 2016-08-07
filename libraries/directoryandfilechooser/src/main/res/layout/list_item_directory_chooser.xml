@@ -28,7 +28,7 @@
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:clickable="true"
+            android:clickable="false"
             android:src="@drawable/selector_file_select"/>
     </FrameLayout>
 

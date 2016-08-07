@@ -12,7 +12,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ViewAnimator;
 
+import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
+import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.ui.adapter.MainLatestAdapter;
 import com.loopeer.codereader.ui.decoration.DividerItemDecoration;
@@ -20,9 +22,9 @@ import com.loopeer.codereader.ui.loader.ILoadHelper;
 import com.loopeer.codereader.ui.loader.RecyclerLoader;
 import com.loopeer.codereader.utils.G;
 import com.loopeer.codereader.utils.Settings;
-import com.loopeer.directorychooser.DirectoryFileChooserActivity;
+import com.loopeer.directorychooser.FileNod;
+import com.loopeer.directorychooser.NavigatorChooser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -67,6 +69,13 @@ public class MainActivity extends BaseActivity {
         setUpView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRecyclerLoader.showProgress();
+        loadLocalData();
+    }
+
     private void setUpView() {
         mRecyclerLoader = new RecyclerLoader(mAnimatorRecyclerContent);
         mRecyclerContent.setLayoutManager(new LinearLayoutManager(this));
@@ -76,9 +85,22 @@ public class MainActivity extends BaseActivity {
                 , getResources().getDimensionPixelSize(R.dimen.repo_list_divider_start)
                 , -1
                 , -1));
-        mMainLatestAdapter.updateData(createTestData());
-        mRecyclerLoader.showContent();
     }
+
+    private void loadLocalData() {
+        List<Repo> repos = CoReaderDbHelper.getInstance(this).readRunDetails();
+        setUpContent(repos);
+    }
+
+    private void setUpContent(List<Repo> repos) {
+        if (repos == null || repos.isEmpty()) {
+            mRecyclerLoader.showEmpty();
+        } else {
+            mRecyclerLoader.showContent();
+            mMainLatestAdapter.updateData(repos);
+        }
+    }
+
 
     @OnClick(R.id.fab_main)
     @SuppressWarnings("unused")
@@ -87,30 +109,22 @@ public class MainActivity extends BaseActivity {
     }
 
     private void doSelectFile() {
-        startActivity(new Intent(this, DirectoryFileChooserActivity.class));
+        NavigatorChooser.startDirectoryFileChooserActivity(this);
     }
 
-
-    /** 根据返回选择的文件，来进行上传操作 **/
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-
-    private List<Repo> createTestData() {
-        List<Repo> repos = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            Repo repo = new Repo();
-            repo.isFolder = true;
-            repo.absolutePath = "asdgsdg";
-            repos.add(repo);
+        switch (requestCode) {
+            case NavigatorChooser.DIRECTORY_FILE_SELECT_CODE:
+                if (resultCode == RESULT_OK) {
+                    FileNod node = (FileNod) data.getSerializableExtra(NavigatorChooser.EXTRA_FILE_NODE);
+                    Repo repo = Repo.parse(node);
+                    CoReaderDbHelper.getInstance(this).insertRepo(repo);
+                    Navigator.startCodeReadActivity(MainActivity.this, repo);
+                }
+                break;
         }
-        for (int i = 0; i < 10; i++) {
-            repos.add(new Repo());
-        }
-        return repos;
     }
 
     @Override

@@ -8,6 +8,8 @@ import com.loopeer.codereader.model.DirectoryNode;
 import com.loopeer.codereader.ui.adapter.DirectoryAdapter;
 import com.loopeer.codereader.utils.FileCache;
 
+import java.io.File;
+
 public class DirectoryNavDelegate {
 
     public interface FileClickListener{
@@ -23,18 +25,16 @@ public class DirectoryNavDelegate {
         mContext = recyclerView.getContext();
         mDirectoryAdapter = new DirectoryAdapter(recyclerView.getContext(), listener);
         setUpRecyclerView();
-        setTestData();
     }
 
     private void setUpRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(mDirectoryAdapter);
-        mDirectoryAdapter.setNodeRoot(setTestData());
     }
 
-    private DirectoryNode setTestData() {
-        DirectoryNode directoryNode = FileCache.getInstance().getFileDirectoryNode();
-        return directoryNode;
+    public void updateData(DirectoryNode directoryNode) {
+        DirectoryNode node = FileCache.getFileDirectory(new File(directoryNode.absolutePath));
+        mDirectoryAdapter.setNodeRoot(node);
     }
 
 }

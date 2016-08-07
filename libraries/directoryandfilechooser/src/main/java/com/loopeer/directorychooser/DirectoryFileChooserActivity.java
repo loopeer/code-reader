@@ -1,5 +1,6 @@
 package com.loopeer.directorychooser;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -77,13 +78,19 @@ public class DirectoryFileChooserActivity extends AppCompatActivity implements D
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onNodeSelected(FileNod node) {
-
+        Intent intent = getIntent();
+        intent.putExtra(NavigatorChooser.EXTRA_FILE_NODE, node);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override
@@ -115,7 +122,6 @@ public class DirectoryFileChooserActivity extends AppCompatActivity implements D
         }
         mTextSelectedPath.setText(spannableString);
         mTextSelectedPath.setMovementMethod(LinkMovementMethod.getInstance());
-
         mScrollView.post(new Runnable() {
             @Override
             public void run() {

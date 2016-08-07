@@ -1,5 +1,6 @@
 package com.loopeer.codereader.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.model.DirectoryNode;
+import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.ui.fragment.CodeReadFragment;
 import com.loopeer.codereader.ui.view.DirectoryNavDelegate;
 import com.loopeer.codereader.ui.view.DrawerLayout;
@@ -28,6 +31,7 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
     DrawerLayout mDrawerLayout;
 
     private CodeReadFragment mFragment;
+    private DirectoryNode mDirectoryNode;
 
     private DirectoryNavDelegate mDirectoryNavDelegate;
 
@@ -37,6 +41,14 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
         setContentView(R.layout.activity_code_read);
 
         mDirectoryNavDelegate = new DirectoryNavDelegate(mDirectoryRecyclerView, this);
+        parseIntent();
+    }
+
+    private void parseIntent() {
+        Intent intent = getIntent();
+        Repo repo = (Repo) intent.getSerializableExtra(Navigator.EXTRA_REPO);
+        mDirectoryNode = repo.toDirectoryNode();
+        mDirectoryNavDelegate.updateData(mDirectoryNode);
     }
 
     @Override

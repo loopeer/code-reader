@@ -1,0 +1,31 @@
+CREATE TABLE db_repo (
+   _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  name TEXT,
+  last_modify INTEGER,
+  absolute_path TEXT,
+  net_url TEXT,
+  is_folder INTEGER AS Boolean DEFAULT 0
+);
+
+select_all:
+SELECT *
+FROM db_repo;
+
+clean_all:
+DELETE
+FROM db_repo;
+
+delete_repo:
+DELETE FROM db_repo
+WHERE _id = ?;
+
+update_last_modify:
+UPDATE db_repo
+SET last_modify = ?
+WHERE _id = ?;
+
+check_same_repo:
+SELECT *
+FROM db_repo
+WHERE name = ?
+AND absolute_path = ?;

@@ -1,9 +1,10 @@
 package com.loopeer.directorychooser;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 
-public class FileNod {
+public class FileNod implements Serializable{
 
     public String name;
     public String absolutePath;

@@ -2,10 +2,12 @@ package com.loopeer.codereader.model;
 
 import android.text.TextUtils;
 
-public class Repo {
+import com.loopeer.directorychooser.FileNod;
+
+public class Repo extends BaseModel{
 
     public String name;
-    public long latestOpenTime;
+    public long lastModify;
     public String absolutePath;
     public String netUrl;
     public boolean isFolder;
@@ -15,5 +17,20 @@ public class Repo {
     }
 
     public Repo() {
+    }
+
+    public static Repo parse(FileNod node) {
+        Repo result = new Repo();
+        result.name = node.name;
+        result.absolutePath = node.absolutePath;
+        result.isFolder = node.isFolder;
+        return result;
+    }
+
+    public DirectoryNode toDirectoryNode() {
+        DirectoryNode node = new DirectoryNode();
+        node.name = name;
+        node.absolutePath = absolutePath;
+        return node;
     }
 }
