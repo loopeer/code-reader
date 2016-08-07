@@ -25,6 +25,7 @@
             android:elevation="2dp">
 
             <HorizontalScrollView
+                android:id="@+id/scrollView_path"
                 android:layout_width="0dp"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_weight="1"

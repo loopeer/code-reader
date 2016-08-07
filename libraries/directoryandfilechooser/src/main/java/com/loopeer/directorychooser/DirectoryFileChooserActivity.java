@@ -9,7 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
@@ -25,6 +28,7 @@ public class DirectoryFileChooserActivity extends AppCompatActivity implements D
     private ViewAnimator mViewAnimator;
     private TextView mTextSelectedPath;
     private Toolbar mToolbar;
+    private HorizontalScrollView mScrollView;
 
     private DirectoryFileAdapter mDirectoryFileAdapter;
     private LinkedList<FileNod> mSelectedNodeStack;
@@ -42,6 +46,7 @@ public class DirectoryFileChooserActivity extends AppCompatActivity implements D
         mRecyclerView = (RecyclerView) findViewById(R.id.view_recycler);
         mViewAnimator = (ViewAnimator) findViewById(R.id.animator_recycler_content);
         mTextSelectedPath = (TextView) findViewById(R.id.text_chooser_path);
+        mScrollView = (HorizontalScrollView) findViewById(R.id.scrollView_path);
         mSelectedNodeStack = new LinkedList<>();
     }
 
@@ -62,6 +67,18 @@ public class DirectoryFileChooserActivity extends AppCompatActivity implements D
 
     private void initData() {
         updateDataWithNode(DirectoryUtils.getFileDirectory(Environment.getExternalStorageDirectory()));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_file_search, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -98,6 +115,13 @@ public class DirectoryFileChooserActivity extends AppCompatActivity implements D
         }
         mTextSelectedPath.setText(spannableString);
         mTextSelectedPath.setMovementMethod(LinkMovementMethod.getInstance());
+
+        mScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                mScrollView.fullScroll(View.FOCUS_RIGHT);
+            }
+        });
     }
 
     private void appendPath(StringBuilder sb, int[] nodeStartPos, int[] nodeEndPos, FileNod node, int i) {
