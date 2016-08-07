@@ -29,7 +29,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_folder_white"
-        app:backgroundTint="@color/colorPrimary"
         app:layout_behavior="@string/scroll_aware_fab_behavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -57,6 +57,8 @@ public class CoReaderDbHelper extends SQLiteOpenHelper {
     }
 
     public long insertRepo(Repo repo) {
+        Repo same = readSameRepo(repo);
+        if (same != null) return Long.valueOf(same.id);
         if (repo.lastModify == 0) repo.lastModify = System.currentTimeMillis();
         SQLiteDatabase db = getWritableDatabase();
         return db.insert(DbRepoModel.TABLE_NAME, null, DbRepo.FACTORY.marshal()
@@ -101,7 +103,7 @@ public class CoReaderDbHelper extends SQLiteOpenHelper {
         return repo;
     }
 
-    public List<Repo> readRunDetails() {
+    public List<Repo> readRepos() {
         SQLiteDatabase db = getReadableDatabase();
         List<Repo> repos = new ArrayList<>();
         Cursor cursor = db.rawQuery(DbRepo.SELECT_ALL, null);
@@ -114,5 +116,10 @@ public class CoReaderDbHelper extends SQLiteOpenHelper {
             }
         }
         return repos;
+    }
+
+    public void updateRepoLastModify(long primaryKey, long lastModify) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(DbRepoModel.UPDATE_LAST_MODIFY, new String[]{String.valueOf(lastModify), String.valueOf(primaryKey)});
     }
 }

@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void loadLocalData() {
-        List<Repo> repos = CoReaderDbHelper.getInstance(this).readRunDetails();
+        List<Repo> repos = CoReaderDbHelper.getInstance(this).readRepos();
         setUpContent(repos);
     }
 
@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity {
                 if (resultCode == RESULT_OK) {
                     FileNod node = (FileNod) data.getSerializableExtra(NavigatorChooser.EXTRA_FILE_NODE);
                     Repo repo = Repo.parse(node);
-                    CoReaderDbHelper.getInstance(this).insertRepo(repo);
+                    repo.id = String.valueOf(CoReaderDbHelper.getInstance(this).insertRepo(repo));
                     Navigator.startCodeReadActivity(MainActivity.this, repo);
                 }
                 break;

@@ -37,8 +37,13 @@ public class DirectoryAdapter extends RecyclerViewAdapter<DirectoryNode> {
 
     private List<DirectoryNode> adaptNodes() {
         ArrayList<DirectoryNode> nodes = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        createShowNodes(nodes, -1, mNodeRoot, sb);
+        if (mNodeRoot.isDirectory) {
+            StringBuilder sb = new StringBuilder();
+            createShowNodes(nodes, -1, mNodeRoot, sb);
+        } else {
+            mNodeRoot.displayName = mNodeRoot.name;
+            nodes.add(mNodeRoot);
+        }
         return nodes;
     }
 

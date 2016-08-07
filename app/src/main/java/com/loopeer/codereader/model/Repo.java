@@ -31,6 +31,7 @@ public class Repo extends BaseModel{
         DirectoryNode node = new DirectoryNode();
         node.name = name;
         node.absolutePath = absolutePath;
+        node.isDirectory = isFolder;
         return node;
     }
 }

@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
+import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
 import com.loopeer.codereader.model.DirectoryNode;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.ui.fragment.CodeReadFragment;
@@ -47,6 +48,7 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
     private void parseIntent() {
         Intent intent = getIntent();
         Repo repo = (Repo) intent.getSerializableExtra(Navigator.EXTRA_REPO);
+        CoReaderDbHelper.getInstance(this).updateRepoLastModify(Long.valueOf(repo.id), System.currentTimeMillis());
         mDirectoryNode = repo.toDirectoryNode();
         mDirectoryNavDelegate.updateData(mDirectoryNode);
     }

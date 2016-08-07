@@ -33,7 +33,12 @@ public class DirectoryNavDelegate {
     }
 
     public void updateData(DirectoryNode directoryNode) {
-        DirectoryNode node = FileCache.getFileDirectory(new File(directoryNode.absolutePath));
+        DirectoryNode node = null;
+        if (directoryNode.isDirectory) {
+            node = FileCache.getFileDirectory(new File(directoryNode.absolutePath));
+        } else {
+            node = directoryNode;
+        }
         mDirectoryAdapter.setNodeRoot(node);
     }
 
