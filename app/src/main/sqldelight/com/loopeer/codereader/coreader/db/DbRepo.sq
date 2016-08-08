@@ -9,7 +9,8 @@ CREATE TABLE db_repo (
 
 select_all:
 SELECT *
-FROM db_repo;
+FROM db_repo
+ORDER BY last_modify DESC;
 
 clean_all:
 DELETE

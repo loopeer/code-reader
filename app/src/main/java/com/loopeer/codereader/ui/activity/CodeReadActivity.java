@@ -48,19 +48,24 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
     private void parseIntent() {
         Intent intent = getIntent();
         Repo repo = (Repo) intent.getSerializableExtra(Navigator.EXTRA_REPO);
-        CoReaderDbHelper.getInstance(this).updateRepoLastModify(Long.valueOf(repo.id), System.currentTimeMillis());
+        CoReaderDbHelper.getInstance(this).updateRepoLastModify(Long.valueOf(repo.id)
+                , System.currentTimeMillis());
         mDirectoryNode = repo.toDirectoryNode();
         mDirectoryNavDelegate.updateData(mDirectoryNode);
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.code_read, menu);
+//        getMenuInflater().inflate(R.menu.code_read, menu);
         return true;
     }
 
@@ -70,7 +75,18 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == android.R.id.home) {
+            if (!mDrawerLayout.isDrawerOpen(GravityCompat.START))
+                mDrawerLayout.openDrawer(GravityCompat.START);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mDirectoryNavDelegate.clearSubscription();
     }
 
     @Override

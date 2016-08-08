@@ -22,4 +22,10 @@
     <style name="Theme.CodeReader.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="Theme.CodeReader.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="ProgressLoadingTheme" parent="Base.Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
 </resources>

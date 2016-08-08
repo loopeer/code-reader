@@ -1,10 +1,12 @@
 package com.loopeer.codereader.ui.fragment;
 
-import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +36,8 @@ public class CodeReadFragment extends BaseFragment {
 
     @BindView(R.id.web_code_read)
     WebView mWebCodeRead;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     private DirectoryNode mNode;
 
@@ -52,28 +56,42 @@ public class CodeReadFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(mToolbar);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getSupportActionBar().setHomeAsUpIndicator(ContextCompat.getDrawable(getContext()
+                , R.drawable.ic_view_list_white));
+
         mWebCodeRead.getSettings().setJavaScriptEnabled(true);
         mWebCodeRead.getSettings().setSupportZoom(true);
         mWebCodeRead.getSettings().setBuiltInZoomControls(true);
         if (Build.VERSION.SDK_INT >= 11) {
-            new Runnable() {
-                @SuppressLint({"NewApi"})
-                public void run() {
-                    mWebCodeRead.getSettings().setDisplayZoomControls(false);
-                }
-            }.run();
+            ((Runnable) () -> mWebCodeRead.getSettings().setDisplayZoomControls(false)).run();
         }
         openFile();
     }
 
     private void openFile() {
-        if (FileUtils.isImageFileType(mNode.absolutePath)) {
+        if (mNode == null) {
+            openEmpty();
+        } else if (FileUtils.isImageFileType(mNode.absolutePath)) {
             openImageFile();
         } else if (FileUtils.isMdFileType(mNode.absolutePath)) {
             openMdShowFile();
         } else {
             openCodeFile();
         }
+    }
+
+    private void openEmpty() {
+        String string = "<html>" +
+                "<body style=\"margin-top: 200px; margin-bottom: 40px; text-align: center; vertical-align: center;\">"
+                + "No File Opened"
+                + "</body></html>";
+        mWebCodeRead.loadDataWithBaseURL(null, string
+                , "text/html"
+                , "utf-8"
+                , null);
     }
 
     private void openImageFile() {
@@ -218,6 +236,5 @@ public class CodeReadFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         mWebCodeRead.destroy();
-
     }
 }
