@@ -86,27 +86,57 @@ public class DirectoryAdapter extends RecyclerViewAdapter<DirectoryNode> {
 
     @Override
     public void bindView(final DirectoryNode var1, int var2, RecyclerView.ViewHolder var3) {
-        DirectoryViewHolder viewHolder = (DirectoryViewHolder) var3;
-        viewHolder.bind(var1);
-        View.OnClickListener clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        if (var3 instanceof DirectoryViewHolder) {
+            DirectoryViewHolder viewHolder = (DirectoryViewHolder) var3;
+            viewHolder.bind(var1);
+            View.OnClickListener clickListener = view -> {
                 if (var1.isDirectory) {
                     var1.openChild = !var1.openChild;
                     updateData(adaptNodes());
                 } else {
                     mFileClickListener.doOpenFile(var1);
                 }
-            }
-        };
-        viewHolder.itemView.setOnClickListener(clickListener);
+            };
+            viewHolder.itemView.setOnClickListener(clickListener);
+        }
+        if (var3 instanceof CodeReadRepoHeaderViewHolder) {
+            CodeReadRepoHeaderViewHolder viewHolder = (CodeReadRepoHeaderViewHolder) var3;
+            viewHolder.bind(mNodeRoot);
+        }
+
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.list_item_directory, parent, false);
-        return new DirectoryViewHolder(view);
+        View view;
+        switch (viewType) {
+            case R.layout.list_item_code_read_repo_header:
+                view = inflater.inflate(R.layout.list_item_code_read_repo_header, parent, false);
+                return new CodeReadRepoHeaderViewHolder(view);
+            default:
+                view = inflater.inflate(R.layout.list_item_directory, parent, false);
+                return new DirectoryViewHolder(view);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return R.layout.list_item_code_read_repo_header;
+        }
+        return R.layout.list_item_directory;
+    }
+
+    @Override
+    public int getItemCount() {
+        return super.getItemCount() == 0 ? 0 : super.getItemCount() + 1;
+    }
+
+    @Override
+    public DirectoryNode getItem(int position) {
+        if (position == 0) return mNodeRoot;
+        return super.getItem(position - 1);
     }
 
     class DirectoryViewHolder extends RecyclerView.ViewHolder {
@@ -139,5 +169,23 @@ public class DirectoryAdapter extends RecyclerViewAdapter<DirectoryNode> {
             mTextDirectoryName.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
         }
 
+    }
+
+    class CodeReadRepoHeaderViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.img_code_read_repo_type)
+        ImageView mImgRepoType;
+        @BindView(R.id.text_code_read_repo_name)
+        TextView mTextRepoName;
+
+        public CodeReadRepoHeaderViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        public void bind(DirectoryNode directoryNode) {
+            mImgRepoType.setImageResource(directoryNode.isDirectory ? R.drawable.ic_repo_white : R.drawable.ic_document_white);
+            mTextRepoName.setText(directoryNode.name);
+        }
     }
 }
