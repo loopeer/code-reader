@@ -12,11 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.model.DirectoryNode;
+import com.loopeer.codereader.ui.view.NestedScrollWebView;
 import com.loopeer.codereader.utils.FileUtils;
 import com.loopeer.codereader.utils.G;
 import com.loopeer.codereader.utils.Utils;
@@ -35,7 +35,7 @@ public class CodeReadFragment extends BaseFragment {
     private static final String TAG = "CodeReadFragment";
 
     @BindView(R.id.web_code_read)
-    WebView mWebCodeRead;
+    NestedScrollWebView mWebCodeRead;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -61,7 +61,6 @@ public class CodeReadFragment extends BaseFragment {
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setHomeAsUpIndicator(ContextCompat.getDrawable(getContext()
                 , R.drawable.ic_view_list_white));
-
         mWebCodeRead.getSettings().setJavaScriptEnabled(true);
         mWebCodeRead.getSettings().setSupportZoom(true);
         mWebCodeRead.getSettings().setBuiltInZoomControls(true);
@@ -237,4 +236,5 @@ public class CodeReadFragment extends BaseFragment {
         super.onDestroyView();
         mWebCodeRead.destroy();
     }
+
 }
