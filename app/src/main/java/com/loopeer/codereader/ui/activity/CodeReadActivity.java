@@ -33,6 +33,7 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
 
     private CodeReadFragment mFragment;
     private DirectoryNode mDirectoryNode;
+    private DirectoryNode mSelectedNode;
 
     private DirectoryNavDelegate mDirectoryNavDelegate;
 
@@ -42,16 +43,31 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
         setContentView(R.layout.activity_code_read);
 
         mDirectoryNavDelegate = new DirectoryNavDelegate(mDirectoryRecyclerView, this);
-        parseIntent();
+        parseIntent(savedInstanceState);
+
     }
 
-    private void parseIntent() {
+    private void parseIntent(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mDirectoryNode = (DirectoryNode) savedInstanceState.getSerializable(Navigator.EXTRA_DIRETORY_ROOT);
+            mSelectedNode = (DirectoryNode) savedInstanceState.getSerializable(Navigator.EXTRA_DIRETORY_SELECTING);
+            mDirectoryNavDelegate.updateData(mDirectoryNode, mSelectedNode);
+            doOpenFile(mSelectedNode);
+            return;
+        }
         Intent intent = getIntent();
         Repo repo = (Repo) intent.getSerializableExtra(Navigator.EXTRA_REPO);
         CoReaderDbHelper.getInstance(this).updateRepoLastModify(Long.valueOf(repo.id)
                 , System.currentTimeMillis());
         mDirectoryNode = repo.toDirectoryNode();
-        mDirectoryNavDelegate.updateData(mDirectoryNode);
+        mDirectoryNavDelegate.updateData(mDirectoryNode, null);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(Navigator.EXTRA_DIRETORY_ROOT, mDirectoryNode);
+        outState.putSerializable(Navigator.EXTRA_DIRETORY_SELECTING, mSelectedNode);
     }
 
     @Override
@@ -91,6 +107,8 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
 
     @Override
     public void doOpenFile(DirectoryNode node) {
+        setTitle(node == null ? mDirectoryNode.name : node.name);
+        mSelectedNode = node;
         loadCodeData(node);
     }
 

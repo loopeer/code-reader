@@ -46,7 +46,7 @@ public class DirectoryNavDelegate {
         mRecyclerView.setAdapter(mDirectoryAdapter);
     }
 
-    public void updateData(DirectoryNode directoryNode) {
+    public void updateData(DirectoryNode directoryNode, DirectoryNode selectNode) {
         mAllSubscription.add(
                 Observable.create(new Observable.OnSubscribe<DirectoryNode>() {
                     @Override
@@ -63,8 +63,9 @@ public class DirectoryNavDelegate {
                 })
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnNext(this::checkOpenFirstFile)
                         .doOnNext(mDirectoryAdapter::setNodeRoot)
+                        .filter(o -> selectNode == null)
+                        .doOnNext(this::checkOpenFirstFile)
                         .subscribe()
         );
     }
