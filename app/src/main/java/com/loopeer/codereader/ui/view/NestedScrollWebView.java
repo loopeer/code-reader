@@ -14,6 +14,10 @@ import android.webkit.WebView;
 * */
 public class NestedScrollWebView extends WebView implements NestedScrollingChild {
 
+    public interface ScrollChangeListener{
+        void onScrollChanged(int l, int t, int oldl, int oldt);
+    }
+
     public static final String TAG = NestedScrollWebView.class.getSimpleName();
 
     private int mLastMotionY;
@@ -24,6 +28,8 @@ public class NestedScrollWebView extends WebView implements NestedScrollingChild
     private int mNestedYOffset;
 
     private NestedScrollingChildHelper mChildHelper;
+
+    private ScrollChangeListener mScrollChangeListener;
 
     public NestedScrollWebView(Context context) {
         super(context);
@@ -146,6 +152,18 @@ public class NestedScrollWebView extends WebView implements NestedScrollingChild
     @Override
     public boolean dispatchNestedPreFling(float velocityX, float velocityY) {
         return mChildHelper.dispatchNestedPreFling(velocityX, velocityY);
+    }
+
+    public void setScrollChangeListener(ScrollChangeListener scrollChangeListener) {
+        mScrollChangeListener = scrollChangeListener;
+    }
+
+    @Override
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        if (mScrollChangeListener != null) {
+            mScrollChangeListener.onScrollChanged(l, t, oldl, oldt);
+        }
     }
 
 }

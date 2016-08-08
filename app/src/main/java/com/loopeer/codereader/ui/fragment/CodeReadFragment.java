@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.loopeer.codereader.R;
@@ -28,10 +29,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
-public class CodeReadFragment extends BaseFragment {
+public class CodeReadFragment extends BaseFragment implements NestedScrollWebView.ScrollChangeListener {
     private static final String TAG = "CodeReadFragment";
 
     @BindView(R.id.web_code_read)
@@ -40,6 +45,8 @@ public class CodeReadFragment extends BaseFragment {
     Toolbar mToolbar;
 
     private DirectoryNode mNode;
+    private Subscription scrollFinishDelaySubscription;
+    private boolean scrollDown = false;
 
     public static CodeReadFragment newInstance(DirectoryNode node) {
         CodeReadFragment codeReadFragment = new CodeReadFragment();
@@ -61,6 +68,7 @@ public class CodeReadFragment extends BaseFragment {
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setHomeAsUpIndicator(ContextCompat.getDrawable(getContext()
                 , R.drawable.ic_view_list_white));
+        mWebCodeRead.setScrollChangeListener(this);
         mWebCodeRead.getSettings().setJavaScriptEnabled(true);
         mWebCodeRead.getSettings().setSupportZoom(true);
         mWebCodeRead.getSettings().setBuiltInZoomControls(true);
@@ -237,4 +245,24 @@ public class CodeReadFragment extends BaseFragment {
         mWebCodeRead.destroy();
     }
 
+    @Override
+    public void onScrollChanged(int l, int t, int oldl, int oldt) {
+        if (scrollFinishDelaySubscription != null && !scrollFinishDelaySubscription.isUnsubscribed()) {
+            scrollFinishDelaySubscription.unsubscribe();
+        }
+        if (t - oldt > 120) {
+            scrollDown = true;
+        } else if (t - oldt < 0) {
+            scrollDown = false;
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+        if (scrollDown) {
+            scrollFinishDelaySubscription = Observable
+                    .timer(500, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext(lo -> getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN))
+                    .doOnNext(lo -> scrollDown = false)
+                    .subscribe();
+        }
+    }
 }
