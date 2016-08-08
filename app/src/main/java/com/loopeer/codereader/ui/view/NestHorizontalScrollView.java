@@ -59,6 +59,7 @@ public class NestHorizontalScrollView  extends FrameLayout implements NestedScro
      * Position of the last motion event.
      */
     private int mLastMotionX;
+    private int mLastMotionY;
 
     /**
      * True when the layout has changed but the traversal has not come through yet.
@@ -556,13 +557,6 @@ public class NestHorizontalScrollView  extends FrameLayout implements NestedScro
             return true;
         }
 
-        /*
-         * Don't try to intercept touch if we can't scroll anyway.
-         */
-        if (getScrollX() == 0 && !ViewCompat.canScrollHorizontally(this, 1)) {
-            return false;
-        }
-
         switch (action & MotionEventCompat.ACTION_MASK) {
             case MotionEvent.ACTION_MOVE: {
                 /*
@@ -588,11 +582,14 @@ public class NestHorizontalScrollView  extends FrameLayout implements NestedScro
                 }
 
                 final int x = (int) MotionEventCompat.getX(ev, pointerIndex);
+                final int y = (int) MotionEventCompat.getY(ev, pointerIndex);
                 final int xDiff = Math.abs(x - mLastMotionX);
-                if (xDiff > mTouchSlop
+                final int yDiff = Math.abs(y - mLastMotionY);
+                if (xDiff > mTouchSlop && xDiff > yDiff
                         && (getNestedScrollAxes() & ViewCompat.SCROLL_AXIS_HORIZONTAL) == 0) {
                     mIsBeingDragged = true;
                     mLastMotionX = x;
+                    mLastMotionY = y;
                     initVelocityTrackerIfNotExists();
                     mVelocityTracker.addMovement(ev);
                     mNestedXOffset = 0;
@@ -600,12 +597,15 @@ public class NestHorizontalScrollView  extends FrameLayout implements NestedScro
                     if (parent != null) {
                         parent.requestDisallowInterceptTouchEvent(true);
                     }
+                } else {
+                    mIsBeingDragged = false;
                 }
                 break;
             }
 
             case MotionEvent.ACTION_DOWN: {
                 final int x = (int) ev.getX();
+                final int y = (int) ev.getY();
                 if (!inChild( (int) x,(int) ev.getY())) {
                     mIsBeingDragged = false;
                     recycleVelocityTracker();
@@ -617,6 +617,7 @@ public class NestHorizontalScrollView  extends FrameLayout implements NestedScro
                  * ACTION_DOWN always refers to pointer index 0.
                  */
                 mLastMotionX = x;
+                mLastMotionY = y;
                 mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
 
                 initOrResetVelocityTracker();
