@@ -6,8 +6,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!-- action -->
     <string name="action_settings">Settings</string>
     <string name="action_go_out">Go Out</string>
+    <string name="action_save">Save repo</string>
 
     <!-- main -->
     <string name="scroll_aware_fab_behavior">com.loopeer.codereader.ui.view.ScrollAwareFABBehavior</string>
