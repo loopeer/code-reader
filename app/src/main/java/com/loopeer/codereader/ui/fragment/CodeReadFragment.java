@@ -79,6 +79,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     }
 
     private void openFile() {
+        mWebCodeRead.clearHistory();
         if (mNode == null) {
             openEmpty();
         } else if (FileUtils.isImageFileType(mNode.absolutePath)) {

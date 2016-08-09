@@ -51,7 +51,8 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
         if (savedInstanceState != null) {
             mDirectoryNode = (DirectoryNode) savedInstanceState.getSerializable(Navigator.EXTRA_DIRETORY_ROOT);
             mSelectedNode = (DirectoryNode) savedInstanceState.getSerializable(Navigator.EXTRA_DIRETORY_SELECTING);
-            mDirectoryNavDelegate.updateData(mDirectoryNode, mSelectedNode);
+            DirectoryNode rootNodeInstance = (DirectoryNode) savedInstanceState.getSerializable(Navigator.EXTRA_DIRETORY_ROOT_NODE_INSTANCE);
+            mDirectoryNavDelegate.resumeDirectoryState(rootNodeInstance);
             doOpenFile(mSelectedNode);
             return;
         }
@@ -60,7 +61,7 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
         CoReaderDbHelper.getInstance(this).updateRepoLastModify(Long.valueOf(repo.id)
                 , System.currentTimeMillis());
         mDirectoryNode = repo.toDirectoryNode();
-        mDirectoryNavDelegate.updateData(mDirectoryNode, null);
+        mDirectoryNavDelegate.updateData(mDirectoryNode);
     }
 
     @Override
@@ -68,6 +69,7 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
         super.onSaveInstanceState(outState);
         outState.putSerializable(Navigator.EXTRA_DIRETORY_ROOT, mDirectoryNode);
         outState.putSerializable(Navigator.EXTRA_DIRETORY_SELECTING, mSelectedNode);
+        outState.putSerializable(Navigator.EXTRA_DIRETORY_ROOT_NODE_INSTANCE, mDirectoryNavDelegate.getDirectoryNodeInstance());
     }
 
     @Override

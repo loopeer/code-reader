@@ -11,6 +11,7 @@ public class Navigator {
     public final static int FILE_SELECT_CODE = 1000;
     public final static String EXTRA_REPO = "extra_repo";
     public final static String EXTRA_DIRETORY_ROOT = "extra_diretory_root";
+    public final static String EXTRA_DIRETORY_ROOT_NODE_INSTANCE = "extra_diretory_root_node_instance";
     public final static String EXTRA_DIRETORY_SELECTING = "extra_diretory_selecting";
 
     public static void startCodeReadActivity(Context context, Repo repo) {

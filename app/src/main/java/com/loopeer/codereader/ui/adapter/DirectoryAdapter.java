@@ -35,6 +35,10 @@ public class DirectoryAdapter extends RecyclerViewAdapter<DirectoryNode> {
         updateData(adaptNodes());
     }
 
+    public DirectoryNode getNodeRoot() {
+        return mNodeRoot;
+    }
+
     private List<DirectoryNode> adaptNodes() {
         ArrayList<DirectoryNode> nodes = new ArrayList<>();
         if (mNodeRoot.isDirectory) {
