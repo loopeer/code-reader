@@ -11,6 +11,8 @@
 
     <!-- main -->
     <string name="scroll_aware_fab_behavior">com.loopeer.codereader.ui.view.ScrollAwareFABBehavior</string>
+    <string name="header_item_github_search">Search</string>
+    <string name="header_item_trending">Trending</string>
 
     <!-- code read -->
     <string name="code_read_not_found_type">无法解析对应文件</string>

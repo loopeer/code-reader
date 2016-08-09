@@ -35,14 +35,14 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
 
-    private int mOrientation;
-    private int padding;
-    private int startpadding;
-    private int endpadding;
-    private int dividerHeight;
-    private Context mContext;
-    private Paint mPaddingPaint;
-    private Paint mDividerPaint;
+    protected int mOrientation;
+    protected int padding;
+    protected int startpadding;
+    protected int endpadding;
+    protected int dividerHeight;
+    protected Context mContext;
+    protected Paint mPaddingPaint;
+    protected Paint mDividerPaint;
 
     public DividerItemDecoration(Context context) {
         this(context, VERTICAL_LIST, -1, -1);

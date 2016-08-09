@@ -18,6 +18,7 @@ import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.ui.adapter.MainLatestAdapter;
 import com.loopeer.codereader.ui.decoration.DividerItemDecoration;
+import com.loopeer.codereader.ui.decoration.DividerItemDecorationMainList;
 import com.loopeer.codereader.ui.loader.ILoadHelper;
 import com.loopeer.codereader.ui.loader.RecyclerLoader;
 import com.loopeer.codereader.utils.G;
@@ -81,7 +82,7 @@ public class MainActivity extends BaseActivity {
         mRecyclerContent.setLayoutManager(new LinearLayoutManager(this));
         mMainLatestAdapter = new MainLatestAdapter(this);
         mRecyclerContent.setAdapter(mMainLatestAdapter);
-        mRecyclerContent.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST
+        mRecyclerContent.addItemDecoration(new DividerItemDecorationMainList(this, DividerItemDecoration.VERTICAL_LIST
                 , getResources().getDimensionPixelSize(R.dimen.repo_list_divider_start)
                 , -1
                 , -1));

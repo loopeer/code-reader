@@ -13,4 +13,8 @@
         <attr name="android:foregroundInsidePadding" />
         <attr name="android:foregroundGravity" />
     </declare-styleable>
+
+    <declare-styleable name="ForegroundTextView">
+        <attr name="android:foreground"/>
+    </declare-styleable>
 </resources>
