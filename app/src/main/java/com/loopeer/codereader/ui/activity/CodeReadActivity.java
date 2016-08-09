@@ -81,14 +81,15 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.code_read, menu);
+        getMenuInflater().inflate(R.menu.menu_code_read_go_out, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_go_out) {
+            finish();
             return true;
         }
         if (id == android.R.id.home) {

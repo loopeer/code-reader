@@ -250,7 +250,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
         if (scrollFinishDelaySubscription != null && !scrollFinishDelaySubscription.isUnsubscribed()) {
             scrollFinishDelaySubscription.unsubscribe();
         }
-        if (t - oldt > 120) {
+        if (t - oldt > 70) {
             scrollDown = true;
         } else if (t - oldt < 0) {
             scrollDown = false;
