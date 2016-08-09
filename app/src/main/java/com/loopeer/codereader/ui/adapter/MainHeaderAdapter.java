@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.model.MainHeaderItem;
 
@@ -43,7 +44,19 @@ public class MainHeaderAdapter extends BaseAdapter{
     public View getView(int i, View convertView, ViewGroup viewGroup) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.grid_item_main_header, viewGroup, false);
         bindView(mDatas.get(i), view);
+        bindClick(view, mDatas.get(i), i);
         return view;
+    }
+
+    private void bindClick(View view, MainHeaderItem item, int i) {
+        view.setOnClickListener(view1 -> {
+            switch (i) {
+                case 0:
+                case 1:
+                    Navigator.startWebActivity(mContext, item.link);
+                    break;
+            }
+        });
     }
 
     private void bindView(MainHeaderItem item, View view) {

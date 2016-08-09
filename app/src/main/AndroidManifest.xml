@@ -3,6 +3,7 @@
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="com.loopeer.codereader.CodeReaderApplication"
@@ -26,8 +27,17 @@
             android:label="@string/title_activity_code_read"
             android:theme="@style/Theme.CodeReader.NoActionBar"/>
 
-        <activity android:name="com.loopeer.directorychooser.DirectoryFileChooserActivity"
-                  android:theme="@style/Theme.CodeReader.NoActionBar"/>
+        <activity
+            android:name="com.loopeer.directorychooser.DirectoryFileChooserActivity"
+            android:theme="@style/Theme.CodeReader.NoActionBar"/>
+
+        <activity
+            android:name=".ui.activity.SimpleWebActivity"
+            android:theme="@style/Theme.CodeReader.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.MainActivity"/>
+        </activity>
     </application>
 
 </manifest>

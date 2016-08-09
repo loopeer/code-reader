@@ -103,8 +103,10 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
 
         public void bind() {
             List<MainHeaderItem> items = new ArrayList<>();
-            items.add(new MainHeaderItem(R.drawable.ic_github, R.string.header_item_github_search, ""));
-            items.add(new MainHeaderItem(R.drawable.ic_trending, R.string.header_item_trending, ""));
+            items.add(new MainHeaderItem(R.drawable.ic_github, R.string.header_item_github_search
+                    , itemView.getContext().getString(R.string.header_item_github_search_link)));
+            items.add(new MainHeaderItem(R.drawable.ic_trending, R.string.header_item_trending
+                    , itemView.getContext().getString(R.string.header_item_trending_link)));
             mMainHeaderAdapter.updateData(items);
         }
     }
