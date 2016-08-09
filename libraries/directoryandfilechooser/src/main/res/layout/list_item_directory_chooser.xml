@@ -17,6 +17,7 @@
         android:layout_weight="1"
         android:maxLines="1"
         android:drawableLeft="@drawable/ic_directory_file"
+        android:textColor="?android:attr/textColorPrimary"
         android:drawablePadding="8dp"/>
 
     <FrameLayout
