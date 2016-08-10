@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.loopeer.codereader.model.Repo;
-import com.loopeer.codereader.service.DownloadRepoService;
+import com.loopeer.codereader.sync.DownloadRepoService;
 import com.loopeer.codereader.ui.activity.CodeReadActivity;
 import com.loopeer.codereader.ui.activity.SimpleWebActivity;
 

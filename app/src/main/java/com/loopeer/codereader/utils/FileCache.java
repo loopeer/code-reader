@@ -53,8 +53,27 @@ public class FileCache {
         return getFileDirectory(file);
     }
 
-    public File getDownloadRepoFile(String name) {
+    public File getRemoteRepoZipFileFromUrl(String url) {
+        return new File(cacheDir, getRepoNameZip(url));
+    }
+
+    public File getRemoteRepoFile(String name) {
         return new File(cacheDir, name);
+    }
+
+    private String getRepoNameZip(String url) {
+        String[] strings = url.split("/");
+        return strings[4] + ".zip";
+    }
+
+    public String getRepoMasterName(String url) {
+        String name = getRepoNameFromUrl(url);
+        return name + "-master";
+    }
+
+    public String getRepoNameFromUrl(String url) {
+        String[] strings = url.split("/");
+        return strings[4].split("//.")[0];
     }
 
     public File getCacheDir() {

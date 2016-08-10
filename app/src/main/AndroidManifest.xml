@@ -39,7 +39,13 @@
                 android:value=".ui.activity.MainActivity"/>
         </activity>
 
-        <service android:name=".service.DownloadRepoService"/>
+        <service android:name=".sync.DownloadRepoService"/>
+
+        <receiver android:name=".sync.DownloadCompletedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
