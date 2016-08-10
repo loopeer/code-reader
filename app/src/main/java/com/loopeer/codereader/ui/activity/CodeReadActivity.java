@@ -43,8 +43,8 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
         setContentView(R.layout.activity_code_read);
 
         mDirectoryNavDelegate = new DirectoryNavDelegate(mDirectoryRecyclerView, this);
+        createFragment(null);
         parseIntent(savedInstanceState);
-
     }
 
     private void parseIntent(Bundle savedInstanceState) {
@@ -117,13 +117,13 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
 
     private void loadCodeData(DirectoryNode node) {
         mDrawerLayout.closeDrawer(GravityCompat.START);
-        if (mFragment == null) {
-            mFragment = CodeReadFragment.newInstance(node);
-            mFragment.setArguments(getIntent().getExtras());
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container_code_read, mFragment).commit();
-        } else {
-            mFragment.openFile(node);
-        }
+        mFragment.openFile(node);
+    }
+
+    private void createFragment(DirectoryNode node) {
+        mFragment = CodeReadFragment.newInstance(node);
+        mFragment.setArguments(getIntent().getExtras());
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container_code_read, mFragment).commit();
     }
 }
