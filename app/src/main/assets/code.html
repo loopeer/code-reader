@@ -1,12 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-
 <head>
     <title>!FILENAME!</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-    <meta name="viewport" content="width=device-width, user-scalable=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0"/>
 
     <script type='text/javascript' src='scripts/shCore.js'></script>
     <script type='text/javascript' src='scripts/shBrush!BRUSHJSFILE!.js'></script>
@@ -22,37 +21,21 @@
     !STYLE_MONOSPACE!
 
     <script type='text/javascript'>
-!SYNTAXHIGHLIGHTER!
+        !SYNTAXHIGHLIGHTER!
 
-function android_init() {
-    !JS_FIX_HSCROLL!
+        function android_init() {
+            !JS_FIX_HSCROLL!
 
-	Android.doneOpen();
-}
+            Android.doneOpen();
+        }
 
-function scrollToLine(lineNumber) {
-	$('html,body').animate({ scrollTop: $('.number' + lineNumber).offset().top }, { duration: 'slow', easing: 'swing'});
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
+    function scrollToLine(lineNumber) {
+        $('html,body').animate({ scrollTop: $('.number' + lineNumber).offset().top }, { duration: 'slow', easing: 'swing'});
+    }
 
     </script>
 </head>
-
-
 <body class='code theme-!THEME!'>
-!CODE!
+    !CODE!
 </body>
-
 </html>
