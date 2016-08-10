@@ -6,6 +6,7 @@ import com.loopeer.codereader.CodeReaderApplication;
 
 import java.io.File;
 import java.util.MissingResourceException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -37,6 +38,8 @@ public class ApiService {
 
     static OkHttpClient createOkHttpClient(Application app) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.connectTimeout(1, TimeUnit.HOURS); // connect timeout
+        httpClient.readTimeout(1, TimeUnit.HOURS);
         File cacheDir = new File(app.getCacheDir(), "http");
         Cache cache = new Cache(cacheDir, DISK_CACHE_SIZE);
         httpClient.cache(cache);

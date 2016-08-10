@@ -98,7 +98,7 @@ public class DownloadRepoService extends Service {
             InputStream inputStream = null;
             OutputStream outputStream = null;
             try {
-                byte[] fileReader = new byte[1024];
+                byte[] fileReader = new byte[1024 * 8];
                 long fileSize = body.contentLength();
                 long fileSizeDownloaded = 0;
                 inputStream = body.byteStream();
@@ -120,6 +120,7 @@ public class DownloadRepoService extends Service {
                 if (zipFile.exists()) zipFile.delete();
                 return true;
             } catch (IOException e) {
+                Log.e(TAG, e.toString());
                 return false;
             } finally {
                 if (inputStream != null) {
@@ -131,6 +132,7 @@ public class DownloadRepoService extends Service {
                 }
             }
         } catch (IOException e) {
+            Log.e(TAG, e.toString());
             return false;
         }
     }
