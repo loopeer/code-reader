@@ -3,7 +3,9 @@ package com.loopeer.codereader.ui.view;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
+import com.loopeer.codereader.BuildConfig;
 import com.loopeer.codereader.model.DirectoryNode;
 import com.loopeer.codereader.ui.adapter.DirectoryAdapter;
 import com.loopeer.codereader.utils.FileCache;
@@ -18,7 +20,8 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class DirectoryNavDelegate {
-
+    private static final String TAG = "DirectoryNavDelegate";
+    
     public interface FileClickListener {
         void doOpenFile(DirectoryNode node);
     }
@@ -73,6 +76,11 @@ public class DirectoryNavDelegate {
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(mDirectoryAdapter::setNodeRoot)
                         .doOnNext(this::checkOpenFirstFile)
+                        .doOnError(e -> {
+                            if (BuildConfig.DEBUG) {
+                                Log.e(TAG, "updateData: " + e.toString());
+                            }
+                        })
                         .subscribe()
         );
     }

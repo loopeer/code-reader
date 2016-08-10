@@ -79,6 +79,9 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     }
 
     private void openFile() {
+        if (mWebCodeRead == null) {
+            return;
+        }
         mWebCodeRead.clearHistory();
         if (mNode == null) {
             openEmpty();

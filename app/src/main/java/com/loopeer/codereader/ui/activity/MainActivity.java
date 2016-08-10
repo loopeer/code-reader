@@ -94,14 +94,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setUpContent(List<Repo> repos) {
-        if (repos == null || repos.isEmpty()) {
-            mRecyclerLoader.showEmpty();
-        } else {
-            mRecyclerLoader.showContent();
-            mMainLatestAdapter.updateData(repos);
-        }
+        mRecyclerLoader.showContent();
+        mMainLatestAdapter.updateData(repos);
     }
-
 
     @OnClick(R.id.fab_main)
     @SuppressWarnings("unused")
