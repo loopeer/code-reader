@@ -38,6 +38,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.MainActivity"/>
         </activity>
+
+        <service android:name=".service.DownloadRepoService"/>
     </application>
 
 </manifest>

@@ -34,11 +34,13 @@ dependencies {
     compile 'com.android.support:design:' + support_version
     compile 'com.jakewharton:butterknife:' + butterknife_version
     apt 'com.jakewharton:butterknife-compiler:' + butterknife_version
-    compile 'io.reactivex:rxjava:1.1.8'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    apt 'com.google.auto.value:auto-value:1.2'
-//    provided 'javax.annotation:jsr250-api:1.0'
-    provided 'com.google.auto.value:auto-value:1.2'
+    compile 'com.squareup.retrofit2:retrofit:' + retrofit
+    compile 'com.squareup.retrofit2:converter-gson:' + retrofit
+    compile 'com.squareup.retrofit2:adapter-rxjava:' + retrofit
+    compile 'io.reactivex:rxjava:' + rxjava
+    compile 'io.reactivex:rxandroid:' + rxandroid
+    apt 'com.google.auto.value:auto-value:' + auto_value
+    provided 'com.google.auto.value:auto-value:' + auto_value
     provided 'com.jakewharton.auto.value:auto-value-annotations:1.2-update1'
     compile project(':libraries:markdownj')
     compile project(':libraries:directoryandfilechooser')

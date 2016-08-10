@@ -53,6 +53,14 @@ public class FileCache {
         return getFileDirectory(file);
     }
 
+    public File getDownloadRepoFile(String name) {
+        return new File(cacheDir, name);
+    }
+
+    public File getCacheDir() {
+        return cacheDir;
+    }
+
     public static DirectoryNode getFileDirectory(File file) {
         if (file == null) return null;
         DirectoryNode directoryNode = new DirectoryNode();

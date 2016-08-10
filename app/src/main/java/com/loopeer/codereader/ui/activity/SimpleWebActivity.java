@@ -1,13 +1,16 @@
 package com.loopeer.codereader.ui.activity;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -21,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SimpleWebActivity extends BaseActivity {
+    private static final String TAG = "SimpleWebActivity";
 
     @BindView(R.id.web_content)
     NestedScrollWebView mWebContent;
@@ -28,6 +32,8 @@ public class SimpleWebActivity extends BaseActivity {
     Toolbar mToolbar;
     @BindView(R.id.progress_bar_web)
     ProgressBar mProgressBar;
+
+    private String mUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +52,22 @@ public class SimpleWebActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mWebContent.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
+
         mWebContent.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
+                mUrl = url;
+                view.loadUrl(mUrl);
                 return true;
             }
 
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                mUrl = String.valueOf(request.getUrl());
+                view.loadUrl(mUrl);
+                return true;
+            }
         });
         mWebContent.setWebChromeClient(new WebChromeClient());
     }
@@ -73,9 +88,9 @@ public class SimpleWebActivity extends BaseActivity {
 
     private void parseIntent() {
         Intent intent = getIntent();
-        String webUrl = intent.getStringExtra(Navigator.EXTRA_WEB_URL);
+        mUrl = intent.getStringExtra(Navigator.EXTRA_WEB_URL);
         String htmlString = intent.getStringExtra(Navigator.EXTRA_HTML_STRING);
-        if (webUrl != null) loadUrl(webUrl);
+        if (mUrl != null) loadUrl(mUrl);
         if (htmlString != null) loadData(htmlString);
     }
 
@@ -97,7 +112,9 @@ public class SimpleWebActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_save) {
-
+            if (!TextUtils.isEmpty(mUrl)) {
+                Navigator.startDownloadRepoService(SimpleWebActivity.this, mUrl);
+            }
             return true;
         }
         if (id == android.R.id.home) {
@@ -119,8 +136,13 @@ public class SimpleWebActivity extends BaseActivity {
                     }
                     return true;
             }
-
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mWebContent.destroy();
     }
 }

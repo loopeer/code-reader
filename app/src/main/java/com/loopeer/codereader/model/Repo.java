@@ -19,6 +19,13 @@ public class Repo extends BaseModel{
     public Repo() {
     }
 
+    public Repo(String name, String absolutePath, String netUrl, boolean isFolder) {
+        this.name = name;
+        this.absolutePath = absolutePath;
+        this.netUrl = netUrl;
+        this.isFolder = isFolder;
+    }
+
     public static Repo parse(FileNod node) {
         Repo result = new Repo();
         result.name = node.name;
