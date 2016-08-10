@@ -50,6 +50,9 @@ public class DownloadRepoService extends Service {
 
     private void downloadFile(String url) {
         String downloadUrl = parseUrl(url);
+        FileCache fileCache = FileCache.getInstance();
+        CoReaderDbHelper.getInstance(getApplicationContext()).insertRepo(new Repo(getRepoMasterName(url)
+                , fileCache.getCacheDir().getPath() + File.separator + getRepoMasterName(url), url, true));
         if (downloadUrl == null) return;
         mGithubService.downloadRepo(downloadUrl)
                 .subscribeOn(Schedulers.io())
@@ -72,6 +75,11 @@ public class DownloadRepoService extends Service {
                 });
     }
 
+    public String getRepoMasterName(String url) {
+        String name = getRepoName(url);
+        return name + "-master";
+    }
+
     private String getRepoNameZip(String url) {
         String[] strings = url.split("/");
         return strings[4] + ".zip";
@@ -84,39 +92,30 @@ public class DownloadRepoService extends Service {
 
     private boolean writeResponseBodyToDisk(ResponseBody body, String url) {
         try {
-            String name = getRepoName(url);
             FileCache fileCache = FileCache.getInstance();
             File file = fileCache.getDownloadRepoFile(getRepoName(url));
             File zipFile = fileCache.getDownloadRepoFile(getRepoNameZip(url));
             InputStream inputStream = null;
             OutputStream outputStream = null;
-
             try {
                 byte[] fileReader = new byte[1024];
-
                 long fileSize = body.contentLength();
                 long fileSizeDownloaded = 0;
-
                 inputStream = body.byteStream();
                 outputStream = new FileOutputStream(zipFile);
-
                 while (true) {
                     int read = inputStream.read(fileReader);
-
                     if (read == -1) {
                         break;
                     }
-
                     outputStream.write(fileReader, 0, read);
-
                     fileSizeDownloaded += read;
-
                     Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
                 }
 
                 outputStream.flush();
-                CoReaderDbHelper.getInstance(getApplicationContext()).insertRepo(new Repo(name, file.getAbsolutePath(), url, true));
-                Unzip decomp = new Unzip(zipFile.getPath(), fileCache.getCacheDir().getPath() + File.separator, getApplicationContext());
+                Unzip decomp = new Unzip(zipFile.getPath()
+                        , fileCache.getCacheDir().getPath() + File.separator, getApplicationContext());
                 decomp.DecompressZip();
                 if (zipFile.exists()) zipFile.delete();
                 return true;
