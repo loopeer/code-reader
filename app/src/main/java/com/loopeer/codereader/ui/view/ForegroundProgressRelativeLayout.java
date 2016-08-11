@@ -1,6 +1,7 @@
 package com.loopeer.codereader.ui.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.v4.content.ContextCompat;
@@ -10,10 +11,10 @@ import com.loopeer.codereader.R;
 
 public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
 
-    private Paint mCurrentPaint;
     private Paint mRemainderPaint;
 
     private float mProgress;
+    private int mRemainderColor;
 
     public ForegroundProgressRelativeLayout(Context context) {
         super(context);
@@ -26,15 +27,16 @@ public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
     public ForegroundProgressRelativeLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ForegroundProgressRelativeLayout,
+                defStyle, 0);
+        mRemainderColor = a.getColor(R.styleable.ForegroundProgressRelativeLayout_android_remainderColor
+                , ContextCompat.getColor(getContext(), R.color.repo_download_remainder_color));
         init();
     }
 
     private void init() {
-        mCurrentPaint = new Paint();
-        mCurrentPaint.setColor(ContextCompat.getColor(getContext(), android.R.color.white));
-        mCurrentPaint.setStyle(Paint.Style.FILL);
         mRemainderPaint = new Paint();
-        mRemainderPaint.setColor(ContextCompat.getColor(getContext(), R.color.repo_download_remainder_color));
+        mRemainderPaint.setColor(mRemainderColor);
         mRemainderPaint.setStyle(Paint.Style.FILL);
     }
 

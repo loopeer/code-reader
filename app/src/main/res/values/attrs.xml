@@ -17,4 +17,8 @@
     <declare-styleable name="ForegroundTextView">
         <attr name="android:foreground"/>
     </declare-styleable>
+
+    <declare-styleable name="ForegroundProgressRelativeLayout">
+        <attr name="android:remainderColor"/>
+    </declare-styleable>
 </resources>
