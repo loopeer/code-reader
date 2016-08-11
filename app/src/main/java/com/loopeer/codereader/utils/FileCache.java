@@ -66,9 +66,9 @@ public class FileCache {
         return strings[4] + ".zip";
     }
 
-    public String getRepoMasterName(String url) {
+    public String getRepoName(String url) {
         String name = getRepoNameFromUrl(url);
-        return name + "-master";
+        return name;
     }
 
     public String getRepoNameFromUrl(String url) {

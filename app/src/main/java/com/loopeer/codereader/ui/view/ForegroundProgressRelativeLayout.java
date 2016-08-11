@@ -41,8 +41,10 @@ public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
     }
 
     public void setProgress(float i) {
-        mProgress = i;
-        invalidate();
+        if (mProgress != i) {
+            mProgress = i;
+            invalidate();
+        }
     }
 
     @Override

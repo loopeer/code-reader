@@ -5,7 +5,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-public class DownloadCompletedReceiver extends BroadcastReceiver {
+import com.loopeer.codereader.Navigator;
+
+public class DownloadReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -16,6 +18,14 @@ public class DownloadCompletedReceiver extends BroadcastReceiver {
                 Intent i = new Intent(context, DownloadRepoService.class);
                 i.putExtra(DownloadManager.EXTRA_DOWNLOAD_ID, downloadId);
                 context.startService(i);
+            }
+        }
+
+        if (intent.hasExtra(DownloadManager.EXTRA_NOTIFICATION_CLICK_DOWNLOAD_IDS)) {
+            long downloadId = intent.getLongExtra(
+                    DownloadManager.EXTRA_DOWNLOAD_ID, 0);
+            if (downloadId > 0) {
+                Navigator.startMainActivity(context);
             }
         }
     }

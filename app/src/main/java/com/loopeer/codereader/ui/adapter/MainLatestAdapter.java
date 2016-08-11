@@ -10,23 +10,30 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.loopeer.codereader.DownloadProgressEvent;
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.model.MainHeaderItem;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.ui.view.ForegroundProgressRelativeLayout;
+import com.loopeer.codereader.utils.RxBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
 
     public MainLatestAdapter(Context context) {
         super(context);
     }
+
+    private final CompositeSubscription mAllSubscription = new CompositeSubscription();
 
     @Override
     public void setData(List<Repo> data) {
@@ -40,7 +47,10 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
     public void bindView(Repo var1, int var2, RecyclerView.ViewHolder var3) {
         if (var3 instanceof RepoViewHolder) {
             RepoViewHolder viewHolder = (RepoViewHolder) var3;
-            viewHolder.bind(var1);
+            Subscription subscription = viewHolder.bind(var1);
+            if (subscription != null) {
+                mAllSubscription.add(subscription);
+            }
             viewHolder.itemView.setOnClickListener(view -> Navigator.startCodeReadActivity(getContext(), var1));
         }
         if (var3 instanceof MainHeaderHolder) {
@@ -48,6 +58,10 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
             viewHolder.bind();
         }
 
+    }
+
+    public void clearSubscription() {
+        mAllSubscription.clear();
     }
 
     @Override
@@ -81,22 +95,39 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
         @BindView(R.id.view_progress_list_repo)
         ForegroundProgressRelativeLayout mProgressRelativeLayout;
 
+        Subscription mSubscription;
+
         public RepoViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(Repo repo) {
+        public Subscription bind(Repo repo) {
             mImgRepoType.setBackgroundResource(repo.isFolder ? R.drawable.shape_circle_folder : R.drawable.shape_circle_document);
             mImgRepoType.setImageResource(repo.isFolder ? R.drawable.ic_repo_white : R.drawable.ic_document_white);
             mTextRepoName.setText(repo.name);
             mTextRepoTime.setText(DateUtils.getRelativeTimeSpanString(itemView.getContext(), repo.lastModify));
-
+            resetSubScription(repo);
             if (repo.isDownloading()) {
                 mProgressRelativeLayout.setProgress(repo.factor);
             } else {
                 mProgressRelativeLayout.setProgress(1f);
             }
+            return mSubscription;
+        }
+
+        private void resetSubScription(Repo repo) {
+            if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+                mSubscription.unsubscribe();
+            }
+            mSubscription = RxBus.getInstance()
+                    .toObservable()
+                    .filter(o -> o instanceof DownloadProgressEvent)
+                    .map(o -> (DownloadProgressEvent) o)
+                    .filter(o -> (o.downloadId == repo.downloadId))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext(o -> mProgressRelativeLayout.setProgress(o.factor))
+                    .subscribe();
         }
     }
 
@@ -105,6 +136,7 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
         @BindView(R.id.grid_main)
         GridView mGridView;
         private MainHeaderAdapter mMainHeaderAdapter;
+
         public MainHeaderHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

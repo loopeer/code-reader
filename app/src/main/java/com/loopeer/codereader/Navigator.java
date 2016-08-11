@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.sync.DownloadRepoService;
 import com.loopeer.codereader.ui.activity.CodeReadActivity;
+import com.loopeer.codereader.ui.activity.MainActivity;
 import com.loopeer.codereader.ui.activity.SimpleWebActivity;
 
 public class Navigator {
@@ -18,6 +19,11 @@ public class Navigator {
     public final static String EXTRA_WEB_URL = "extra_web_url";
     public final static String EXTRA_HTML_STRING = "extra_html_string";
     public final static String EXTRA_DOWNLOAD_URL = "extra_download_url";
+
+    public static void startMainActivity(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
+    }
 
     public static void startCodeReadActivity(Context context, Repo repo) {
         Intent intent = new Intent(context, CodeReadActivity.class);

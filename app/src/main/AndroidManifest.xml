@@ -41,9 +41,10 @@
 
         <service android:name=".sync.DownloadRepoService"/>
 
-        <receiver android:name=".sync.DownloadCompletedReceiver">
+        <receiver android:name=".sync.DownloadReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED"/>
             </intent-filter>
         </receiver>
     </application>

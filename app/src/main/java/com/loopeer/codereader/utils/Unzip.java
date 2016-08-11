@@ -32,7 +32,7 @@ public class Unzip {
         mLocation = location;
         mBuffer = new byte[BUFFER_SIZE];
         mContext = context;
-        dirChecker("");
+        dirChecker(null);
     }
 
     public void DecompressZip() {
@@ -48,7 +48,7 @@ public class Unzip {
             while ((ze = zin.getNextEntry()) != null) {
                 Log.d("Decompress", "Unzipping " + ze.getName());
                 if (ze.isDirectory()) {
-                    dirChecker(ze.getName());
+                    dirChecker(ze);
                 } else {
                     tmp = File.createTempFile("decomp", ".tmp", outputDir);
                     fout = new BufferedOutputStream(new FileOutputStream(tmp));
@@ -58,7 +58,7 @@ public class Unzip {
                     zin.closeEntry();
                     fout.close();
                     fout = null;
-                    tmp.renameTo(new File(mLocation + ze.getName()));
+                    tmp.renameTo(new File(getPathSaveName(ze)));
                     tmp = null;
                 }
             }
@@ -98,9 +98,16 @@ public class Unzip {
         }
     }
 
-    private void dirChecker(String dir) {
-        File f = new File(mLocation, dir);
+    private String getPathSaveName(ZipEntry ze) {
+        if (ze == null) {
+            return mLocation;
+        }
+        String zeName = ze.getName();
+        return mLocation + File.separator + zeName.substring(zeName.indexOf("/") + 1, zeName.length());
+    }
 
+    private void dirChecker(ZipEntry ze) {
+        File f = new File(getPathSaveName(ze));
         if (!f.isDirectory()) {
             f.mkdirs();
         }

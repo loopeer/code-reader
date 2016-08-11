@@ -34,12 +34,14 @@ public class RemoteRepoFetcher {
 
   public long download() {
     FileCache fileCache = FileCache.getInstance();
-    String repoName = fileCache.getRepoMasterName(mUrl);
+    String repoName = fileCache.getRepoName(mUrl);
 
     DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
     Uri downloadUri = Uri.parse(mDownloadUrl);
     DownloadManager.Request request = new DownloadManager.Request(downloadUri);
-    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE
+            |DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+    request.setVisibleInDownloadsUi(false);
     request.setDescription(repoName);
     request.setDestinationUri(mDestinationUri);
     long downloadId = manager.enqueue(request);

@@ -59,14 +59,16 @@ public class DownloadRepoService extends Service {
 
             final int statusColumnId = cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS);
             final int localFilenameColumnId = cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_LOCAL_FILENAME);
+            final int descName = cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_DESCRIPTION);
             if (cursor.moveToNext()) {
                 final long status = cursor.getLong(statusColumnId);
                 final String path = cursor.getString(localFilenameColumnId);
+                final String name = cursor.getString(descName);
                 if (status == DownloadManager.STATUS_SUCCESSFUL) { // 下载成功
                     File zipFile = new File(path);
                     FileCache fileCache = FileCache.getInstance();
                     Unzip decomp = new Unzip(zipFile.getPath()
-                            , fileCache.getCacheDir().getPath() + File.separator, getApplicationContext());
+                            , fileCache.getCacheDir().getPath() + File.separator + name, getApplicationContext());
                     decomp.DecompressZip();
                     if (zipFile.exists()) zipFile.delete();
                     Log.e(TAG, "Success");

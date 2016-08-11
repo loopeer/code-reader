@@ -1,17 +1,8 @@
 package com.loopeer.codereader.ui.activity;
 
 import android.Manifest;
-import android.app.DownloadManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -19,9 +10,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
-import android.view.View;
 import android.widget.ViewAnimator;
 
 import com.loopeer.codereader.CodeReaderApplication;
@@ -29,6 +17,7 @@ import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
 import com.loopeer.codereader.model.Repo;
+import com.loopeer.codereader.sync.DownloadProgressHelper;
 import com.loopeer.codereader.ui.adapter.MainLatestAdapter;
 import com.loopeer.codereader.ui.decoration.DividerItemDecoration;
 import com.loopeer.codereader.ui.decoration.DividerItemDecorationMainList;
@@ -43,10 +32,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import rx.Subscription;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
@@ -60,10 +46,8 @@ public class MainActivity extends BaseActivity {
     FloatingActionButton mFabMain;
 
     private ILoadHelper mRecyclerLoader;
-    DownloadManager mDownloadManager;
     private MainLatestAdapter mMainLatestAdapter;
-
-    private Paint p = new Paint();
+    private Subscription mProgressSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +67,6 @@ public class MainActivity extends BaseActivity {
                         MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
             }
         }
-        mDownloadManager =
-                (DownloadManager) this.getSystemService(Context.DOWNLOAD_SERVICE);
     }
 
     @Override
@@ -112,56 +94,13 @@ public class MainActivity extends BaseActivity {
     }
 
     private void loadLocalData() {
-        checkDownloadingProgress();
-    }
-
-    private void checkDownloadingProgress() {
-        Observable.create(new Observable.OnSubscribe<List<Repo>>() {
-            @Override
-            public void call(Subscriber<? super List<Repo>> subscriber) {
-                boolean downloading = true;
-                while (downloading) {
-                    int downloadNum = 0;
-                    List<Repo> repos =
-                            CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext()).readRepos();
-                    for (Repo repo : repos) {
-                        if (repo.isDownloading()) {
-                            DownloadManager.Query q = new DownloadManager.Query();
-                            q.setFilterById(repo.downloadId);
-
-                            Cursor cursor = mDownloadManager.query(q);
-                            cursor.moveToFirst();
-                            int bytes_downloaded = cursor.getInt(cursor
-                                    .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
-                            int bytes_total = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-
-                            if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) != DownloadManager.STATUS_SUCCESSFUL) {
-                                ++downloadNum;
-                            }
-
-                            final float dl_progress = 1.f * bytes_downloaded / bytes_total;
-                            repo.factor = dl_progress;
-                            Log.e(TAG, dl_progress + "");
-                            cursor.close();
-                        }
-                        subscriber.onNext(repos);
-                    }
-                    if (downloadNum == 0) {
-                        downloading = false;
-                    }
-                    try {
-                        Thread.currentThread().sleep(2000);
-                    } catch (InterruptedException e) {
-                        subscriber.onError(e);
-                    }
-                }
-                subscriber.onCompleted();
-            }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(r -> setUpContent(r))
-                .subscribe();
+        List<Repo> repos =
+                CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext()).readRepos();
+        setUpContent(repos);
+        if (mProgressSubscription != null && !mProgressSubscription.isUnsubscribed()) {
+            mProgressSubscription.unsubscribe();
+        }
+        mProgressSubscription = DownloadProgressHelper.checkDownloadingProgress(this);
     }
 
     private void setUpContent(List<Repo> repos) {
@@ -191,6 +130,15 @@ public class MainActivity extends BaseActivity {
                     Navigator.startCodeReadActivity(MainActivity.this, repo);
                 }
                 break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMainLatestAdapter.clearSubscription();
+        if (mProgressSubscription != null && mProgressSubscription.isUnsubscribed()) {
+            mProgressSubscription.unsubscribe();
         }
     }
 

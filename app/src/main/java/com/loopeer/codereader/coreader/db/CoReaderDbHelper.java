@@ -68,6 +68,7 @@ public class CoReaderDbHelper extends SQLiteOpenHelper {
                 .net_url(repo.netUrl)
                 .is_folder(repo.isFolder)
                 .download_id(repo.downloadId)
+                .factor(repo.factor)
                 .asContentValues());
     }
 
@@ -102,6 +103,7 @@ public class CoReaderDbHelper extends SQLiteOpenHelper {
         repo.isFolder = dbRepo.is_folder();
         repo.lastModify = dbRepo.last_modify();
         repo.downloadId = dbRepo.download_id();
+        repo.factor = dbRepo.factor();
         return repo;
     }
 
@@ -128,5 +130,11 @@ public class CoReaderDbHelper extends SQLiteOpenHelper {
     public void updateRepoDownloadId(long downloadId) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(DbRepoModel.UPDATE_DOWNLOAD_ID, new String[]{String.valueOf(downloadId)});
+    }
+
+    public void updateRepoDownloadProgress(long downloadId, float factor) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(DbRepoModel.UPDATE_DOWNLOAD_PROGRESS
+                , new String[]{String.valueOf(factor), String.valueOf(downloadId)});
     }
 }
