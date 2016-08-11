@@ -19,6 +19,6 @@
     </declare-styleable>
 
     <declare-styleable name="ForegroundProgressRelativeLayout">
-        <attr name="android:remainderColor"/>
+        <attr name="remainderColor" format="color"/>
     </declare-styleable>
 </resources>

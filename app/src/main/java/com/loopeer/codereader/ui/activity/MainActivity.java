@@ -6,6 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -13,7 +19,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.View;
 import android.widget.ViewAnimator;
 
 import com.loopeer.codereader.CodeReaderApplication;
@@ -54,6 +62,8 @@ public class MainActivity extends BaseActivity {
     private ILoadHelper mRecyclerLoader;
     DownloadManager mDownloadManager;
     private MainLatestAdapter mMainLatestAdapter;
+
+    private Paint p = new Paint();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,9 +112,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void loadLocalData() {
-//        List<Repo> repos = CoReaderDbHelper.getInstance(this).readRepos();
         checkDownloadingProgress();
-//        setUpContent(repos);
     }
 
     private void checkDownloadingProgress() {

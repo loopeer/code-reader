@@ -29,7 +29,7 @@ public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ForegroundProgressRelativeLayout,
                 defStyle, 0);
-        mRemainderColor = a.getColor(R.styleable.ForegroundProgressRelativeLayout_android_remainderColor
+        mRemainderColor = a.getColor(R.styleable.ForegroundProgressRelativeLayout_remainderColor
                 , ContextCompat.getColor(getContext(), R.color.repo_download_remainder_color));
         init();
     }
