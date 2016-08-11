@@ -10,9 +10,11 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.loopeer.codereader.CodeReaderApplication;
 import com.loopeer.codereader.DownloadProgressEvent;
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
+import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
 import com.loopeer.codereader.model.MainHeaderItem;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.ui.view.ForegroundProgressRelativeLayout;
@@ -127,6 +129,9 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
                     .filter(o -> (o.downloadId == repo.downloadId))
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext(o -> mProgressRelativeLayout.setProgress(o.factor))
+                    .filter(o -> o.factor == 1f)
+                    .doOnNext(o -> CoReaderDbHelper.getInstance(
+                            CodeReaderApplication.getAppContext()).resetRepoDownloadId(repo.downloadId))
                     .subscribe();
         }
     }

@@ -75,7 +75,6 @@ public class DownloadRepoService extends Service {
                 } else {
                 }
             }
-            CoReaderDbHelper.getInstance(getApplicationContext()).resetRepoDownloadId(id);
             mDownloadRepoIds.remove(id);
         } catch (Exception e) {
             e.printStackTrace();

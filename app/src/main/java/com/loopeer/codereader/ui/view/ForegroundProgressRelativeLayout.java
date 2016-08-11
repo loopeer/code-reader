@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 
@@ -12,9 +13,11 @@ import com.loopeer.codereader.R;
 public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
 
     private Paint mRemainderPaint;
+    private Paint mProgressPaint;
 
     private float mProgress;
     private int mRemainderColor;
+    private static int sProgressTextPadding;
 
     public ForegroundProgressRelativeLayout(Context context) {
         super(context);
@@ -35,9 +38,17 @@ public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
     }
 
     private void init() {
+        sProgressTextPadding = getResources().getDimensionPixelSize(R.dimen.inline_padding);
+
         mRemainderPaint = new Paint();
         mRemainderPaint.setColor(mRemainderColor);
         mRemainderPaint.setStyle(Paint.Style.FILL);
+
+        mProgressPaint = new Paint();
+        mProgressPaint.setAntiAlias(true);
+        mProgressPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        mProgressPaint.setStyle(Paint.Style.FILL);
+        mProgressPaint.setTextSize(getResources().getDimension(R.dimen.text_size_xxsmall));
     }
 
     public void setProgress(float i) {
@@ -53,6 +64,15 @@ public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
 
         if (mProgress < 1f) {
             canvas.drawRect(getWidth() * mProgress, 0, getWidth(), getHeight(), mRemainderPaint);
+            String content = String.format("%.0f",mProgress * 100) + "%";
+            Rect bounds = new Rect();
+            mProgressPaint.getTextBounds(content, 0, content.length(), bounds);
+            if (getWidth() * (1 - mProgress) > bounds.width()) {
+                canvas.drawText(content
+                        , getWidth() * mProgress + sProgressTextPadding
+                        , getHeight() - sProgressTextPadding
+                        , mProgressPaint);
+            }
         }
     }
 }

@@ -26,9 +26,8 @@ public class RemoteRepoFetcher {
         DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
         Uri downloadUri = Uri.parse(mUrl);
         DownloadManager.Request request = new DownloadManager.Request(downloadUri);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE
-                | DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-//        request.setVisibleInDownloadsUi(false);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+        request.setVisibleInDownloadsUi(false);
         request.setDescription(mRepoName);
         request.setDestinationUri(mDestinationUri);
         long downloadId = manager.enqueue(request);

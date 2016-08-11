@@ -28,9 +28,9 @@ public class DownloadProgressHelper {
                         (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
                 boolean downloading = true;
                 while (downloading) {
-                    int downloadNum = 0;
                     List<Repo> repos =
                             CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext()).readRepos();
+                    int downloadNum = 0;
                     for (Repo repo : repos) {
                         if (repo.isDownloading()) {
                             DownloadManager.Query q = new DownloadManager.Query();
@@ -44,11 +44,12 @@ public class DownloadProgressHelper {
 
                             if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) != DownloadManager.STATUS_SUCCESSFUL) {
                                 ++downloadNum;
+                                final float dl_progress = 1.f * bytes_downloaded / bytes_total;
+                                repo.factor = dl_progress;
+                            } else {
+                                repo.factor = 1;
                             }
-
-                            final float dl_progress = 1.f * bytes_downloaded / bytes_total;
-                            repo.factor = dl_progress;
-                            if (bytes_total > 0) {
+                            if (repo.factor > 0) {
                                 CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
                                         .updateRepoDownloadProgress(repo.downloadId, repo.factor);
                                 RxBus.getInstance().send(new DownloadProgressEvent(repo.downloadId, repo.factor));
