@@ -18,7 +18,11 @@ import android.widget.ProgressBar;
 
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
+import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
+import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.ui.view.NestedScrollWebView;
+import com.loopeer.codereader.utils.DownloadUrlParser;
+import com.loopeer.codereader.utils.FileCache;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -113,7 +117,13 @@ public class SimpleWebActivity extends BaseActivity {
         int id = item.getItemId();
         if (id == R.id.action_save) {
             if (!TextUtils.isEmpty(mUrl)) {
-                Navigator.startDownloadRepoService(SimpleWebActivity.this, mUrl);
+                String downloadUrl = DownloadUrlParser.parseUrl(mUrl);
+                String repoName = DownloadUrlParser.getRepoName(mUrl);
+                Repo repo = new Repo(repoName
+                        , FileCache.getInstance().getRepoAbsolutePath(repoName), mUrl, true, 0);
+                long repoId = CoReaderDbHelper.getInstance(this).insertRepo(repo);
+                repo.id = String.valueOf(repoId);
+                Navigator.startDownloadRepoService(SimpleWebActivity.this, downloadUrl, repo);
             }
             return true;
         }

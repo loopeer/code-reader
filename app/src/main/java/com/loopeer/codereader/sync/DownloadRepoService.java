@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
+import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.utils.FileCache;
 import com.loopeer.codereader.utils.Unzip;
 
@@ -39,11 +40,12 @@ public class DownloadRepoService extends Service {
     private void parseIntent(Intent intent) {
         Intent in = intent;
         String url = in.getStringExtra(Navigator.EXTRA_DOWNLOAD_URL);
+        Repo repo = (Repo) in.getSerializableExtra(Navigator.EXTRA_REPO);
         long id = in.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
         if (TextUtils.isEmpty(url)) {
             doRepoDownloadComplete(id);
         } else {
-            downloadFile(url);
+            downloadFile(url, repo);
         }
     }
 
@@ -54,9 +56,7 @@ public class DownloadRepoService extends Service {
                     (DownloadManager) this.getSystemService(Context.DOWNLOAD_SERVICE);
             DownloadManager.Query baseQuery = new DownloadManager.Query()
                     .setFilterById(id);
-
             cursor = manager.query(baseQuery);
-
             final int statusColumnId = cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS);
             final int localFilenameColumnId = cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_LOCAL_FILENAME);
             final int descName = cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_DESCRIPTION);
@@ -75,7 +75,7 @@ public class DownloadRepoService extends Service {
                 } else {
                 }
             }
-            CoReaderDbHelper.getInstance(getApplicationContext()).updateRepoDownloadId(id);
+            CoReaderDbHelper.getInstance(getApplicationContext()).resetRepoDownloadId(id);
             mDownloadRepoIds.remove(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,9 +84,11 @@ public class DownloadRepoService extends Service {
         }
     }
 
-    private void downloadFile(String url) {
-        RemoteRepoFetcher dataFetcher = new RemoteRepoFetcher(this, url);
-        mDownloadRepoIds.add(dataFetcher.download());
+    private void downloadFile(String url, Repo repo) {
+        RemoteRepoFetcher dataFetcher = new RemoteRepoFetcher(this, url, repo.name);
+        long downloadId = dataFetcher.download();
+        CoReaderDbHelper.getInstance(getApplicationContext()).updateRepoDownloadId(downloadId, repo.id);
+        mDownloadRepoIds.add(downloadId);
     }
 
     @Nullable

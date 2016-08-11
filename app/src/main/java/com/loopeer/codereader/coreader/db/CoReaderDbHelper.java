@@ -127,9 +127,14 @@ public class CoReaderDbHelper extends SQLiteOpenHelper {
         db.execSQL(DbRepoModel.UPDATE_LAST_MODIFY, new String[]{String.valueOf(lastModify), String.valueOf(primaryKey)});
     }
 
-    public void updateRepoDownloadId(long downloadId) {
+    public void updateRepoDownloadId(long downloadId, String repoId) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL(DbRepoModel.UPDATE_DOWNLOAD_ID, new String[]{String.valueOf(downloadId)});
+        db.execSQL(DbRepoModel.UPDATE_DOWNLOAD_ID, new String[]{String.valueOf(downloadId), String.valueOf(repoId)});
+    }
+
+    public void resetRepoDownloadId(long downloadId) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(DbRepoModel.RESET_DOWNLOAD_ID, new String[]{String.valueOf(downloadId)});
     }
 
     public void updateRepoDownloadProgress(long downloadId, float factor) {

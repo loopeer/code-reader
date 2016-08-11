@@ -53,31 +53,12 @@ public class FileCache {
         return getFileDirectory(file);
     }
 
-    public File getRemoteRepoZipFileFromUrl(String url) {
-        return new File(cacheDir, getRepoNameZip(url));
-    }
-
-    public File getRemoteRepoFile(String name) {
-        return new File(cacheDir, name);
-    }
-
-    private String getRepoNameZip(String url) {
-        String[] strings = url.split("/");
-        return strings[4] + ".zip";
-    }
-
-    public String getRepoName(String url) {
-        String name = getRepoNameFromUrl(url);
-        return name;
-    }
-
-    public String getRepoNameFromUrl(String url) {
-        String[] strings = url.split("/");
-        return strings[4].split("//.")[0];
-    }
-
     public File getCacheDir() {
         return cacheDir;
+    }
+
+    public String getRepoAbsolutePath(String repoName) {
+        return getCacheDir().getPath() + File.separator + repoName;
     }
 
     public static DirectoryNode getFileDirectory(File file) {

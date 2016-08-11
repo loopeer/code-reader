@@ -48,9 +48,12 @@ public class DownloadProgressHelper {
 
                             final float dl_progress = 1.f * bytes_downloaded / bytes_total;
                             repo.factor = dl_progress;
-                            CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
-                                    .updateRepoDownloadProgress(repo.downloadId, repo.factor);
-                            RxBus.getInstance().send(new DownloadProgressEvent(repo.downloadId, repo.factor));
+                            if (bytes_total > 0) {
+                                CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
+                                        .updateRepoDownloadProgress(repo.downloadId, repo.factor);
+                                RxBus.getInstance().send(new DownloadProgressEvent(repo.downloadId, repo.factor));
+                            }
+
                             cursor.close();
                         }
                     }

@@ -22,11 +22,7 @@ public class DownloadReceiver extends BroadcastReceiver {
         }
 
         if (intent.hasExtra(DownloadManager.EXTRA_NOTIFICATION_CLICK_DOWNLOAD_IDS)) {
-            long downloadId = intent.getLongExtra(
-                    DownloadManager.EXTRA_DOWNLOAD_ID, 0);
-            if (downloadId > 0) {
-                Navigator.startMainActivity(context);
-            }
+            Navigator.startMainActivity(context);
         }
     }
 
