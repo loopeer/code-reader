@@ -4,7 +4,8 @@ CREATE TABLE db_repo (
   last_modify INTEGER,
   absolute_path TEXT,
   net_url TEXT,
-  is_folder INTEGER AS Boolean DEFAULT 0
+  is_folder INTEGER AS Boolean DEFAULT 0,
+  download_id INTEGER DEFAULT 0
 );
 
 select_all:
@@ -30,3 +31,8 @@ SELECT *
 FROM db_repo
 WHERE name = ?
 AND absolute_path = ?;
+
+update_download_id:
+UPDATE db_repo
+SET download_id = 0
+WHERE download_id = ?;

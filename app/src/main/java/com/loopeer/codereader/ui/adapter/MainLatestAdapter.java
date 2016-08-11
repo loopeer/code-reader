@@ -14,6 +14,7 @@ import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.model.MainHeaderItem;
 import com.loopeer.codereader.model.Repo;
+import com.loopeer.codereader.ui.view.ForegroundProgressRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +30,10 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
 
     @Override
     public void setData(List<Repo> data) {
-        data.add(0, null);
-        super.setData(data);
+        ArrayList list = new ArrayList();
+        list.add(null);
+        list.addAll(data);
+        super.setData(list);
     }
 
     @Override
@@ -75,6 +78,8 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
         TextView mTextRepoName;
         @BindView(R.id.text_repo_time)
         TextView mTextRepoTime;
+        @BindView(R.id.view_progress_list_repo)
+        ForegroundProgressRelativeLayout mProgressRelativeLayout;
 
         public RepoViewHolder(View itemView) {
             super(itemView);
@@ -86,6 +91,12 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
             mImgRepoType.setImageResource(repo.isFolder ? R.drawable.ic_repo_white : R.drawable.ic_document_white);
             mTextRepoName.setText(repo.name);
             mTextRepoTime.setText(DateUtils.getRelativeTimeSpanString(itemView.getContext(), repo.lastModify));
+
+            if (repo.isDownloading()) {
+                mProgressRelativeLayout.setProgress(repo.factor);
+            } else {
+                mProgressRelativeLayout.setProgress(1f);
+            }
         }
     }
 

@@ -37,6 +37,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:' + retrofit
     compile 'com.squareup.retrofit2:converter-gson:' + retrofit
     compile 'com.squareup.retrofit2:adapter-rxjava:' + retrofit
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
     compile 'io.reactivex:rxjava:' + rxjava
     compile 'io.reactivex:rxandroid:' + rxandroid
     apt 'com.google.auto.value:auto-value:' + auto_value

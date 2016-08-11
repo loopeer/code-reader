@@ -1,8 +1,11 @@
 package com.loopeer.codereader.ui.activity;
 
 import android.Manifest;
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -10,8 +13,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ViewAnimator;
 
+import com.loopeer.codereader.CodeReaderApplication;
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
@@ -30,8 +35,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity {
+    private static final String TAG = "MainActivity";
 
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000;
     @BindView(R.id.view_recycler)
@@ -42,6 +52,7 @@ public class MainActivity extends BaseActivity {
     FloatingActionButton mFabMain;
 
     private ILoadHelper mRecyclerLoader;
+    DownloadManager mDownloadManager;
     private MainLatestAdapter mMainLatestAdapter;
 
     @Override
@@ -62,6 +73,8 @@ public class MainActivity extends BaseActivity {
                         MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
             }
         }
+        mDownloadManager =
+                (DownloadManager) this.getSystemService(Context.DOWNLOAD_SERVICE);
     }
 
     @Override
@@ -89,8 +102,58 @@ public class MainActivity extends BaseActivity {
     }
 
     private void loadLocalData() {
-        List<Repo> repos = CoReaderDbHelper.getInstance(this).readRepos();
-        setUpContent(repos);
+//        List<Repo> repos = CoReaderDbHelper.getInstance(this).readRepos();
+        checkDownloadingProgress();
+//        setUpContent(repos);
+    }
+
+    private void checkDownloadingProgress() {
+        Observable.create(new Observable.OnSubscribe<List<Repo>>() {
+            @Override
+            public void call(Subscriber<? super List<Repo>> subscriber) {
+                boolean downloading = true;
+                while (downloading) {
+                    int downloadNum = 0;
+                    List<Repo> repos =
+                            CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext()).readRepos();
+                    for (Repo repo : repos) {
+                        if (repo.isDownloading()) {
+                            DownloadManager.Query q = new DownloadManager.Query();
+                            q.setFilterById(repo.downloadId);
+
+                            Cursor cursor = mDownloadManager.query(q);
+                            cursor.moveToFirst();
+                            int bytes_downloaded = cursor.getInt(cursor
+                                    .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+                            int bytes_total = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+
+                            if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) != DownloadManager.STATUS_SUCCESSFUL) {
+                                ++downloadNum;
+                            }
+
+                            final float dl_progress = 1.f * bytes_downloaded / bytes_total;
+                            repo.factor = dl_progress;
+                            Log.e(TAG, dl_progress + "");
+                            cursor.close();
+                        }
+                        subscriber.onNext(repos);
+                    }
+                    if (downloadNum == 0) {
+                        downloading = false;
+                    }
+                    try {
+                        Thread.currentThread().sleep(2000);
+                    } catch (InterruptedException e) {
+                        subscriber.onError(e);
+                    }
+                }
+                subscriber.onCompleted();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(r -> setUpContent(r))
+                .subscribe();
     }
 
     private void setUpContent(List<Repo> repos) {

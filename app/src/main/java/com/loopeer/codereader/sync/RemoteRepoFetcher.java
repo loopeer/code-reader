@@ -5,6 +5,7 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
 import com.loopeer.codereader.model.Repo;
@@ -13,6 +14,7 @@ import com.loopeer.codereader.utils.FileCache;
 import java.io.File;
 
 public class RemoteRepoFetcher {
+  private static final String TAG = "RemoteRepoFetcher";
 
   private static final String EXTENSION = ".zip";
   private Context mContext;
@@ -33,8 +35,6 @@ public class RemoteRepoFetcher {
   public long download() {
     FileCache fileCache = FileCache.getInstance();
     String repoName = fileCache.getRepoMasterName(mUrl);
-    CoReaderDbHelper.getInstance(mContext).insertRepo(new Repo(repoName
-            , fileCache.getCacheDir().getPath() + File.separator + repoName, mUrl, true));
 
     DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
     Uri downloadUri = Uri.parse(mDownloadUrl);
@@ -42,7 +42,11 @@ public class RemoteRepoFetcher {
     request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
     request.setDescription(repoName);
     request.setDestinationUri(mDestinationUri);
-    return manager.enqueue(request);
+    long downloadId = manager.enqueue(request);
+    CoReaderDbHelper.getInstance(mContext).insertRepo(new Repo(repoName
+            , fileCache.getCacheDir().getPath() + File.separator + repoName, mUrl, true, downloadId));
+    Log.e(TAG, "downloadID:----- " + downloadId);
+    return downloadId;
   }
 
   private String parseUrl(String url) {

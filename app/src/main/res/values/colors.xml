@@ -18,6 +18,7 @@
 
     <color name="repo_color">@color/color_795548</color>
     <color name="document_color">@color/color_03A9F4</color>
+    <color name="repo_download_remainder_color">#EEEEEE</color>
 
     <color name="color_795548">#795548</color>
     <color name="color_03A9F4">#03a9f4</color>

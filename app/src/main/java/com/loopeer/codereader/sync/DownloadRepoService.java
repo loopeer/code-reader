@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.loopeer.codereader.Navigator;
+import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
 import com.loopeer.codereader.utils.FileCache;
 import com.loopeer.codereader.utils.Unzip;
 
@@ -21,12 +22,12 @@ import java.util.List;
 public class DownloadRepoService extends Service {
     private static final String TAG = "DownloadRepoService";
 
-    private List<Long> mDownloadIds;
+    private List<Long> mDownloadRepoIds;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mDownloadIds = new ArrayList<>();
+        mDownloadRepoIds = new ArrayList<>();
     }
 
     @Override
@@ -72,7 +73,8 @@ public class DownloadRepoService extends Service {
                 } else {
                 }
             }
-            mDownloadIds.remove(id);
+            CoReaderDbHelper.getInstance(getApplicationContext()).updateRepoDownloadId(id);
+            mDownloadRepoIds.remove(id);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -82,7 +84,7 @@ public class DownloadRepoService extends Service {
 
     private void downloadFile(String url) {
         RemoteRepoFetcher dataFetcher = new RemoteRepoFetcher(this, url);
-        mDownloadIds.add(dataFetcher.download());
+        mDownloadRepoIds.add(dataFetcher.download());
     }
 
     @Nullable

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.loopeer.codereader.ui.view.ForegroundRelativeLayout
+<com.loopeer.codereader.ui.view.ForegroundProgressRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_progress_list_repo"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:foreground="?selectableItemBackground"
-    android:padding="@dimen/medium_padding">
+    android:padding="@dimen/medium_padding"
+    tools:showIn="@layout/list_item_repo">
 
     <ImageView
         android:id="@+id/img_repo_type"
@@ -38,4 +40,4 @@
         android:textSize="@dimen/text_size_small"
         tools:text="2014-02-11 12:00:32"/>
 
-</com.loopeer.codereader.ui.view.ForegroundRelativeLayout>
+</com.loopeer.codereader.ui.view.ForegroundProgressRelativeLayout>
