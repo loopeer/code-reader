@@ -59,7 +59,7 @@ public class DownloadRepoService extends Service {
         CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
                 .updateRepoDownloadProgress(id, 1, true);
         RxBus.getInstance().send(new DownloadProgressEvent(id, true));
-
+        Log.e(TAG, "Unzip start...");
         Observable.create((Observable.OnSubscribe<Void>) subscriber -> {
             Cursor cursor = null;
             try {
@@ -97,6 +97,7 @@ public class DownloadRepoService extends Service {
                 cursor.close();
             }
         })
+                .onErrorResumeNext(Observable.empty())
                 .subscribeOn(Schedulers.io())
                 .doOnError(e -> Log.d(TAG, e.toString()))
                 .subscribe();
