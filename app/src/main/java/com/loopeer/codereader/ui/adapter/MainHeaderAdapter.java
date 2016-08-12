@@ -15,7 +15,7 @@ import com.loopeer.codereader.model.MainHeaderItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainHeaderAdapter extends BaseAdapter{
+public class MainHeaderAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<MainHeaderItem> mDatas;
@@ -52,6 +52,8 @@ public class MainHeaderAdapter extends BaseAdapter{
         view.setOnClickListener(view1 -> {
             switch (i) {
                 case 0:
+                    Navigator.startSearchActivity(mContext);
+                    break;
                 case 1:
                     Navigator.startWebActivity(mContext, item.link);
                     break;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.loopeer.codereader"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.loopeer.codereader">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name="com.loopeer.codereader.CodeReaderApplication"
@@ -29,6 +29,16 @@
 
         <activity
             android:name="com.loopeer.directorychooser.DirectoryFileChooserActivity"
+            android:theme="@style/Theme.CodeReader.NoActionBar"/>
+
+        <activity
+            android:name=".ui.activity.RepositoryActivity"
+            android:label=""
+            android:theme="@style/Theme.CodeReader.NoActionBar"/>
+
+        <activity
+            android:name=".ui.activity.SearchActivity"
+            android:label=""
             android:theme="@style/Theme.CodeReader.NoActionBar"/>
 
         <activity

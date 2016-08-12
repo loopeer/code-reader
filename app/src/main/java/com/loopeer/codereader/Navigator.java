@@ -7,6 +7,8 @@ import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.sync.DownloadRepoService;
 import com.loopeer.codereader.ui.activity.CodeReadActivity;
 import com.loopeer.codereader.ui.activity.MainActivity;
+import com.loopeer.codereader.ui.activity.RepositoryActivity;
+import com.loopeer.codereader.ui.activity.SearchActivity;
 import com.loopeer.codereader.ui.activity.SimpleWebActivity;
 
 public class Navigator {
@@ -20,6 +22,7 @@ public class Navigator {
     public final static String EXTRA_DOWNLOAD_URL = "extra_download_url";
     public final static String EXTRA_DOWNLOAD_REPO_NAME = "extra_download_repo_name";
     public final static String EXTRA_DOWNLOAD_REPO_ID = "extra_download_repo_id";
+    public final static String EXTRA_SEARCH_TEXT = "extra_search_text";
 
     public static void startMainActivity(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -45,4 +48,16 @@ public class Navigator {
         intent.putExtra(EXTRA_REPO, repo);
         context.startService(intent);
     }
+
+    public static void startSearchActivity(Context context) {
+        Intent intent = new Intent(context, SearchActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void startRepositoryActivity(Context context, String searchText) {
+        Intent intent = new Intent(context, RepositoryActivity.class);
+        intent.putExtra(EXTRA_SEARCH_TEXT, searchText);
+        context.startActivity(intent);
+    }
+
 }

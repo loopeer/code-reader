@@ -37,9 +37,11 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:' + retrofit
     compile 'com.squareup.retrofit2:converter-gson:' + retrofit
     compile 'com.squareup.retrofit2:adapter-rxjava:' + retrofit
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile "com.daimajia.swipelayout:library:1.2.0@aar"
     compile 'io.reactivex:rxjava:' + rxjava
     compile 'io.reactivex:rxandroid:' + rxandroid
+    compile 'com.github.bumptech.glide:glide:3.7.0'
     apt 'com.google.auto.value:auto-value:' + auto_value
     provided 'com.google.auto.value:auto-value:' + auto_value
     provided 'com.jakewharton.auto.value:auto-value-annotations:1.2-update1'
