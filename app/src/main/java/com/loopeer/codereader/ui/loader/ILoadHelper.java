@@ -6,6 +6,6 @@ public interface ILoadHelper {
 
     void showContent();
 
-    void showEmpty();
+    void showEmpty(String message);
 
 }

@@ -21,7 +21,7 @@ public class RecyclerLoader implements ILoadHelper {
     }
 
     @Override
-    public void showEmpty() {
+    public void showEmpty(String message) {
         mViewAnimator.setDisplayedChild(1);
     }
 }

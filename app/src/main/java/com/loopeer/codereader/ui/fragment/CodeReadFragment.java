@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.model.DirectoryNode;
@@ -99,7 +98,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
         }
         mWebCodeRead.clearHistory();
         if (mNode == null) {
-            if (mOpenFileAfterLoadFinish) mCodeContentLoader.showEmpty();
+            if (mOpenFileAfterLoadFinish) mCodeContentLoader.showEmpty(getString(R.string.code_read_no_file_open));
         } else if (FileUtils.isImageFileType(mNode.absolutePath)) {
             openImageFile();
         } else if (FileUtils.isMdFileType(mNode.absolutePath)) {
@@ -107,17 +106,6 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
         } else {
             openCodeFile();
         }
-    }
-
-    private void openEmpty() {
-        String string = "<html>" +
-                "<body style=\"margin-top: 200px; margin-bottom: 40px; text-align: center; vertical-align: center;\">"
-                + "<font color=\"#999999\">"+ getString(R.string.code_read_no_file_open) +"</font>"
-                + "</body></html>";
-        mWebCodeRead.loadDataWithBaseURL(null, string
-                , "text/html"
-                , "utf-8"
-                , null);
     }
 
     private void openImageFile() {
@@ -190,7 +178,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(o -> mWebCodeRead.loadDataWithBaseURL("file:///android_asset/", o, "text/html", "UTF-8", ""))
-                .doOnError(e -> Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show())
+                .doOnError(e -> mCodeContentLoader.showEmpty(e.getMessage()))
                 .onErrorResumeNext(Observable.empty())
                 .subscribe();
     }
@@ -240,7 +228,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(s -> mWebCodeRead.loadDataWithBaseURL("fake://", s, "text/html", "UTF-8", ""))
-                        .doOnError(e -> Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show())
+                        .doOnError(e -> mCodeContentLoader.showEmpty(e.getMessage()))
                         .onErrorResumeNext(Observable.empty())
                         .subscribe()
         );

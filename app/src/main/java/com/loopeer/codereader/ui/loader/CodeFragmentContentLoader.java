@@ -1,6 +1,7 @@
 package com.loopeer.codereader.ui.loader;
 
 import android.view.View;
+import android.widget.TextView;
 import android.widget.ViewAnimator;
 
 import com.loopeer.codereader.R;
@@ -15,6 +16,8 @@ public class CodeFragmentContentLoader implements ILoadHelper {
     ProgressIndicatorView mProgressIndicatorView;
     @BindView(R.id.content_animator)
     ViewAnimator mContentAnimator;
+    @BindView(android.R.id.empty)
+    TextView mTextEmpty;
 
     public CodeFragmentContentLoader(View contentView) {
         ButterKnife.bind(this, contentView);
@@ -33,8 +36,9 @@ public class CodeFragmentContentLoader implements ILoadHelper {
     }
 
     @Override
-    public void showEmpty() {
+    public void showEmpty(String message) {
         mContentAnimator.setDisplayedChild(2);
+        mTextEmpty.setText(message);
         mProgressIndicatorView.setAnimationStatus(ProgressIndicatorView.AnimStatus.CANCEL);
     }
 }
