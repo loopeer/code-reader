@@ -47,6 +47,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     private DirectoryNode mNode;
     private Subscription scrollFinishDelaySubscription;
     private boolean scrollDown = false;
+    private boolean mOpenFileAfterLoadFinish = false;
 
     public static CodeReadFragment newInstance(DirectoryNode node) {
         CodeReadFragment codeReadFragment = new CodeReadFragment();
@@ -84,7 +85,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
         }
         mWebCodeRead.clearHistory();
         if (mNode == null) {
-            openEmpty();
+            if (mOpenFileAfterLoadFinish) openEmpty();
         } else if (FileUtils.isImageFileType(mNode.absolutePath)) {
             openImageFile();
         } else if (FileUtils.isMdFileType(mNode.absolutePath)) {
@@ -117,6 +118,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     }
 
     public void openFile(DirectoryNode node) {
+        mOpenFileAfterLoadFinish = true;
         mNode = node;
         openFile();
     }
