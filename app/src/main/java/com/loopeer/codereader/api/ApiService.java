@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -42,8 +41,8 @@ public class ApiService {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
         if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            HttpJsonLoggingInterceptor loggingInterceptor = new HttpJsonLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpJsonLoggingInterceptor.Level.BODY);
             httpClient.addInterceptor(loggingInterceptor);
         }
 

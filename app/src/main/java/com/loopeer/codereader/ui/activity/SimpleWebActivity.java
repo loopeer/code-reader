@@ -82,7 +82,8 @@ public class SimpleWebActivity extends BaseActivity {
             if (newProgress == 100) {
                 mProgressBar.setVisibility(View.GONE);
             } else {
-                if (mProgressBar.getVisibility() == View.GONE) mProgressBar.setVisibility(View.VISIBLE);
+                if (mProgressBar.getVisibility() == View.GONE)
+                    mProgressBar.setVisibility(View.VISIBLE);
                 mProgressBar.setProgress(newProgress);
             }
             super.onProgressChanged(view, newProgress);
@@ -125,10 +126,6 @@ public class SimpleWebActivity extends BaseActivity {
                 repo.id = String.valueOf(repoId);
                 Navigator.startDownloadRepoService(SimpleWebActivity.this, downloadUrl, repo);
             }
-            return true;
-        }
-        if (id == android.R.id.home) {
-            this.finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
