@@ -45,4 +45,5 @@ dependencies {
     provided 'com.jakewharton.auto.value:auto-value-annotations:1.2-update1'
     compile project(':libraries:markdownj')
     compile project(':libraries:directoryandfilechooser')
+    debugCompile 'com.facebook.stetho:stetho:1.1.0'
 }

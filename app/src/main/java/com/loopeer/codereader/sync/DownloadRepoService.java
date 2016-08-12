@@ -87,6 +87,8 @@ public class DownloadRepoService extends Service {
                                 , fileCache.getCacheDir().getPath() + File.separator + name, getApplicationContext());
                         decomp.DecompressZip();
                         if (zipFile.exists()) zipFile.delete();
+                        CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
+                                .updateRepoDownloadProgress(id, 1, false);
                         RxBus.getInstance().send(new DownloadProgressEvent(id, false));
                         Log.d(TAG, "Unzip Success");
                     } else {

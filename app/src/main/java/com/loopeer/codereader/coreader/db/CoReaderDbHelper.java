@@ -142,6 +142,6 @@ public class CoReaderDbHelper extends SQLiteOpenHelper {
     public void updateRepoDownloadProgress(long downloadId, float factor, boolean isUnzip) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(DbRepoModel.UPDATE_DOWNLOAD_PROGRESS
-                , new String[]{String.valueOf(factor), String.valueOf(downloadId), String.valueOf(isUnzip ? 1 : 0)});
+                , new String[]{String.valueOf(factor),  String.valueOf(isUnzip ? 1 : 0), String.valueOf(downloadId)});
     }
 }
