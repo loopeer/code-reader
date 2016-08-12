@@ -19,16 +19,16 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class DownloadProgressHelper {
-    private static final String TAG = "DownloadProgressHelper";
 
     public static Subscription checkDownloadingProgress(Context context) {
         return Observable.create(new Observable.OnSubscribe<List<Repo>>() {
+
             @Override
             public void call(Subscriber<? super List<Repo>> subscriber) {
                 DownloadManager downloadManager =
                         (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-                boolean downloading = true;
-                while (downloading) {
+                final boolean[] downloading = {true};
+                while (downloading[0]) {
                     List<Repo> repos =
                             CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext()).readRepos();
                     int downloadNum = 0;
@@ -60,8 +60,20 @@ public class DownloadProgressHelper {
                         }
                     }
                     if (downloadNum == 0) {
-                        downloading = false;
+                        downloading[0] = false;
                     }
+                    subscriber.add(new Subscription() {
+                        @Override
+                        public void unsubscribe() {
+                            downloading[0] = false;
+                            return;
+                        }
+
+                        @Override
+                        public boolean isUnsubscribed() {
+                            return false;
+                        }
+                    });
                     try {
                         Thread.currentThread().sleep(1000);
                     } catch (InterruptedException e) {

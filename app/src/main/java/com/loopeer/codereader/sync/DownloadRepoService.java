@@ -61,11 +61,6 @@ public class DownloadRepoService extends Service {
         RxBus.getInstance().send(new DownloadProgressEvent(id, true));
 
         Observable.create((Observable.OnSubscribe<Void>) subscriber -> {
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             Cursor cursor = null;
             try {
                 DownloadManager manager =
@@ -97,12 +92,13 @@ public class DownloadRepoService extends Service {
                 mDownloadRepoIds.remove(id);
                 subscriber.onCompleted();
             } catch (Exception e) {
-                e.printStackTrace();
+                subscriber.onError(e);
             } finally {
                 cursor.close();
             }
         })
                 .subscribeOn(Schedulers.io())
+                .doOnError(e -> Log.d(TAG, e.toString()))
                 .subscribe();
     }
 

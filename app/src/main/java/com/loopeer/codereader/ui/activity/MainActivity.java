@@ -134,10 +134,11 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onPause() {
+        super.onPause();
+
         mMainLatestAdapter.clearSubscription();
-        if (mProgressSubscription != null && mProgressSubscription.isUnsubscribed()) {
+        if (mProgressSubscription != null && !mProgressSubscription.isUnsubscribed()) {
             mProgressSubscription.unsubscribe();
         }
     }

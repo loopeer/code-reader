@@ -13,14 +13,13 @@ import com.loopeer.codereader.utils.FileUtils;
 import java.io.File;
 
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class DirectoryNavDelegate {
     private static final String TAG = "DirectoryNavDelegate";
-    
+
     public interface FileClickListener {
         void doOpenFile(DirectoryNode node);
     }
@@ -58,28 +57,23 @@ public class DirectoryNavDelegate {
 
     public void updateData(DirectoryNode directoryNode) {
         mAllSubscription.add(
-                Observable.create(new Observable.OnSubscribe<DirectoryNode>() {
-                    @Override
-                    public void call(Subscriber<? super DirectoryNode> subscriber) {
-                        DirectoryNode node;
-                        if (directoryNode.isDirectory) {
-                            node = FileCache.getFileDirectory(new File(directoryNode.absolutePath));
-                        } else {
-                            node = directoryNode;
-                        }
-                        subscriber.onNext(node);
-                        subscriber.onCompleted();
+                Observable.fromCallable(() -> {
+                    DirectoryNode node;
+                    Log.e(TAG, "1111");
+
+                    if (directoryNode.isDirectory) {
+                        node = FileCache.getFileDirectory(new File(directoryNode.absolutePath));
+                    } else {
+                        node = directoryNode;
                     }
+                    return node;
                 })
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(mDirectoryAdapter::setNodeRoot)
                         .doOnNext(this::checkOpenFirstFile)
-                        .doOnError(e -> {
-                            Log.e(TAG, "updateData: " + e.toString());
-                        })
-                        .subscribe()
-        );
+                        .doOnError(e -> Log.d(TAG, "error: " + e.toString()))
+                        .subscribe());
     }
 
     private void checkOpenFirstFile(DirectoryNode node) {

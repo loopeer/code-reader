@@ -106,6 +106,7 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
     protected void onDestroy() {
         super.onDestroy();
         mDirectoryNavDelegate.clearSubscription();
+        mDirectoryNavDelegate = null;
     }
 
     @Override
