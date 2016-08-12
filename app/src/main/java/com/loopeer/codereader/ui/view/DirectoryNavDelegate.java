@@ -59,8 +59,6 @@ public class DirectoryNavDelegate {
         mAllSubscription.add(
                 Observable.fromCallable(() -> {
                     DirectoryNode node;
-                    Log.e(TAG, "1111");
-
                     if (directoryNode.isDirectory) {
                         node = FileCache.getFileDirectory(new File(directoryNode.absolutePath));
                     } else {

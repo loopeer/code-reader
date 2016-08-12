@@ -97,7 +97,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     private void openEmpty() {
         String string = "<html>" +
                 "<body style=\"margin-top: 200px; margin-bottom: 40px; text-align: center; vertical-align: center;\">"
-                + "No File Opened"
+                + "<font color=\"#999999\">"+ getString(R.string.code_read_no_file_open) +"</font>"
                 + "</body></html>";
         mWebCodeRead.loadDataWithBaseURL(null, string
                 , "text/html"

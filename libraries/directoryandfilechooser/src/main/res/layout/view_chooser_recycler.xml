@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/empty_text"
+        android:textColor="?android:textColorTertiary"
         android:layout_gravity="center"/>
 
     <android.support.v4.widget.ContentLoadingProgressBar
