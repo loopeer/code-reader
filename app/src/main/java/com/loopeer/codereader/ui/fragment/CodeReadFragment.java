@@ -1,6 +1,5 @@
 package com.loopeer.codereader.ui.fragment;
 
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,7 +7,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +31,10 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class CodeReadFragment extends BaseFragment implements NestedScrollWebView.ScrollChangeListener {
     private static final String TAG = "CodeReadFragment";
@@ -122,24 +122,24 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     }
 
     protected void openCodeFile() {
-        InputStream stream = null;
-        try {
-            stream = new FileInputStream(mNode.absolutePath);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (stream == null)
-            return;
-        final InputStream finalStream = stream;
-        new AsyncTask<String, String, String>() {
-
+        Observable.create(new Observable.OnSubscribe<String>() {
             @Override
-            protected String doInBackground(String[] objects) {
+            public void call(Subscriber<? super String> subscriber) {
+                InputStream stream = null;
+                try {
+                    stream = new FileInputStream(mNode.absolutePath);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                if (stream == null) {
+                    subscriber.onCompleted();
+                    return;
+                }
+                final InputStream finalStream = stream;
                 String[] names = mNode.name.split("\\.");
                 String jsFile = G.fileExtToJSMap.getJsFileForExtension(names[names.length - 1]);
                 if (jsFile == null) {
-                    publishProgress(getActivity().getString(R.string.code_read_not_found_type));
-                    return null;
+                    subscriber.onError(new Exception(getActivity().getString(R.string.code_read_not_found_type)));
                 }
                 StringBuilder sb = new StringBuilder();
                 StringBuilder localStringBuilder = new StringBuilder();
@@ -160,87 +160,71 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                     sb.append(";'>");
                     sb.append(TextUtils.htmlEncode(localStringBuilder.toString()));
                     sb.append("</pre>");
-                    return Utils.buildHtmlContent(getActivity(), sb.toString(), jsFile, mNode.name);
-                } catch (OutOfMemoryError paramAnonymousVarArgs) {
-                    Log.e(TAG, "Unable to open file, out of memory!");
-                    return null;
-                } catch (FileNotFoundException paramAnonymousVarArgs) {
-                    return null;
-                } catch (IOException paramAnonymousVarArgs) {
+                    subscriber.onNext(Utils.buildHtmlContent(getActivity(), sb.toString(), jsFile, mNode.name));
+                } catch (OutOfMemoryError e) {
+                    subscriber.onError(e);
+                } catch (FileNotFoundException e) {
+                    subscriber.onError(e);
+                } catch (IOException e) {
+                    subscriber.onError(e);
                 }
-                return null;
+                subscriber.onCompleted();
             }
-
-            @Override
-            protected void onPostExecute(String o) {
-                super.onPostExecute(o);
-                if (o != null) {
-                    mWebCodeRead.loadDataWithBaseURL("file:///android_asset/", o, "text/html", "UTF-8", "");
-                    return;
-                }
-            }
-
-            @Override
-            protected void onProgressUpdate(String... values) {
-                super.onProgressUpdate(values);
-                Toast.makeText(getContext(), values[0], Toast.LENGTH_SHORT).show();
-            }
-        }.execute();
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(o -> mWebCodeRead.loadDataWithBaseURL("file:///android_asset/", o, "text/html", "UTF-8", ""))
+                .doOnError(e -> Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show())
+                .subscribe();
     }
 
     protected void openMdShowFile() {
-        InputStream stream = null;
-        try {
-            stream = new FileInputStream(mNode.absolutePath);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (stream == null)
-            return;
-        final InputStream finalStream = stream;
-        new AsyncTask<String, String, String>() {
-
-            @Override
-            protected String doInBackground(String[] objects) {
-                StringBuilder localStringBuilder = new StringBuilder();
-                try {
-                    BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(finalStream, "UTF-8"));
-                    for (; ; ) {
-                        String str = localBufferedReader.readLine();
-                        if (str == null) {
-                            break;
+        registerSubscription(
+                Observable.create(new Observable.OnSubscribe<String>() {
+                    @Override
+                    public void call(Subscriber<? super String> subscriber) {
+                        InputStream stream = null;
+                        try {
+                            stream = new FileInputStream(mNode.absolutePath);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
                         }
-                        localStringBuilder.append(str);
-                        localStringBuilder.append("\n");
+                        if (stream == null)
+                            return;
+                        final InputStream finalStream = stream;
+                        StringBuilder localStringBuilder = new StringBuilder();
+                        try {
+                            BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(finalStream, "UTF-8"));
+                            for (; ; ) {
+                                String str = localBufferedReader.readLine();
+                                if (str == null) {
+                                    break;
+                                }
+                                localStringBuilder.append(str);
+                                localStringBuilder.append("\n");
+                            }
+                            String textString = localStringBuilder.toString();
+
+                            if (textString != null) {
+                                MarkdownProcessor m = new MarkdownProcessor();
+                                String html = m.markdown(textString);
+                                subscriber.onNext(html);
+                            }
+                            subscriber.onCompleted();
+                        } catch (OutOfMemoryError e) {
+                            subscriber.onError(e);
+                        } catch (FileNotFoundException e) {
+                            subscriber.onError(e);
+                        } catch (IOException e) {
+                            subscriber.onError(e);
+                        }
                     }
-                    return localStringBuilder.toString();
-                } catch (OutOfMemoryError paramAnonymousVarArgs) {
-                    Log.e(TAG, "Unable to open file, out of memory!");
-                    return null;
-                } catch (FileNotFoundException paramAnonymousVarArgs) {
-                    return null;
-                } catch (IOException paramAnonymousVarArgs) {
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(String o) {
-                super.onPostExecute(o);
-                if (o != null) {
-                    MarkdownProcessor m = new MarkdownProcessor();
-                    String html = m.markdown(o);
-                    mWebCodeRead.loadDataWithBaseURL("fake://", html, "text/html", "UTF-8", "");
-                    return;
-                }
-            }
-
-            @Override
-            protected void onProgressUpdate(String... values) {
-                super.onProgressUpdate(values);
-                Toast.makeText(getContext(), values[0], Toast.LENGTH_SHORT).show();
-            }
-        }.execute();
+                })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnNext(s -> mWebCodeRead.loadDataWithBaseURL("fake://", s, "text/html", "UTF-8", ""))
+                        .subscribe()
+        );
     }
 
     @Override
