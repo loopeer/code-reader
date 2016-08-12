@@ -20,7 +20,7 @@ import com.loopeer.codereader.ui.view.DrawerLayout;
 
 import butterknife.BindView;
 
-public class CodeReadActivity extends BaseActivity implements DirectoryNavDelegate.FileClickListener {
+public class CodeReadActivity extends BaseActivity implements DirectoryNavDelegate.FileClickListener, DirectoryNavDelegate.LoadFileCallback {
 
     @BindView(R.id.directory_view)
     RecyclerView mDirectoryRecyclerView;
@@ -43,6 +43,7 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
         setContentView(R.layout.activity_code_read);
 
         mDirectoryNavDelegate = new DirectoryNavDelegate(mDirectoryRecyclerView, this);
+        mDirectoryNavDelegate.setLoadFileCallback(this);
         createFragment(null);
         parseIntent(savedInstanceState);
     }
@@ -126,5 +127,15 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
         mFragment.setArguments(getIntent().getExtras());
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container_code_read, mFragment).commit();
+    }
+
+    @Override
+    public void onFileOpenStart() {
+        showProgressLoading("");
+    }
+
+    @Override
+    public void onFileOpenEnd() {
+        dismissProgressLoading();
     }
 }

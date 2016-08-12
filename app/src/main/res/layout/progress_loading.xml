@@ -6,11 +6,10 @@
               android:gravity="center"
               android:orientation="vertical">
 
-    <ProgressBar
+    <com.loopeer.codereader.ui.view.ProgressIndicatorView
         android:id="@+id/progress"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"
         android:layout_margin="5dp"
         android:indeterminate="true"/>

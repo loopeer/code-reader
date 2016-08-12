@@ -175,6 +175,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(o -> mWebCodeRead.loadDataWithBaseURL("file:///android_asset/", o, "text/html", "UTF-8", ""))
                 .doOnError(e -> Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show())
+                .onErrorResumeNext(Observable.empty())
                 .subscribe();
     }
 
@@ -187,7 +188,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                         try {
                             stream = new FileInputStream(mNode.absolutePath);
                         } catch (FileNotFoundException e) {
-                            e.printStackTrace();
+                            subscriber.onError(e);
                         }
                         if (stream == null)
                             return;
@@ -223,6 +224,8 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(s -> mWebCodeRead.loadDataWithBaseURL("fake://", s, "text/html", "UTF-8", ""))
+                        .doOnError(e -> Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show())
+                        .onErrorResumeNext(Observable.empty())
                         .subscribe()
         );
     }

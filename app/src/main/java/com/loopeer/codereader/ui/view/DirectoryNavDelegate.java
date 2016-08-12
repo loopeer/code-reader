@@ -3,7 +3,7 @@ package com.loopeer.codereader.ui.view;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.widget.Toast;
 
 import com.loopeer.codereader.model.DirectoryNode;
 import com.loopeer.codereader.ui.adapter.DirectoryAdapter;
@@ -24,10 +24,16 @@ public class DirectoryNavDelegate {
         void doOpenFile(DirectoryNode node);
     }
 
+    public interface LoadFileCallback{
+        void onFileOpenStart();
+        void onFileOpenEnd();
+    }
+
     private RecyclerView mRecyclerView;
     private DirectoryAdapter mDirectoryAdapter;
     private Context mContext;
     private FileClickListener mFileClickListener;
+    private LoadFileCallback mLoadFileCallback;
     private final CompositeSubscription mAllSubscription = new CompositeSubscription();
 
     public DirectoryNavDelegate(RecyclerView recyclerView, FileClickListener listener) {
@@ -36,6 +42,10 @@ public class DirectoryNavDelegate {
         mFileClickListener = listener;
         mDirectoryAdapter = new DirectoryAdapter(recyclerView.getContext(), listener);
         setUpRecyclerView();
+    }
+
+    public void setLoadFileCallback(LoadFileCallback loadFileCallback) {
+        mLoadFileCallback = loadFileCallback;
     }
 
     public void clearSubscription() {
@@ -56,6 +66,7 @@ public class DirectoryNavDelegate {
     }
 
     public void updateData(DirectoryNode directoryNode) {
+        mLoadFileCallback.onFileOpenStart();
         mAllSubscription.add(
                 Observable.fromCallable(() -> {
                     DirectoryNode node;
@@ -70,7 +81,9 @@ public class DirectoryNavDelegate {
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(mDirectoryAdapter::setNodeRoot)
                         .doOnNext(this::checkOpenFirstFile)
-                        .doOnError(e -> Log.d(TAG, "error: " + e.toString()))
+                        .doOnNext(o -> mLoadFileCallback.onFileOpenEnd())
+                        .doOnError(e -> Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show())
+                        .onErrorResumeNext(Observable.empty())
                         .subscribe());
     }
 

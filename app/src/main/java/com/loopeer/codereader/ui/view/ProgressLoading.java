@@ -2,17 +2,17 @@ package com.loopeer.codereader.ui.view;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.loopeer.codereader.R;
 
 public class ProgressLoading extends Dialog {
 
-    private ProgressBar mProgressBar;
+    private View mProgressView;
     private TextView mMessageTextView;
 
     private Window mWindow;
@@ -28,9 +28,10 @@ public class ProgressLoading extends Dialog {
     private void initialize(Context context, int theme) {
         mWindow = getWindow();
         mWindow.requestFeature(Window.FEATURE_NO_TITLE);
+        mWindow.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         setContentView(R.layout.progress_loading);
         mMessageTextView = (TextView) findViewById(R.id.text_message);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress);
+        mProgressView = findViewById(R.id.progress);
     }
 
     public ProgressLoading setMessage(int resId) {
@@ -69,11 +70,11 @@ public class ProgressLoading extends Dialog {
             }
         }
 
-        if (mProgressBar != null) {
+        if (mProgressView != null) {
             if (mShowProgress) {
-                mProgressBar.setVisibility(View.VISIBLE);
+                mProgressView.setVisibility(View.VISIBLE);
             } else {
-                mProgressBar.setVisibility(View.GONE);
+                mProgressView.setVisibility(View.GONE);
             }
         }
         super.show();
