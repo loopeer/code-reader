@@ -11,10 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.model.DirectoryNode;
+import com.loopeer.codereader.ui.loader.CodeFragmentContentLoader;
+import com.loopeer.codereader.ui.loader.ILoadHelper;
 import com.loopeer.codereader.ui.view.NestedScrollWebView;
 import com.loopeer.codereader.utils.FileUtils;
 import com.loopeer.codereader.utils.G;
@@ -48,6 +52,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     private Subscription scrollFinishDelaySubscription;
     private boolean scrollDown = false;
     private boolean mOpenFileAfterLoadFinish = false;
+    private ILoadHelper mCodeContentLoader;
 
     public static CodeReadFragment newInstance(DirectoryNode node) {
         CodeReadFragment codeReadFragment = new CodeReadFragment();
@@ -64,6 +69,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mCodeContentLoader = new CodeFragmentContentLoader(view);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -73,6 +79,13 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
         mWebCodeRead.getSettings().setJavaScriptEnabled(true);
         mWebCodeRead.getSettings().setSupportZoom(true);
         mWebCodeRead.getSettings().setBuiltInZoomControls(true);
+        mWebCodeRead.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                mCodeContentLoader.showContent();
+            }
+        });
         if (Build.VERSION.SDK_INT >= 11) {
             ((Runnable) () -> mWebCodeRead.getSettings().setDisplayZoomControls(false)).run();
         }
@@ -80,12 +93,13 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     }
 
     private void openFile() {
+        mCodeContentLoader.showProgress();
         if (mWebCodeRead == null) {
             return;
         }
         mWebCodeRead.clearHistory();
         if (mNode == null) {
-            if (mOpenFileAfterLoadFinish) openEmpty();
+            if (mOpenFileAfterLoadFinish) mCodeContentLoader.showEmpty();
         } else if (FileUtils.isImageFileType(mNode.absolutePath)) {
             openImageFile();
         } else if (FileUtils.isMdFileType(mNode.absolutePath)) {

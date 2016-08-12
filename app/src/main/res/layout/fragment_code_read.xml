@@ -6,12 +6,33 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.loopeer.codereader.ui.view.NestedScrollWebView
-        android:id="@+id/web_code_read"
+    <ViewAnimator
+        android:id="@+id/content_animator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.loopeer.codereader.ui.view.NestedScrollWebView
+            android:id="@+id/web_code_read"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <com.loopeer.codereader.ui.view.ProgressIndicatorView
+            android:id="@+id/progress_code_fragment"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="?actionBarSize"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="?actionBarSize"
+            android:text="@string/code_read_no_file_open"
+            android:textColor="?android:textColorTertiary"/>
+    </ViewAnimator>
 
     <include layout="@layout/layout_app_bar"/>
 
