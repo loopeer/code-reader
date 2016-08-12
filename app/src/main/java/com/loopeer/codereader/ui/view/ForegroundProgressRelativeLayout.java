@@ -16,8 +16,10 @@ public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
     private Paint mProgressPaint;
 
     private float mProgress;
+    private boolean mIsUnzip;
     private int mRemainderColor;
     private static int sProgressTextPadding;
+    private static int sUnzipTextPadding;
 
     public ForegroundProgressRelativeLayout(Context context) {
         super(context);
@@ -39,6 +41,7 @@ public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
 
     private void init() {
         sProgressTextPadding = getResources().getDimensionPixelSize(R.dimen.inline_padding);
+        sUnzipTextPadding = getResources().getDimensionPixelSize(R.dimen.medium_padding);
 
         mRemainderPaint = new Paint();
         mRemainderPaint.setColor(mRemainderColor);
@@ -58,6 +61,13 @@ public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
         }
     }
 
+    public void setUnzip(boolean b) {
+        mIsUnzip = b;
+        if (mProgress == 1.f) {
+            invalidate();
+        }
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -73,6 +83,16 @@ public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
                         , getHeight() - sProgressTextPadding
                         , mProgressPaint);
             }
+        }
+
+        if (mProgress == 1f && mIsUnzip) {
+            String content = getResources().getString(R.string.repo_download_isunzip);
+            Rect bounds = new Rect();
+            mProgressPaint.getTextBounds(content, 0, content.length(), bounds);
+            canvas.drawText(content
+                    , getWidth() - sUnzipTextPadding - bounds.width()
+                    , getHeight() - sProgressTextPadding
+                    , mProgressPaint);
         }
     }
 }

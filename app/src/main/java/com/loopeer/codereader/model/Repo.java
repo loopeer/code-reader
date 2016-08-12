@@ -13,6 +13,7 @@ public class Repo extends BaseModel{
     public boolean isFolder;
     public long downloadId;
     public float factor;
+    public boolean isUnzip;
 
     public boolean isLocal() {
         return !TextUtils.isEmpty(absolutePath);

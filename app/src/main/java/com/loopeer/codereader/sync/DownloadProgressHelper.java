@@ -19,6 +19,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class DownloadProgressHelper {
+    private static final String TAG = "DownloadProgressHelper";
 
     public static Subscription checkDownloadingProgress(Context context) {
         return Observable.create(new Observable.OnSubscribe<List<Repo>>() {
@@ -44,17 +45,17 @@ public class DownloadProgressHelper {
 
                             if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) != DownloadManager.STATUS_SUCCESSFUL) {
                                 ++downloadNum;
-                                final float dl_progress = 1.f * bytes_downloaded / bytes_total;
+                                final float dl_progress = 1f * bytes_downloaded / bytes_total;
                                 repo.factor = dl_progress;
                             } else {
                                 repo.factor = 1;
                             }
                             if (repo.factor > 0) {
+                                if (repo.factor == 1f) repo.isUnzip = true;
                                 CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
-                                        .updateRepoDownloadProgress(repo.downloadId, repo.factor);
-                                RxBus.getInstance().send(new DownloadProgressEvent(repo.downloadId, repo.factor));
+                                        .updateRepoDownloadProgress(repo.downloadId, repo.factor, repo.isUnzip);
+                                RxBus.getInstance().send(new DownloadProgressEvent(repo.downloadId, repo.factor, repo.isUnzip));
                             }
-
                             cursor.close();
                         }
                     }
@@ -62,7 +63,7 @@ public class DownloadProgressHelper {
                         downloading = false;
                     }
                     try {
-                        Thread.currentThread().sleep(2000);
+                        Thread.currentThread().sleep(1000);
                     } catch (InterruptedException e) {
                         subscriber.onError(e);
                     }

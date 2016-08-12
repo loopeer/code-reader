@@ -267,6 +267,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                     .doOnNext(lo -> getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN))
                     .doOnNext(lo -> scrollDown = false)
                     .subscribe();
+            registerSubscription(scrollFinishDelaySubscription);
         }
     }
 }

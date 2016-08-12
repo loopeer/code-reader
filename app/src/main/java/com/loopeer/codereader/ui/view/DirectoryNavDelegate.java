@@ -5,7 +5,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.loopeer.codereader.BuildConfig;
 import com.loopeer.codereader.model.DirectoryNode;
 import com.loopeer.codereader.ui.adapter.DirectoryAdapter;
 import com.loopeer.codereader.utils.FileCache;
@@ -77,9 +76,7 @@ public class DirectoryNavDelegate {
                         .doOnNext(mDirectoryAdapter::setNodeRoot)
                         .doOnNext(this::checkOpenFirstFile)
                         .doOnError(e -> {
-                            if (BuildConfig.DEBUG) {
-                                Log.e(TAG, "updateData: " + e.toString());
-                            }
+                            Log.e(TAG, "updateData: " + e.toString());
                         })
                         .subscribe()
         );

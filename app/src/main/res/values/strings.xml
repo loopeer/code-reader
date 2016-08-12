@@ -25,4 +25,5 @@
     <string name="empty_main_repo">Haven\'t opened file!You can open by bottom button</string>
 
     <!-- download -->
+    <string name="repo_download_isunzip">Unziping...</string>
 </resources>

@@ -6,7 +6,8 @@ CREATE TABLE db_repo (
   net_url TEXT,
   is_folder INTEGER AS Boolean DEFAULT 0,
   download_id INTEGER DEFAULT 0,
-  factor REAL AS Float
+  factor REAL AS Float,
+  is_unzip INTEGER AS Boolean DEFAULT 0
 );
 
 select_all:
@@ -45,5 +46,5 @@ WHERE download_id = ?;
 
 update_download_progress:
 UPDATE db_repo
-SET factor = ?
+SET factor = ?, is_unzip = ?
 WHERE download_id = ?;

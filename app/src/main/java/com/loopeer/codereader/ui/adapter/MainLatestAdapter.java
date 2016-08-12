@@ -30,6 +30,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
+    private static final String TAG = "MainLatestAdapter";
 
     public MainLatestAdapter(Context context) {
         super(context);
@@ -53,7 +54,9 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
             if (subscription != null) {
                 mAllSubscription.add(subscription);
             }
-            viewHolder.itemView.setOnClickListener(view -> Navigator.startCodeReadActivity(getContext(), var1));
+            viewHolder.itemView.setOnClickListener(view -> {
+                if (!var1.isDownloading() && !var1.isUnzip) Navigator.startCodeReadActivity(getContext(), var1);
+            });
         }
         if (var3 instanceof MainHeaderHolder) {
             MainHeaderHolder viewHolder = (MainHeaderHolder) var3;
@@ -115,6 +118,7 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
             } else {
                 mProgressRelativeLayout.setProgress(1f);
             }
+            mProgressRelativeLayout.setUnzip(repo.isUnzip);
             return mSubscription;
         }
 
@@ -130,8 +134,12 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext(o -> mProgressRelativeLayout.setProgress(o.factor))
                     .filter(o -> o.factor == 1f)
+                    .doOnNext(o -> repo.isUnzip = o.isUnzip)
+                    .doOnNext(o -> mProgressRelativeLayout.setUnzip(o.isUnzip))
+                    .filter(o -> o.isUnzip == false)
                     .doOnNext(o -> CoReaderDbHelper.getInstance(
                             CodeReaderApplication.getAppContext()).resetRepoDownloadId(repo.downloadId))
+                    .doOnNext(o -> repo.downloadId = 0)
                     .subscribe();
         }
     }
