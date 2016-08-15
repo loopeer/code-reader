@@ -68,6 +68,9 @@ public class RepositoryFragment extends BaseFragment {
                 .subscribe(repositories -> {
                     mRepositoryAdapter.updateData(repositories);
                     dismissProgressLoading();
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    dismissProgressLoading();
                 }));
     }
 
