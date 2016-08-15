@@ -98,7 +98,8 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
         }
         mWebCodeRead.clearHistory();
         if (mNode == null) {
-            if (mOpenFileAfterLoadFinish) mCodeContentLoader.showEmpty(getString(R.string.code_read_no_file_open));
+            if (mOpenFileAfterLoadFinish)
+                mCodeContentLoader.showEmpty(getString(R.string.code_read_no_file_open));
         } else if (FileUtils.isImageFileType(mNode.absolutePath)) {
             openImageFile();
         } else if (FileUtils.isMdFileType(mNode.absolutePath)) {
@@ -246,8 +247,14 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
             scrollFinishDelaySubscription.unsubscribe();
         }
         if (t - oldt > 70) {
+            if (scrollDown)
+                return;
+
             scrollDown = true;
         } else if (t - oldt < 0) {
+            if (!scrollDown)
+                return;
+
             scrollDown = false;
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
@@ -256,7 +263,6 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                     .timer(500, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext(lo -> getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN))
-                    .doOnNext(lo -> scrollDown = false)
                     .subscribe();
             registerSubscription(scrollFinishDelaySubscription);
         }
