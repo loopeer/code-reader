@@ -27,4 +27,8 @@
 
     <!-- download -->
     <string name="repo_download_isunzip">Unziping...</string>
+
+    <!--search-->
+    <string name="search_hint_file">Search files</string>
+    <string name="search_hint_project">Search projects</string>
 </resources>

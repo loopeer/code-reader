@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.loopeer.codereader">
+    package="com.loopeer.codereader">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="com.loopeer.codereader.CodeReaderApplication"
@@ -17,39 +17,47 @@
             android:name="com.loopeer.codereader.ui.activity.MainActivity"
             android:theme="@style/Theme.CodeReader.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.loopeer.codereader.ui.activity.CodeReadActivity"
             android:label="@string/title_activity_code_read"
-            android:theme="@style/Theme.CodeReader.NoActionBar"/>
+            android:theme="@style/Theme.CodeReader.NoActionBar" />
 
         <activity
             android:name="com.loopeer.directorychooser.DirectoryFileChooserActivity"
-            android:theme="@style/Theme.CodeReader.NoActionBar"/>
+            android:theme="@style/Theme.CodeReader.NoActionBar" />
 
         <activity
             android:name=".ui.activity.SearchActivity"
             android:label=""
-            android:theme="@style/Theme.CodeReader.NoActionBar"/>
+            android:theme="@style/Theme.CodeReader.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
 
         <activity
             android:name=".ui.activity.SimpleWebActivity"
             android:theme="@style/Theme.CodeReader.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.MainActivity"/>
+                android:value=".ui.activity.MainActivity" />
         </activity>
 
-        <service android:name=".sync.DownloadRepoService"/>
+        <service android:name=".sync.DownloadRepoService" />
 
         <receiver android:name=".sync.DownloadReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
-                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED"/>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
             </intent-filter>
         </receiver>
     </application>
