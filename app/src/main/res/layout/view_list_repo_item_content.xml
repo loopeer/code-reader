@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.loopeer.codereader.ui.view.ForegroundProgressRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_progress_list_repo"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:foreground="?selectableItemBackground"
+    android:padding="@dimen/medium_padding"
+    tools:showIn="@layout/list_item_repo">
+
+    <ImageView
+        android:id="@+id/img_repo_type"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_document_white"
+        android:scaleType="centerInside"
+        android:background="@drawable/shape_circle_folder"/>
+
+    <TextView
+        android:id="@+id/text_repo_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/img_repo_type"
+        android:layout_marginLeft="@dimen/default_padding"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="@dimen/text_size_medium"
+        tools:text="RecyclerRepo"/>
+
+    <TextView
+        android:id="@+id/text_repo_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/text_repo_name"
+        android:layout_below="@+id/text_repo_name"
+        android:layout_marginTop="@dimen/inline_padding"
+        android:textColor="?android:textColorTertiary"
+        android:textSize="@dimen/text_size_small"
+        tools:text="2014-02-11 12:00:32"/>
+
+</com.loopeer.codereader.ui.view.ForegroundProgressRelativeLayout>
+    

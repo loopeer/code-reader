@@ -1,5 +1,6 @@
 package com.loopeer.codereader.ui.view;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
@@ -8,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 public class DragView extends ViewGroup {
     private ViewDragHelper mDragHelper;
@@ -16,6 +18,8 @@ public class DragView extends ViewGroup {
     private int mDragRange;
     private float mDragOffset;
     private int mActionViewWidth;
+    private DragHelperCallback mDragHelperCallback;
+    private ValueAnimator mResetAnimator;
 
     public DragView(Context context) {
         this(context, null);
@@ -31,7 +35,8 @@ public class DragView extends ViewGroup {
     }
 
     private void init() {
-        mDragHelper = ViewDragHelper.create(this, 1.0f, new DragHelperCallback());
+        mDragHelperCallback = new DragHelperCallback();
+        mDragHelper = ViewDragHelper.create(this, 1.0f, mDragHelperCallback);
     }
 
     @Override
@@ -39,14 +44,34 @@ public class DragView extends ViewGroup {
         super.onFinishInflate();
         mContentView = getChildAt(0);
         mActionView = getChildAt(1);
+        mResetAnimator = ValueAnimator.ofFloat(0f, 1f);
+        mResetAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        mResetAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            float oldValue = 0;
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float fraction = valueAnimator.getAnimatedFraction();
+                float targetP = fraction * mActionViewWidth - oldValue;
+                oldValue = fraction * mActionViewWidth;
+                ViewCompat.offsetLeftAndRight(mContentView, (int) targetP);
+                if (fraction == 1f) oldValue = 0;
+            }
+        });
+        mActionView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mDragHelper.getViewDragState() == ViewDragHelper.STATE_IDLE) mResetAnimator.start();
+            }
+        });
     }
 
     private class DragHelperCallback extends ViewDragHelper.Callback {
 
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
-            /*return child == mContentView;*/
-            return true;
+            return child == mContentView;
         }
 
         @Override
@@ -76,12 +101,10 @@ public class DragView extends ViewGroup {
 
         @Override
         public int clampViewPositionHorizontal(View child, int left, int dx) {
-            return left;
-            /*Log.d("DragLayout", "clampViewPositionHorizontal " + left + "," + dx);
             final int leftBound = - mActionViewWidth;
             final int rightBound = 0;
             final int newLeft = Math.min(Math.max(left, leftBound), rightBound);
-            return newLeft;*/
+            return newLeft;
         }
     }
 
@@ -92,10 +115,11 @@ public class DragView extends ViewGroup {
         measureChildWithMargins(childContent, widthMeasureSpec, 0, heightMeasureSpec, 0);
         View childDragShowContent = mActionView;
         int heightSizeAndState = resolveSizeAndState(childContent.getMeasuredHeight(), heightMeasureSpec, 0);
-        int widthSizeAndState = resolveSizeAndState(childContent.getMeasuredWidth(), heightMeasureSpec, 0);
+        int widthSizeAndState = resolveSizeAndState(childContent.getMeasuredWidth(), widthMeasureSpec, 0);
+
+        measureChildWithMargins(childDragShowContent, widthMeasureSpec, 0, heightMeasureSpec, 0);
         setMeasuredDimension(widthSizeAndState,
                 heightSizeAndState);
-        measureChildWithMargins(childDragShowContent, widthMeasureSpec, 0, heightMeasureSpec, 0);
     }
 
     @Override
@@ -106,7 +130,6 @@ public class DragView extends ViewGroup {
         int childWidth = childContent.getMeasuredWidth();
         int childHeight = childContent.getMeasuredHeight();
         childContent.layout(childLeft, childTop, childLeft + childWidth, childTop + childHeight);
-        childContent.bringToFront();
 
         View childDragShowContent = mActionView;
         int childDragWidth = childDragShowContent.getMeasuredWidth();
@@ -115,6 +138,8 @@ public class DragView extends ViewGroup {
         childDragShowContent.layout(childDragLeft, childTop, childWidth, childTop + childDragHeight);
         mDragRange = childDragWidth;
         mActionViewWidth = childDragWidth;
+
+        mContentView.bringToFront();
     }
 
     @Override
