@@ -35,7 +35,8 @@
         <activity
             android:name=".ui.activity.SearchActivity"
             android:label=""
-            android:theme="@style/Theme.CodeReader.NoActionBar">
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.CodeReader.SearchView">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

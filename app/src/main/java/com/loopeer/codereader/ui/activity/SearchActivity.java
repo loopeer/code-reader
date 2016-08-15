@@ -8,20 +8,16 @@ import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 
 import com.loopeer.codereader.R;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class SearchActivity extends BaseActivity implements SearchView.OnQueryTextListener {
 
-    @BindView(R.id.edit_search_content)
-    EditText mEditSearchContent;
-
     private RepositoryFragment mRepositoryFragment;
+    private SearchView mSearchView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,10 +31,10 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_file_search, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(true);
-        searchView.setOnQueryTextListener(this);
+        mSearchView= (SearchView) menu.findItem(R.id.action_search).getActionView();
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        mSearchView.setIconified(false);
+        mSearchView.setOnQueryTextListener(this);
         return true;
     }
 
@@ -51,18 +47,13 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
         return super.onOptionsItemSelected(item);
     }
 
-
-    @OnClick(R.id.btn_search)
-    void onClick(View view) {
-        String searchText = mEditSearchContent.getText().toString();
-        if (!TextUtils.isEmpty(searchText) && mRepositoryFragment != null) {
-            mRepositoryFragment.setSearchText(searchText);
-        }
-    }
-
     @Override
     public boolean onQueryTextSubmit(String query) {
-        return false;
+        if (!TextUtils.isEmpty(query) && mRepositoryFragment != null) {
+            mRepositoryFragment.setSearchText(query);
+            mSearchView.clearFocus();
+        }
+        return true;
     }
 
     @Override

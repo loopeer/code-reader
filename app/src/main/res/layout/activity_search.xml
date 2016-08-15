@@ -9,37 +9,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <EditText
-                android:id="@+id/edit_search_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/btn_search"
-                android:hint="Search Repository"
-                android:textColor="@color/text_color_primary"
-                android:textColorHint="@color/text_color_hint"/>
-
-            <ImageButton
-                android:id="@id/btn_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/inline_padding"
-                android:layout_marginRight="@dimen/large_padding"
-                android:background="@null"
-                android:src="@drawable/ic_search_white"
-                android:text="Search"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.Toolbar>
+        android:background="?attr/colorPrimary"/>
 
     <fragment
         android:id="@+id/fragment_repository"
