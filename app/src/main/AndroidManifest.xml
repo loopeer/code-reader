@@ -32,11 +32,6 @@
             android:theme="@style/Theme.CodeReader.NoActionBar"/>
 
         <activity
-            android:name=".ui.activity.RepositoryActivity"
-            android:label=""
-            android:theme="@style/Theme.CodeReader.NoActionBar"/>
-
-        <activity
             android:name=".ui.activity.SearchActivity"
             android:label=""
             android:theme="@style/Theme.CodeReader.NoActionBar"/>

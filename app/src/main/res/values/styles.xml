@@ -1,4 +1,7 @@
 <resources>
 
+    <style name="ActionBarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="contentInsetStartWithNavigation">0dp</item>
+    </style>
 
 </resources>
