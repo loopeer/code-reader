@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopeer.codereader.CodeReaderApplication;
 import com.loopeer.codereader.DownloadProgressEvent;
@@ -57,6 +58,12 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
             }
             viewHolder.mProgressRelativeLayout.setOnClickListener(view -> {
                 if (!var1.isDownloading() && !var1.isUnzip) Navigator.startCodeReadActivity(getContext(), var1);
+            });
+            viewHolder.mActionView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(view.getContext(), "Test Delete", Toast.LENGTH_SHORT).show();
+                }
             });
         }
         if (var3 instanceof MainHeaderHolder) {
@@ -149,6 +156,7 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
         public float getActionWidth() {
             return mActionView.getWidth();
         }
+
     }
 
     class MainHeaderHolder extends RecyclerView.ViewHolder {

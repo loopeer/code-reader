@@ -23,6 +23,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.animation.Interpolator;
 
@@ -257,6 +258,10 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
 
     private final RecyclerView.OnItemTouchListener mOnItemTouchListener
             = new RecyclerView.OnItemTouchListener() {
+
+        boolean mClick = false;
+        float mLastX = 0;
+
         @Override
         public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent event) {
             mGestureDetector.onTouchEvent(event);
@@ -268,6 +273,10 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                 mActivePointerId = MotionEventCompat.getPointerId(event, 0);
                 mInitialTouchX = event.getX();
                 mInitialTouchY = event.getY();
+
+
+                mClick = true;
+                mLastX = event.getX();
                 obtainVelocityTracker();
                 if (mSelected == null) {
                     final RecoverAnimation animation = findAnimation(event);
@@ -299,6 +308,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
             if (mVelocityTracker != null) {
                 mVelocityTracker.addMovement(event);
             }
+
             return mSelected != null;
         }
 
@@ -330,6 +340,8 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                     // Find the index of the active pointer and fetch its position
                     if (activePointerIndex >= 0) {
                         updateDxDy(event, mSelectedFlags, activePointerIndex);
+                        if (Math.abs(event.getX() - mLastX) > mSlop) mClick = false;
+                        mLastX = event.getX();
                         moveIfNecessary(viewHolder);
                         mRecyclerView.removeCallbacks(mScrollRunnable);
                         mScrollRunnable.run();
@@ -343,10 +355,15 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                     }
                     // fall through
                 case MotionEvent.ACTION_UP:
+                    if (mClick) {
+                        doChildClickEvent(event.getRawX(), event.getRawY());
+                    }
+                    mClick = false;
                     select(null, ACTION_STATE_IDLE);
                     mActivePointerId = ACTIVE_POINTER_ID_NONE;
                     break;
                 case MotionEvent.ACTION_POINTER_UP: {
+                    mClick = false;
                     final int pointerIndex = MotionEventCompat.getActionIndex(event);
                     final int pointerId = MotionEventCompat.getPointerId(event, pointerIndex);
                     if (pointerId == mActivePointerId) {
@@ -358,6 +375,9 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                     }
                     break;
                 }
+                default:
+                    mClick = false;
+                    break;
             }
         }
 
@@ -369,6 +389,33 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
             select(null, ACTION_STATE_IDLE);
         }
     };
+
+    private void doChildClickEvent(float x, float y) {
+        View view = mSelected.itemView;
+        View consumeEventView = findConsumeView((ViewGroup) view, x, y);
+        if (consumeEventView != null) {
+            consumeEventView.performClick();
+        }
+    }
+
+    private View findConsumeView(ViewGroup parent, float x, float y) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            View child = parent.getChildAt(i);
+            if (child instanceof ViewGroup && child.getVisibility() == View.VISIBLE && child.hasFocus()) {
+                return findConsumeView(parent, x, y);
+            } else {
+
+                int[] location = new int[2];
+                child.getLocationOnScreen(location);
+                Rect rect = new Rect(location[0], location[1], location[0] + child.getWidth(), location[1] + child.getHeight());
+                if (rect.contains((int)x, (int)y) && ViewCompat.hasOnClickListeners(child)
+                        && child.getVisibility() == View.VISIBLE) {
+                    return child;
+                }
+            }
+        }
+        return null;
+    }
 
     /**
      * Temporary rect instance that is used when we need to lookup Item decorations.
@@ -1113,6 +1160,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
         if ((directionFlags & DOWN) == 0) {
             mDy = Math.min(0, mDy);
         }
+
     }
 
     private int swipeIfNecessary(ViewHolder viewHolder) {
@@ -2251,6 +2299,11 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                     }
                 }
             }
+        }
+
+        @Override
+        public boolean onContextClick(MotionEvent e) {
+            return super.onContextClick(e);
         }
     }
 
