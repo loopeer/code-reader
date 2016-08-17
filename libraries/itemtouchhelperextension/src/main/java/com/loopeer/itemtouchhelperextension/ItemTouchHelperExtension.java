@@ -81,7 +81,8 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
     /**
      * A View is currently being dragged.
      */
-    public static final int ACTION_STATE_DRAG = 2;
+    public static final int
+            ACTION_STATE_DRAG = 2;
 
     /**
      * Animation type for views which are swiped successfully.
@@ -134,6 +135,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
      * Currently selected view holder
      */
     RecyclerView.ViewHolder mSelected = null;
+    RecyclerView.ViewHolder mPreSelected = null;
 
     /**
      * The reference coordinates for the action start. For drag & drop, this is the time long
@@ -337,6 +339,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
             }
             switch (action) {
                 case MotionEvent.ACTION_MOVE: {
+
                     // Find the index of the active pointer and fetch its position
                     if (activePointerIndex >= 0) {
                         updateDxDy(event, mSelectedFlags, activePointerIndex);
@@ -621,10 +624,27 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                         if (swipeDir <= 0) {
                             // this is a drag or failed swipe. recover immediately
                             mCallback.clearView(mRecyclerView, prevSelected);
+                            mPreSelected = null;
                             // full cleanup will happen on onDrawOver
                         } else {
                             // wait until remove animation is complete.
+                            if (mPreSelected != null && mPreSelected != prevSelected) {
+                                final View view = ((ViewGroup)mPreSelected.itemView).getChildAt(1);
+                                view.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        view.setTranslationX(0);
+                                        mCallback.clearView(mRecyclerView, mPreSelected);
+                                        mPendingCleanup.remove(mPreSelected.itemView);
+                                        endRecoverAnimation(mPreSelected, true);
+                                        mPreSelected = prevSelected;
+                                    }
+                                }, 26);
+                                Log.e("111", ""+view.getTranslationX());
+                                view.invalidate();
+                            }
                             mPendingCleanup.add(prevSelected.itemView);
+                            mPreSelected = prevSelected;
                             mIsPendingCleanup = true;
                             if (swipeDir > 0) {
                                 // Animation might be ended by other animators during a layout.
