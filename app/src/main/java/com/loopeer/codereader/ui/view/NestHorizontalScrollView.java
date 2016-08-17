@@ -606,7 +606,7 @@ public class NestHorizontalScrollView  extends FrameLayout implements NestedScro
             case MotionEvent.ACTION_DOWN: {
                 final int x = (int) ev.getX();
                 final int y = (int) ev.getY();
-                if (!inChild( (int) x,(int) ev.getY())) {
+                if (!inChild(x, y)) {
                     mIsBeingDragged = false;
                     recycleVelocityTracker();
                     break;

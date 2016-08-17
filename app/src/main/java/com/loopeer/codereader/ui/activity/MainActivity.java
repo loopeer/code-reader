@@ -18,6 +18,7 @@ import com.loopeer.codereader.R;
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.sync.DownloadProgressHelper;
+import com.loopeer.codereader.ui.adapter.ItemTouchHelperCallback;
 import com.loopeer.codereader.ui.adapter.MainLatestAdapter;
 import com.loopeer.codereader.ui.decoration.DividerItemDecoration;
 import com.loopeer.codereader.ui.decoration.DividerItemDecorationMainList;
@@ -27,6 +28,7 @@ import com.loopeer.codereader.utils.G;
 import com.loopeer.codereader.utils.Settings;
 import com.loopeer.directorychooser.FileNod;
 import com.loopeer.directorychooser.NavigatorChooser;
+import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension;
 
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class MainActivity extends BaseActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000;
     @BindView(R.id.view_recycler)
-    RecyclerView mRecyclerContent;
+    RecyclerView mRecyclerView;
     @BindView(R.id.animator_recycler_content)
     ViewAnimator mAnimatorRecyclerContent;
     @BindView(R.id.fab_main)
@@ -48,6 +50,9 @@ public class MainActivity extends BaseActivity {
     private ILoadHelper mRecyclerLoader;
     private MainLatestAdapter mMainLatestAdapter;
     private Subscription mProgressSubscription;
+
+    public ItemTouchHelperExtension mItemTouchHelper;
+    public ItemTouchHelperExtension.Callback mCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,13 +89,24 @@ public class MainActivity extends BaseActivity {
 
     private void setUpView() {
         mRecyclerLoader = new RecyclerLoader(mAnimatorRecyclerContent);
-        mRecyclerContent.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mMainLatestAdapter = new MainLatestAdapter(this);
-        mRecyclerContent.setAdapter(mMainLatestAdapter);
-        mRecyclerContent.addItemDecoration(new DividerItemDecorationMainList(this, DividerItemDecoration.VERTICAL_LIST
+        mRecyclerView.setAdapter(mMainLatestAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecorationMainList(this, DividerItemDecoration.VERTICAL_LIST
                 , getResources().getDimensionPixelSize(R.dimen.repo_list_divider_start)
                 , -1
                 , -1));
+        mItemTouchHelper = createItemTouchHelper();
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+    }
+
+    public ItemTouchHelperExtension createItemTouchHelper() {
+        mCallback = createCallback();
+        return new ItemTouchHelperExtension(mCallback);
+    }
+
+    public ItemTouchHelperExtension.Callback createCallback() {
+        return new ItemTouchHelperCallback();
     }
 
     private void loadLocalData() {

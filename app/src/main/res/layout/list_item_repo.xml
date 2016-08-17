@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.loopeer.codereader.ui.view.DragView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <include layout="@layout/view_list_repo_item_content"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:gravity="center"
         android:padding="@dimen/activity_horizontal_margin"
         android:text="Delete"
         android:textColor="@color/colorPrimary"/>
-</com.loopeer.codereader.ui.view.DragView>
+
+    <include layout="@layout/view_list_repo_item_content"/>
+
+</FrameLayout>
 

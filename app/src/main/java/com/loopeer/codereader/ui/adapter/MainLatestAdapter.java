@@ -54,7 +54,7 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
             if (subscription != null) {
                 mAllSubscription.add(subscription);
             }
-            viewHolder.itemView.setOnClickListener(view -> {
+            viewHolder.mProgressRelativeLayout.setOnClickListener(view -> {
                 if (!var1.isDownloading() && !var1.isUnzip) Navigator.startCodeReadActivity(getContext(), var1);
             });
         }
@@ -89,7 +89,7 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
         return R.layout.list_item_repo;
     }
 
-    class RepoViewHolder extends RecyclerView.ViewHolder {
+    public class RepoViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.img_repo_type)
         ImageView mImgRepoType;
