@@ -5,12 +5,13 @@
     android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/view_list_repo_action_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:gravity="center"
         android:padding="@dimen/activity_horizontal_margin"
-        android:text="Delete"
+        android:text="Delete Test"
         android:textColor="@color/colorPrimary"/>
 
     <include layout="@layout/view_list_repo_item_content"/>

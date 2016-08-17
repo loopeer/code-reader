@@ -19,6 +19,7 @@ import com.loopeer.codereader.model.MainHeaderItem;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.ui.view.ForegroundProgressRelativeLayout;
 import com.loopeer.codereader.utils.RxBus;
+import com.loopeer.itemtouchhelperextension.Extension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +90,7 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
         return R.layout.list_item_repo;
     }
 
-    public class RepoViewHolder extends RecyclerView.ViewHolder {
+    public class RepoViewHolder extends RecyclerView.ViewHolder implements Extension {
 
         @BindView(R.id.img_repo_type)
         ImageView mImgRepoType;
@@ -99,6 +100,7 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
         TextView mTextRepoTime;
         @BindView(R.id.view_progress_list_repo)
         ForegroundProgressRelativeLayout mProgressRelativeLayout;
+        @BindView(R.id.view_list_repo_action_view) View mActionView;
 
         Subscription mSubscription;
 
@@ -141,6 +143,11 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
                             CodeReaderApplication.getAppContext()).resetRepoDownloadId(repo.downloadId))
                     .doOnNext(o -> repo.downloadId = 0)
                     .subscribe();
+        }
+
+        @Override
+        public float getActionWidth() {
+            return mActionView.getWidth();
         }
     }
 

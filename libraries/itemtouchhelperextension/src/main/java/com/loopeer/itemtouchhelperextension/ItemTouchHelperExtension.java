@@ -541,7 +541,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                     case START:
                     case END:
                         targetTranslateY = 0;
-                        targetTranslateX = Math.signum(mDx) * 200;/*mRecyclerView.getWidth()*/
+                        targetTranslateX = Math.signum(mDx) * getSwipeWidth();
                         break;
                     case UP:
                     case DOWN:
@@ -624,6 +624,10 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
         }
         mCallback.onSelectedChanged(mSelected, mActionState);
         mRecyclerView.invalidate();
+    }
+
+    private float getSwipeWidth() {
+        return ((Extension)mSelected).getActionWidth();
     }
 
     private void postDispatchSwipe(final RecoverAnimation anim, final int swipeDir) {
