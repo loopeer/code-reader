@@ -323,7 +323,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
         }
 
         private void closeOpenedPreItem() {
-            final View view = ((ViewGroup) mPreSelected.itemView).getChildAt(1);
+            final View view = mCallback.getItemFrontView(mPreSelected);
             ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view, "translationX", view.getTranslationX(), 0f);
             objectAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
@@ -654,27 +654,8 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                         if (swipeDir <= 0) {
                             // this is a drag or failed swipe. recover immediately
                             mCallback.clearView(mRecyclerView, prevSelected);
-//                            mPreSelected = null;
-                            // full cleanup will happen on onDrawOver
                         } else {
                             // wait until remove animation is complete.
-/*
-                            if (mPreSelected != null && mPreSelected != prevSelected) {
-                                final View view = ((ViewGroup)mPreSelected.itemView).getChildAt(1);
-                                view.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        view.setTranslationX(0);
-                                        mCallback.clearView(mRecyclerView, mPreSelected);
-                                        mPendingCleanup.remove(mPreSelected.itemView);
-                                        endRecoverAnimation(mPreSelected, true);
-                                        mPreSelected = prevSelected;
-                                    }
-                                }, 26);
-                                Log.e("111", ""+view.getTranslationX());
-                                view.invalidate();
-                            }
-*/
                             mPendingCleanup.add(prevSelected.itemView);
                             mPreSelected = prevSelected;
                             mIsPendingCleanup = true;
@@ -1908,6 +1889,22 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
          *                   #END}).
          */
         public abstract void onSwiped(ViewHolder viewHolder, int direction);
+
+
+        /**
+         * @param viewHolder this is pre action viewHolder, there we think view has two child
+         *                   first one is back action view.Front is show view.
+         * @return
+         */
+        public View getItemFrontView(ViewHolder viewHolder) {
+            if (viewHolder == null) return null;
+            if (viewHolder.itemView instanceof ViewGroup && ((ViewGroup) viewHolder.itemView).getChildCount() > 1) {
+                ViewGroup viewGroup = (ViewGroup) viewHolder.itemView;
+                return viewGroup.getChildAt(viewGroup.getChildCount() - 1);
+            } else {
+                return viewHolder.itemView;
+            }
+        }
 
         /**
          * Called when the ViewHolder swiped or dragged by the ItemTouchHelper is changed.
