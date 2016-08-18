@@ -53,6 +53,7 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
             mDirectoryNode = (DirectoryNode) savedInstanceState.getSerializable(Navigator.EXTRA_DIRETORY_ROOT);
             mSelectedNode = (DirectoryNode) savedInstanceState.getSerializable(Navigator.EXTRA_DIRETORY_SELECTING);
             DirectoryNode rootNodeInstance = (DirectoryNode) savedInstanceState.getSerializable(Navigator.EXTRA_DIRETORY_ROOT_NODE_INSTANCE);
+            mFragment.updateRootNode(mDirectoryNode);
             mDirectoryNavDelegate.resumeDirectoryState(rootNodeInstance);
             doOpenFile(mSelectedNode);
             return;

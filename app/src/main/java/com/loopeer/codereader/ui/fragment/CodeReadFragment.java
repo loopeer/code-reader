@@ -241,6 +241,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
         mWebCodeRead.destroy();
     }
 

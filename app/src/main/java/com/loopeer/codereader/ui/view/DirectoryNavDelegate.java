@@ -81,9 +81,9 @@ public class DirectoryNavDelegate {
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(mDirectoryAdapter::setNodeRoot)
                         .doOnNext(this::checkOpenFirstFile)
-                        .doOnNext(o -> mLoadFileCallback.onFileOpenEnd())
                         .doOnError(e -> Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show())
                         .onErrorResumeNext(Observable.empty())
+                        .doOnCompleted(() -> mLoadFileCallback.onFileOpenEnd())
                         .subscribe());
     }
 
