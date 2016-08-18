@@ -280,6 +280,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                 mClick = true;
                 mLastX = event.getX();
                 obtainVelocityTracker();
+
                 if (mSelected == null) {
                     final RecoverAnimation animation = findAnimation(event);
                     if (animation != null) {
@@ -309,6 +310,20 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
             }
             if (mVelocityTracker != null) {
                 mVelocityTracker.addMovement(event);
+            }
+
+            if (mPreSelected != null && mPreSelected != mSelected) {
+                final View view = ((ViewGroup)mPreSelected.itemView).getChildAt(1);
+                view.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.setTranslationX(0);
+                        if (mPreSelected != null) mCallback.clearView(mRecyclerView, mPreSelected);
+                        if (mPreSelected != null) mPendingCleanup.remove(mPreSelected.itemView);
+                        endRecoverAnimation(mPreSelected, true);
+                        mPreSelected = mSelected;
+                    }
+                }, 26);
             }
 
             return mSelected != null;
@@ -624,10 +639,11 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                         if (swipeDir <= 0) {
                             // this is a drag or failed swipe. recover immediately
                             mCallback.clearView(mRecyclerView, prevSelected);
-                            mPreSelected = null;
+//                            mPreSelected = null;
                             // full cleanup will happen on onDrawOver
                         } else {
                             // wait until remove animation is complete.
+/*
                             if (mPreSelected != null && mPreSelected != prevSelected) {
                                 final View view = ((ViewGroup)mPreSelected.itemView).getChildAt(1);
                                 view.postDelayed(new Runnable() {
@@ -643,6 +659,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                                 Log.e("111", ""+view.getTranslationX());
                                 view.invalidate();
                             }
+*/
                             mPendingCleanup.add(prevSelected.itemView);
                             mPreSelected = prevSelected;
                             mIsPendingCleanup = true;
