@@ -125,6 +125,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     public void openFile(DirectoryNode node) {
         mOpenFileAfterLoadFinish = true;
         mNode = node;
+        if (!isVisible()) return;
         openFile();
     }
 

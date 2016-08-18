@@ -18,7 +18,6 @@
 			{ regex: /\b([\d]+(\.[\d]+)?|0x[a-f0-9]+)\b/gi,				css: 'value' },			// numbers
 			{ regex: /(?!\@interface\b)\@[\$\w]+\b/g,					css: 'keyword' },
 			{ regex: /[\+, \-, \=, \*, \/]/g,                           css: 'keyword' },
-			{ regex: /\->/g,          	                	            css: 'keyword' },
 			{ regex: new RegExp(this.getKeywords(keywords), 'gm'),		css: 'keyword' },
 			{ regex: new RegExp(this.getKeywords(values), 'gm'),		css: 'value' }	       	// java keyword
 
