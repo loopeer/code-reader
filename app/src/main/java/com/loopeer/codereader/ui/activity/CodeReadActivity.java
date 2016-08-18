@@ -139,4 +139,5 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
     public void onFileOpenEnd() {
         dismissProgressLoading();
     }
+
 }

@@ -724,17 +724,13 @@ public class MarkdownProcessor {
     private void doImages(TextEditor text) {
         // Inline image syntax
         text.replaceAll("!\\[(.*)\\]\\((.*) \"(.*)\"\\)", "<img src=\"$2\"/>");
-        String[] strings = text.toString().split("\\s");
-        StringBuilder sb = new StringBuilder();
-        for (String item : strings) {
-            System.out.println(item);
-            String replaceString = item.replaceAll("!\\[(.*)\\]\\((.*)\\)", "<img src=\"file:///" + localHostPath + "$2\" alt=\"$1\" />");
-            sb.append(replaceString);
-            sb.append("\n");
+
+
+        if (!text.toString().contains("http://") && !text.toString().contains("https://")){
+            doLocalImage(text);
         }
-
-        text.update(sb.toString());
-
+        text.replaceAll("!\\[(.*)\\]\\((.*) \"(.*)\"\\)", "<img src=\"$2\" alt=\"$1\" title=\"$3\" />");
+        text.replaceAll("!\\[(.*)\\]\\((.*)\\)", "<img src=\"$2\" alt=\"$1\" />");
         /*text.replaceAll("!\\[(.*)\\]\\((.*) \"(.*)\"\\)", "<img src=\"$2\" alt=\"$1\" title=\"$3\" />");
         text.replaceAll("!\\[(.*)\\]\\((.*)\\)", "<img src=\"$2\" alt=\"$1\" />");*/
         // Reference-style image syntax
@@ -773,6 +769,17 @@ public class MarkdownProcessor {
                 return replacementText;
             }
         });
+    }
+
+    private void doLocalImage(TextEditor text) {
+        String[] strings = text.toString().split("\\s");
+        StringBuilder sb = new StringBuilder();
+        for (String item : strings) {
+            String replaceString = item.replaceAll("!\\[(.*)\\]\\((.*)\\)", "<img src=\"file:///" + localHostPath + "$2\" alt=\"$1\" />");
+            sb.append(replaceString);
+            sb.append("\n");
+        }
+        text.update(sb.toString());
     }
 
     private TextEditor doAnchors(TextEditor markup) {
