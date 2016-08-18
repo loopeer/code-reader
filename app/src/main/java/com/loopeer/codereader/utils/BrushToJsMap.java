@@ -149,6 +149,9 @@ public class BrushToJsMap {
         list = new ArrayList();
         list.add("properties");
         mapping.put("Properties", list);
+        list = new ArrayList();
+        list.add("json");
+        mapping.put("Json", list);
         /*Iterator iterator = G.settings.customFileToJSMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry localEntry = (Map.Entry) ((Iterator) list).next();
