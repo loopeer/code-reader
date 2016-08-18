@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.loopeer.codereader.CodeReaderApplication;
 import com.loopeer.codereader.DownloadProgressEvent;
@@ -59,18 +58,20 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
             viewHolder.mProgressRelativeLayout.setOnClickListener(view -> {
                 if (!var1.isDownloading() && !var1.isUnzip) Navigator.startCodeReadActivity(getContext(), var1);
             });
-            viewHolder.mActionView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(view.getContext(), "Test Delete", Toast.LENGTH_SHORT).show();
-                }
-            });
+            viewHolder.mActionView.setOnClickListener(view -> doRepoDelete(var3));
         }
         if (var3 instanceof MainHeaderHolder) {
             MainHeaderHolder viewHolder = (MainHeaderHolder) var3;
             viewHolder.bind();
         }
 
+    }
+
+    private void doRepoDelete(RecyclerView.ViewHolder var3) {
+        int position = var3.getAdapterPosition();
+        CoReaderDbHelper.getInstance(getContext()).deleteRepo(Long.parseLong(mData.get(position).id));
+        mData.remove(position);
+        notifyItemRemoved(position);
     }
 
     public void clearSubscription() {

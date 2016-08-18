@@ -2,7 +2,8 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@android:color/holo_red_light">
 
     <TextView
         android:id="@+id/view_list_repo_action_view"
@@ -11,8 +12,8 @@
         android:layout_gravity="right"
         android:gravity="center"
         android:padding="@dimen/activity_horizontal_margin"
-        android:text="Delete Test"
-        android:textColor="@color/colorPrimary"/>
+        android:text="@string/repo_delete"
+        android:textColor="@android:color/white"/>
 
     <include layout="@layout/view_list_repo_item_content"/>
 

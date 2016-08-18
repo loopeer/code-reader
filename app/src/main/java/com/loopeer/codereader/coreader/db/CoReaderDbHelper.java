@@ -144,4 +144,10 @@ public class CoReaderDbHelper extends SQLiteOpenHelper {
         db.execSQL(DbRepoModel.UPDATE_DOWNLOAD_PROGRESS
                 , new String[]{String.valueOf(factor),  String.valueOf(isUnzip ? 1 : 0), String.valueOf(downloadId)});
     }
+
+    public void deleteRepo(long id) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(DbRepoModel.DELETE_REPO
+                , new String[]{String.valueOf(id)});
+    }
 }
