@@ -48,14 +48,16 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     Toolbar mToolbar;
 
     private DirectoryNode mNode;
+    private DirectoryNode mRootNode;
     private Subscription scrollFinishDelaySubscription;
     private boolean scrollDown = false;
     private boolean mOpenFileAfterLoadFinish = false;
     private ILoadHelper mCodeContentLoader;
 
-    public static CodeReadFragment newInstance(DirectoryNode node) {
+    public static CodeReadFragment newInstance(DirectoryNode node, DirectoryNode root) {
         CodeReadFragment codeReadFragment = new CodeReadFragment();
         codeReadFragment.mNode = node;
+        codeReadFragment.mRootNode = root;
         return codeReadFragment;
     }
 
@@ -212,7 +214,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                             String textString = localStringBuilder.toString();
 
                             if (textString != null) {
-                                MarkdownProcessor m = new MarkdownProcessor();
+                                MarkdownProcessor m = new MarkdownProcessor(mRootNode.absolutePath);
                                 String html = m.markdown(textString);
                                 subscriber.onNext(html);
                             }
@@ -266,5 +268,9 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                     .subscribe();
             registerSubscription(scrollFinishDelaySubscription);
         }
+    }
+
+    public void updateRootNode(DirectoryNode directoryNode) {
+        mRootNode = directoryNode;
     }
 }

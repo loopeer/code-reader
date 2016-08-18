@@ -58,6 +58,9 @@ public class TextEditor {
         this.text = new StringBuilder(text);
     }
 
+    public void update(CharSequence text) {
+        this.text = new StringBuilder(text);
+    }
     /**
      * Give up the contents of the TextEditor.
      * @return

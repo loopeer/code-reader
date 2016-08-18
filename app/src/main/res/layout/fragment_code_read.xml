@@ -22,8 +22,8 @@
             android:id="@+id/progress_code_fragment"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="?actionBarSize"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_marginBottom="?actionBarSize"/>
 
         <TextView
             android:id="@android:id/empty"
@@ -31,6 +31,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="?actionBarSize"
+            android:drawablePadding="@dimen/medium_padding"
+            android:drawableTop="@drawable/ic_empty"
+            android:gravity="center"
+            android:padding="@dimen/activity_horizontal_margin"
             android:text="@string/code_read_no_file_open"
             android:textColor="?android:textColorTertiary"/>
     </ViewAnimator>

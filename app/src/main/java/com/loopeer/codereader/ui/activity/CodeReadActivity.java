@@ -62,6 +62,7 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
         CoReaderDbHelper.getInstance(this).updateRepoLastModify(Long.valueOf(repo.id)
                 , System.currentTimeMillis());
         mDirectoryNode = repo.toDirectoryNode();
+        mFragment.updateRootNode(mDirectoryNode);
         mDirectoryNavDelegate.updateData(mDirectoryNode);
     }
 
@@ -123,7 +124,7 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
     }
 
     private void createFragment(DirectoryNode node) {
-        mFragment = CodeReadFragment.newInstance(node);
+        mFragment = CodeReadFragment.newInstance(node, mDirectoryNode);
         mFragment.setArguments(getIntent().getExtras());
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container_code_read, mFragment).commit();

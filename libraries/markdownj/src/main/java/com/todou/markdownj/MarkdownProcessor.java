@@ -56,14 +56,29 @@ public class MarkdownProcessor {
     private Map<String, LinkDefinition> linkDefinitions = new TreeMap<String, LinkDefinition>();
     private static final CharacterProtector HTML_PROTECTOR = new CharacterProtector();
     private static final CharacterProtector CHAR_PROTECTOR = new CharacterProtector();
+    private static final String sCss = "<style type=\"text/css\">\n" +
+            ".a {\n" +
+            "    background-color: #c7dec6;\n" +
+            "    border: 1px solid #000;\n" +
+            "    border-top-left-radius: 10px;\n" +
+            "    border-top-right-radius: 10px;\n" +
+            "border-bottom-left-radius: 10px;\n" +
+            "border-bottom-right-radius: 10px;\n" +
+            "height:auto;\n" +
+            "width:auto;\n" +
+            "padding:20px;\n" +
+            "}\n" +
+            "</style>";
     private int listLevel;
     private int tabWidth = 4;
+    private String localHostPath;
 
     /**
      * Creates a new Markdown processor.
      */
-    public MarkdownProcessor() {
+    public MarkdownProcessor(String localHostPath) {
         listLevel = 0;
+        this.localHostPath = localHostPath;
     }
 
     /**
@@ -79,8 +94,8 @@ public class MarkdownProcessor {
         TextEditor text = new TextEditor(txt);
 
         // Standardize line endings:
-        text.replaceAll("\\r\\n", "\n"); 	// DOS to Unix
-        text.replaceAll("\\r", "\n");    	// Mac to Unix
+        text.replaceAll("\\r\\n", "\n");    // DOS to Unix
+        text.replaceAll("\\r", "\n");        // Mac to Unix
         text.replaceAll("^[ \\t]+$", "");
 
         // Make sure $text ends with a couple of newlines:
@@ -94,7 +109,16 @@ public class MarkdownProcessor {
         unEscapeSpecialChars(text);
 
         text.append("\n");
-        return text.toString();
+        return wrapHtml(text.toString());
+    }
+
+    public String wrapHtml(String content) {
+        String result = "<html>"
+                + sCss
+                + "<body style=\"margin-top: 40px; margin-bottom: 40px; vertical-align: center;\">"
+                + content
+                + "</body></html>";
+        return result;
     }
 
     private TextEditor encodeBackslashEscapes(TextEditor text) {
@@ -121,11 +145,11 @@ public class MarkdownProcessor {
 
     private void stripLinkDefinitions(TextEditor text) {
         Pattern p = Pattern.compile("^[ ]{0,3}\\[(.+)\\]:" + // ID = $1
-                "[ \\t]*\\n?[ \\t]*" + // Space
-                "<?(\\S+?)>?" + // URL = $2
-                "[ \\t]*\\n?[ \\t]*" + // Space
-                "(?:[\"(](.+?)[\")][ \\t]*)?" + // Optional title = $3
-                "(?:\\n+|\\Z)",
+                        "[ \\t]*\\n?[ \\t]*" + // Space
+                        "<?(\\S+?)>?" + // URL = $2
+                        "[ \\t]*\\n?[ \\t]*" + // Space
+                        "(?:[\"(](.+?)[\")][ \\t]*)?" + // Optional title = $3
+                        "(?:\\n+|\\Z)",
                 Pattern.MULTILINE);
 
         text.replaceAll(p, new Replacement() {
@@ -172,8 +196,8 @@ public class MarkdownProcessor {
         // hard-coded:
 
         String[] tagsA = {
-            "p", "div", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "pre", "table",
-            "dl", "ol", "ul", "script", "noscript", "form", "fieldset", "iframe", "math"
+                "p", "div", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "pre", "table",
+                "dl", "ol", "ul", "script", "noscript", "form", "fieldset", "iframe", "math"
         };
         String[] tagsB = {"ins", "del"};
 
@@ -199,7 +223,7 @@ public class MarkdownProcessor {
                 "(.*\\n)*?" +
                 "</\\2>" +
                 "[ ]*" +
-                "(?=\\n+|\\Z))", Pattern.MULTILINE |  Pattern.CASE_INSENSITIVE);
+                "(?=\\n+|\\Z))", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
 
         Replacement protectHTML = new Replacement() {
             public String replacement(Matcher m) {
@@ -270,6 +294,8 @@ public class MarkdownProcessor {
             String decoded = HTML_PROTECTOR.decode(paragraph);
             if (decoded != null) {
                 paragraphs[i] = decoded;
+            } else if (isCodeParagraph(paragraph)) {
+                paragraphs[i] = handleCodeParagraph(paragraph);
             } else {
                 paragraph = runSpanGamut(new TextEditor(paragraph)).toString();
                 paragraphs[i] = "<p>" + paragraph + "</p>";
@@ -278,6 +304,34 @@ public class MarkdownProcessor {
         return new TextEditor(join("\n\n", paragraphs));
     }
 
+    private boolean isCodeParagraph(String text) {
+        if (text.startsWith("```") && text.endsWith("```")) {
+            return true;
+        }
+        return false;
+    }
+
+    private String handleCodeParagraph(String text) {
+        if (text.startsWith("```") && text.endsWith("```")) {
+            String paragraph = text.replaceAll("```.*", "");
+            paragraph = paragraph.replace("<", "&lt;");
+            paragraph = paragraph.replace(">", "&gt;");
+            StringBuilder sb = new StringBuilder();
+            sb.append("<div style=\"background-color:#f7f7f7;padding:10px;display: inline-block;\">");
+            sb.append("<pre>");
+            if (paragraph.startsWith("\n")) {
+                paragraph = paragraph.substring("\n".length(), paragraph.length());
+            }
+            if (paragraph.endsWith("\n")) {
+                paragraph = paragraph.substring(0, paragraph.length() - "\n".length());
+            }
+            sb.append(paragraph);
+            sb.append("</pre>");
+            sb.append("</div></p>");
+            return sb.toString();
+        }
+        return text;
+    }
 
     private TextEditor doAutoLinks(TextEditor markup) {
         markup.replaceAll("<((https?|ftp):[^'\">\\s]+)>", "<a href=\"$1\">$1</a>");
@@ -362,61 +416,59 @@ public class MarkdownProcessor {
                 ")" +
                 "((?=^[ ]{0,4}\\S)|\\Z)", Pattern.MULTILINE);
         return markup.replaceAll(p, new Replacement() {
-        			private static final String LANG_IDENTIFIER = "lang:";
-                    public String replacement(Matcher m) {
-                        String codeBlock = m.group(1);
-                        TextEditor ed = new TextEditor(codeBlock);
-                        ed.outdent();
-                        encodeCode(ed);
-                        ed.detabify().deleteAll("\\A\\n+").deleteAll("\\s+\\z");
-                        String text = ed.toString();
-                        String out;
-                        String firstLine = firstLine(text);
-                        if (isLanguageIdentifier(firstLine)) {
-                          out = languageBlock(firstLine, text);
-                        } else {
-                          out = genericCodeBlock(text);
-                        }
-                        return out;
-                    }
+            private static final String LANG_IDENTIFIER = "lang:";
 
-                    public String firstLine(String text)
-                    {
-                        if (text == null) {
-                            return "";
-                        }
-                        String[] splitted = text.split("\\n");
-                        return splitted[0];
-                    }
+            public String replacement(Matcher m) {
+                String codeBlock = m.group(1);
+                TextEditor ed = new TextEditor(codeBlock);
+                ed.outdent();
+                encodeCode(ed);
+                ed.detabify().deleteAll("\\A\\n+").deleteAll("\\s+\\z");
+                String text = ed.toString();
+                String out;
+                String firstLine = firstLine(text);
+                if (isLanguageIdentifier(firstLine)) {
+                    out = languageBlock(firstLine, text);
+                } else {
+                    out = genericCodeBlock(text);
+                }
+                return out;
+            }
 
-                    public boolean isLanguageIdentifier(String line)
-                    {
-                        if (line == null) {
-                            return false;
-                        }
-                        String lang = "";
-                        if (line.startsWith(LANG_IDENTIFIER)) {
-                        	lang = line.replaceFirst(LANG_IDENTIFIER, "").trim();
-                        }
-                        return lang.length() > 0;
-                    }
+            public String firstLine(String text) {
+                if (text == null) {
+                    return "";
+                }
+                String[] splitted = text.split("\\n");
+                return splitted[0];
+            }
 
-                    public String languageBlock(String firstLine, String text)
-                    {
-                        // dont'use %n in format string (markdown aspect every new line char as "\n")
-                    	//String codeBlockTemplate = "<pre class=\"brush: %s\">%n%s%n</pre>"; // http://alexgorbatchev.com/wiki/SyntaxHighlighter
-                        String codeBlockTemplate = "\n\n<pre class=\"%s\">\n%s\n</pre>\n\n"; // http://shjs.sourceforge.net/doc/documentation.html
-                        String lang = firstLine.replaceFirst(LANG_IDENTIFIER, "").trim();
-                        String block = text.replaceFirst( firstLine+"\n", "");
-                        return String.format(codeBlockTemplate, lang, block);
-                    }
-                    public String genericCodeBlock(String text)
-                    {
-                        // dont'use %n in format string (markdown aspect every new line char as "\n")
-                    	String codeBlockTemplate = "\n\n<pre><code>%s\n</code></pre>\n\n";
-                        return String.format(codeBlockTemplate, text);
-                    }
-                });
+            public boolean isLanguageIdentifier(String line) {
+                if (line == null) {
+                    return false;
+                }
+                String lang = "";
+                if (line.startsWith(LANG_IDENTIFIER)) {
+                    lang = line.replaceFirst(LANG_IDENTIFIER, "").trim();
+                }
+                return lang.length() > 0;
+            }
+
+            public String languageBlock(String firstLine, String text) {
+                // dont'use %n in format string (markdown aspect every new line char as "\n")
+                //String codeBlockTemplate = "<pre class=\"brush: %s\">%n%s%n</pre>"; // http://alexgorbatchev.com/wiki/SyntaxHighlighter
+                String codeBlockTemplate = "\n\n<pre class=\"%s\">\n%s\n</pre>\n\n"; // http://shjs.sourceforge.net/doc/documentation.html
+                String lang = firstLine.replaceFirst(LANG_IDENTIFIER, "").trim();
+                String block = text.replaceFirst(firstLine + "\n", "");
+                return String.format(codeBlockTemplate, lang, block);
+            }
+
+            public String genericCodeBlock(String text) {
+                // dont'use %n in format string (markdown aspect every new line char as "\n")
+                String codeBlockTemplate = "\n\n<pre><code>%s\n</code></pre>\n\n";
+                return String.format(codeBlockTemplate, text);
+            }
+        });
     }
 
     private void encodeCode(TextEditor ed) {
@@ -437,23 +489,23 @@ public class MarkdownProcessor {
 
         String wholeList =
                 "(" +
-                "(" +
-                "[ ]{0," + lessThanTab + "}" +
-                "((?:[-+*]|\\d+[.]))" + // $3 is first list item marker
-                "[ ]+" +
-                ")" +
-                "(?s:.+?)" +
-                "(" +
-                "\\z" + // End of input is OK
-                "|" +
-                "\\n{2,}" +
-                "(?=\\S)" + // If not end of input, then a new para
-                "(?![ ]*" +
-                "(?:[-+*]|\\d+[.])" +
-                "[ ]+" +
-                ")" + // negative lookahead for another list marker
-                ")" +
-                ")";
+                        "(" +
+                        "[ ]{0," + lessThanTab + "}" +
+                        "((?:[-+*]|\\d+[.]))" + // $3 is first list item marker
+                        "[ ]+" +
+                        ")" +
+                        "(?s:.+?)" +
+                        "(" +
+                        "\\z" + // End of input is OK
+                        "|" +
+                        "\\n{2,}" +
+                        "(?=\\S)" + // If not end of input, then a new para
+                        "(?![ ]*" +
+                        "(?:[-+*]|\\d+[.])" +
+                        "[ ]+" +
+                        ")" + // negative lookahead for another list marker
+                        ")" +
+                        ")";
 
         if (listLevel > 0) {
             Replacement replacer = new Replacement() {
@@ -499,9 +551,9 @@ public class MarkdownProcessor {
                     String listType;
 
                     if (listStart.matches("[*+-]")) {
-                     listType = "ul";
+                        listType = "ul";
                     } else {
-                     listType = "ol";
+                        listType = "ol";
                     }
 
                     // Turn double returns into triple returns, so that we can make a
@@ -554,9 +606,9 @@ public class MarkdownProcessor {
         list = replaceAll(list, "\\n{2,}\\z", "\n");
 
         Pattern p = Pattern.compile("(\\n)?" +
-                "^([ \\t]*)([-+*]|\\d+[.])[ ]+" +
-                "((?s:.+?)(\\n{1,2}))" +
-                "(?=\\n*(\\z|\\2([-+\\*]|\\d+[.])[ \\t]+))",
+                        "^([ \\t]*)([-+*]|\\d+[.])[ ]+" +
+                        "((?s:.+?)(\\n{1,2}))" +
+                        "(?=\\n*(\\z|\\2([-+\\*]|\\d+[.])[ \\t]+))",
                 Pattern.MULTILINE);
         list = replaceAll(list, p, new Replacement() {
             public String replacement(Matcher m) {
@@ -641,7 +693,7 @@ public class MarkdownProcessor {
 
     /**
      * escape special characters
-     *
+     * <p>
      * Within tags -- meaning between < and > -- encode [\ ` * _] so they
      * don't conflict with their use in Markdown for code, italics and strong.
      * We're replacing each such character with its corresponding random string
@@ -671,48 +723,57 @@ public class MarkdownProcessor {
 
     private void doImages(TextEditor text) {
         // Inline image syntax
-    	text.replaceAll("!\\[(.*)\\]\\((.*) \"(.*)\"\\)", "<img src=\"$2\"/>");
-    	text.replaceAll("(!\\[(.*)\\]\\((.*)\\))", "sdgsdgsdg");
+        text.replaceAll("!\\[(.*)\\]\\((.*) \"(.*)\"\\)", "<img src=\"$2\"/>");
+        String[] strings = text.toString().split("\\s");
+        StringBuilder sb = new StringBuilder();
+        for (String item : strings) {
+            System.out.println(item);
+            String replaceString = item.replaceAll("!\\[(.*)\\]\\((.*)\\)", "<img src=\"file:///" + localHostPath + "$2\" alt=\"$1\" />");
+            sb.append(replaceString);
+            sb.append("\n");
+        }
+
+        text.update(sb.toString());
 
         /*text.replaceAll("!\\[(.*)\\]\\((.*) \"(.*)\"\\)", "<img src=\"$2\" alt=\"$1\" title=\"$3\" />");
         text.replaceAll("!\\[(.*)\\]\\((.*)\\)", "<img src=\"$2\" alt=\"$1\" />");*/
         // Reference-style image syntax
-    	Pattern imageLink = Pattern.compile("(" +
-            	"[!]\\[(.*?)\\]" + // alt text = $2
-            	"[ ]?(?:\\n[ ]*)?" +
-            	"\\[(.*?)\\]" + // ID = $3
-            	")");
-    	text.replaceAll(imageLink, new Replacement() {
-        	public String replacement(Matcher m) {
-            	String replacementText;
-            	String wholeMatch = m.group(1);
-            	String altText = m.group(2);
-            	String id = m.group(3).toLowerCase();
-            	if ("".equals(id)) {
-                	id = altText.toLowerCase();
-            	}
+        Pattern imageLink = Pattern.compile("(" +
+                "[!]\\[(.*?)\\]" + // alt text = $2
+                "[ ]?(?:\\n[ ]*)?" +
+                "\\[(.*?)\\]" + // ID = $3
+                ")");
+        text.replaceAll(imageLink, new Replacement() {
+            public String replacement(Matcher m) {
+                String replacementText;
+                String wholeMatch = m.group(1);
+                String altText = m.group(2);
+                String id = m.group(3).toLowerCase();
+                if ("".equals(id)) {
+                    id = altText.toLowerCase();
+                }
 
-            	// imageDefinition is the same as linkDefinition
-            	LinkDefinition defn = linkDefinitions.get(id);
-            	if (defn != null) {
-                	String url = defn.getUrl();
-                	url = url.replaceAll("\\*", CHAR_PROTECTOR.encode("*"));
-                	url = url.replaceAll("_", CHAR_PROTECTOR.encode("_"));
-                	String title = defn.getTitle();
-                	String titleTag = "";
-                	if (title != null && !title.equals("")) {
-                    	title = title.replaceAll("\\*", CHAR_PROTECTOR.encode("*"));
-                    	title = title.replaceAll("_", CHAR_PROTECTOR.encode("_"));
-                    	titleTag = " alt=\"" + altText + "\" title=\"" + title + "\"";
-                	}
-                	replacementText = "<img src=\"" + url + "\"" + titleTag + "/>";
-            	} else {
-                	replacementText = wholeMatch;
-            	}
-            	return replacementText;
-        	}
-    	});
-	}
+                // imageDefinition is the same as linkDefinition
+                LinkDefinition defn = linkDefinitions.get(id);
+                if (defn != null) {
+                    String url = defn.getUrl();
+                    url = url.replaceAll("\\*", CHAR_PROTECTOR.encode("*"));
+                    url = url.replaceAll("_", CHAR_PROTECTOR.encode("_"));
+                    String title = defn.getTitle();
+                    String titleTag = "";
+                    if (title != null && !title.equals("")) {
+                        title = title.replaceAll("\\*", CHAR_PROTECTOR.encode("*"));
+                        title = title.replaceAll("_", CHAR_PROTECTOR.encode("_"));
+                        titleTag = " alt=\"" + altText + "\" title=\"" + title + "\"";
+                    }
+                    replacementText = "<img src=\"" + url + "\"" + titleTag + "/>";
+                } else {
+                    replacementText = wholeMatch;
+                }
+                return replacementText;
+            }
+        });
+    }
 
     private TextEditor doAnchors(TextEditor markup) {
         // Internal references: [link text] [id]
@@ -796,10 +857,10 @@ public class MarkdownProcessor {
         // These must come last in case you've also got [link test][1]
         // or [link test](/foo)
         Pattern referenceShortcut = Pattern.compile("(" + // wrap whole match in $1
-                                                        "\\[" +
-                                                        "([^\\[\\]]+)" + // link text = $2; can't contain '[' or ']'
-                                                        "\\]" +
-                                                    ")", Pattern.DOTALL);
+                "\\[" +
+                "([^\\[\\]]+)" + // link text = $2; can't contain '[' or ']'
+                "\\]" +
+                ")", Pattern.DOTALL);
         markup.replaceAll(referenceShortcut, new Replacement() {
             public String replacement(Matcher m) {
                 String replacementText;
@@ -827,7 +888,7 @@ public class MarkdownProcessor {
                     replacementText = wholeMatch;
                 }
                 return replacementText;
-         }
+            }
         });
 
         return markup;
@@ -848,15 +909,15 @@ public class MarkdownProcessor {
     }
 
     private TextEditor doCodeSpans(TextEditor markup) {
-            return markup.replaceAll(Pattern.compile("(?<!\\\\)(`+)(.+?)(?<!`)\\1(?!`)"), new Replacement() {
-                    public String replacement(Matcher m) {
-                        String code = m.group(2);
-                        TextEditor subEditor = new TextEditor(code);
-                        subEditor.deleteAll("^[ \\t]+").deleteAll("[ \\t]+$");
-                        encodeCode(subEditor);
-                        return "<code>" + subEditor.toString() + "</code>";
-                    }
-                });
+        return markup.replaceAll(Pattern.compile("(?<!\\\\)(`+)(.+?)(?<!`)\\1(?!`)"), new Replacement() {
+            public String replacement(Matcher m) {
+                String code = m.group(2);
+                TextEditor subEditor = new TextEditor(code);
+                subEditor.deleteAll("^[ \\t]+").deleteAll("[ \\t]+$");
+                encodeCode(subEditor);
+                return "<code>" + subEditor.toString() + "</code>";
+            }
+        });
     }
 
 
@@ -891,7 +952,7 @@ public class MarkdownProcessor {
                 buf.append(cbuf, 0, charsRead);
                 charsRead = in.read(cbuf);
             }
-            System.out.println(new MarkdownProcessor().markdown(buf.toString()));
+            System.out.println(new MarkdownProcessor(null).markdown(buf.toString()));
         } catch (java.io.IOException e) {
             System.err.println("Error reading input: " + e.getMessage());
             System.exit(1);
