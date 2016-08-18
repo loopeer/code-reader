@@ -305,14 +305,14 @@ public class MarkdownProcessor {
     }
 
     private boolean isCodeParagraph(String text) {
-        if (text.startsWith("```") && text.endsWith("```")) {
+        if (text.contains("```")) {
             return true;
         }
         return false;
     }
 
     private String handleCodeParagraph(String text) {
-        if (text.startsWith("```") && text.endsWith("```")) {
+        if (text.contains("```")) {
             String paragraph = text.replaceAll("```.*", "");
             paragraph = paragraph.replace("<", "&lt;");
             paragraph = paragraph.replace(">", "&gt;");
