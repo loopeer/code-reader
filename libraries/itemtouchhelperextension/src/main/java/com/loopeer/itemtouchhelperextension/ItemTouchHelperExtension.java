@@ -726,7 +726,10 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
     }
 
     private float getSwipeWidth() {
-        return ((Extension) mSelected).getActionWidth();
+        if (mSelected instanceof Extension) {
+            return ((Extension) mSelected).getActionWidth();
+        }
+        return mRecyclerView.getWidth();
     }
 
     private void postDispatchSwipe(final RecoverAnimation anim, final int swipeDir) {
