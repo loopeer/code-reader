@@ -147,7 +147,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                 String[] names = mNode.name.split("\\.");
                 String jsFile = G.fileExtToJSMap.getJsFileForExtension(names[names.length - 1]);
                 if (jsFile == null) {
-                    subscriber.onError(new Exception(getActivity().getString(R.string.code_read_not_found_type)));
+                    jsFile = "txt";
                 }
                 StringBuilder sb = new StringBuilder();
                 StringBuilder localStringBuilder = new StringBuilder();

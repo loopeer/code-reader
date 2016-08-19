@@ -135,6 +135,8 @@ public class BrushToJsMap {
         list.add("xhtml");
         list.add("xaml");
         list.add("iml");
+        list.add("plist");
+        list.add("storyboard");
         mapping.put("Xml", list);
         list = new ArrayList();
         list.add("gradle");
