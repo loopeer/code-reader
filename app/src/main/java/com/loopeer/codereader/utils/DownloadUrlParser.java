@@ -13,8 +13,9 @@ public class DownloadUrlParser {
     private static final String GITHUB_REPO_URL_BASE = "https://codeload.github.com/";
     private static final String ZIP_SUFFIX = ".zip";
 
-    public static void parseUrlAndDownload(Context context, String url) {
+    public static boolean parseGithubUrlAndDownload(Context context, String url) {
         String downloadUrl = DownloadUrlParser.parseGithubDownloadUrl(url);
+        if (downloadUrl == null) return false;
         String repoName = DownloadUrlParser.getRepoName(url);
         Repo repo = new Repo(repoName
                 , FileCache.getInstance().getRepoAbsolutePath(repoName), downloadUrl, true, 0);
@@ -27,6 +28,7 @@ public class DownloadUrlParser {
         }
         repo.id = String.valueOf(repoId);
         Navigator.startDownloadRepoService(context, repo);
+        return true;
     }
 
     public static String parseGithubDownloadUrl(String url) {

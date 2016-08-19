@@ -4,6 +4,8 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -18,8 +20,10 @@ import android.widget.ProgressBar;
 
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
+import com.loopeer.codereader.event.DownloadRepoStartEvent;
 import com.loopeer.codereader.ui.view.NestedScrollWebView;
 import com.loopeer.codereader.utils.DownloadUrlParser;
+import com.loopeer.codereader.utils.RxBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +33,8 @@ public class SimpleWebActivity extends BaseActivity {
 
     @BindView(R.id.web_content)
     NestedScrollWebView mWebContent;
+    @BindView(R.id.container_simple_web)
+    CoordinatorLayout mContainerWeb;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.progress_bar_web)
@@ -44,6 +50,13 @@ public class SimpleWebActivity extends BaseActivity {
 
         initWeb();
         parseIntent();
+        registerSubscription(
+                RxBus.getInstance()
+                        .toObservable()
+                        .filter(o -> o instanceof DownloadRepoStartEvent)
+                        .map(o -> (DownloadRepoStartEvent)o)
+                        .doOnNext(o -> showMessage(o.reason))
+                        .subscribe());
     }
 
     private void initWeb() {
@@ -114,12 +127,18 @@ public class SimpleWebActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_save) {
-            if (!TextUtils.isEmpty(mUrl)) {
-                DownloadUrlParser.parseUrlAndDownload(SimpleWebActivity.this, mUrl);
+            if (!TextUtils.isEmpty(mUrl)
+                    && !DownloadUrlParser.parseGithubUrlAndDownload(SimpleWebActivity.this, mUrl)) {
+                showMessage(getString(R.string.repo_download_url_parse_error));
             }
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showMessage(String message) {
+        Snackbar.make(mContainerWeb, message, Snackbar.LENGTH_LONG)
+                .show();
     }
 
     @Override

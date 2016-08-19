@@ -180,7 +180,7 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
                             CodeReaderApplication.getAppContext()).resetRepoDownloadId(repo.downloadId))
                     .doOnNext(o -> repo.downloadId = 0)
                     .doOnNext(o -> mMessager.showMessage(
-                            getContext().getString(R.string.repo_down_load_complete, repo.name)))
+                            getContext().getString(R.string.repo_download_complete, repo.name)))
                     .subscribe();
         }
 

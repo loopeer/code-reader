@@ -18,7 +18,6 @@
     <string name="header_item_trending">Trending</string>
     <string name="header_item_trending_link">https://github.com/trending</string>
     <string name="repo_delete">Delete</string>
-    <string name="repo_down_load_complete">%s download complete</string>
 
     <!-- code read -->
     <string name="code_read_not_found_type">无法解析对应文件</string>
@@ -33,4 +32,8 @@
     <!--search-->
     <string name="search_hint_file">Search files</string>
     <string name="search_hint_project">Search projects</string>
+
+    <!-- download -->
+    <string name="repo_download_complete">%s download complete</string>
+    <string name="repo_download_url_parse_error">This url can\'t parse to downloadUrl</string>
 </resources>

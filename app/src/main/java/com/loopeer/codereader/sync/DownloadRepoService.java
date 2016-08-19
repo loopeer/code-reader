@@ -113,9 +113,21 @@ public class DownloadRepoService extends Service {
     private void downloadFile(Repo repo) {
         RemoteRepoFetcher dataFetcher = new RemoteRepoFetcher(this, repo.netDownloadUrl, repo.name);
         long downloadId = dataFetcher.download();
+        checkDownloadStatus(downloadId);
         CoReaderDbHelper.getInstance(getApplicationContext()).updateRepoDownloadId(downloadId, repo.id);
         mDownloadRepoIds.add(downloadId);
-        RxBus.getInstance().send(new DownloadRepoStartEvent());
+    }
+
+    private void checkDownloadStatus(long downloadId) {
+        DownloadManager.Query q = new DownloadManager.Query();
+        q.setFilterById(downloadId);
+        DownloadManager downloadManager =
+                (DownloadManager) getApplicationContext().getSystemService(Context.DOWNLOAD_SERVICE);
+        Cursor cursor = downloadManager.query(q);
+        cursor.moveToFirst();
+        String reason = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+        RxBus.getInstance().send(new DownloadRepoStartEvent(reason));
+
     }
 
     @Nullable
