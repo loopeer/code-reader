@@ -316,7 +316,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                 mVelocityTracker.addMovement(event);
             }
 
-            if (mPreSelected != null && mSelected != null && mPreSelected != mSelected) {
+            if (mPreSelected != null && mPreSelected != mSelected) {
                 closeOpenedPreItem();
             }
             return mSelected != null;
@@ -434,10 +434,9 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
     private View findConsumeView(ViewGroup parent, float x, float y) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
-            if (child instanceof ViewGroup && child.getVisibility() == View.VISIBLE && child.hasFocus()) {
-                return findConsumeView(parent, x, y);
+            if (child instanceof ViewGroup && child.getVisibility() == View.VISIBLE) {
+                return findConsumeView((ViewGroup) child, x, y);
             } else {
-
                 int[] location = new int[2];
                 child.getLocationOnScreen(location);
                 Rect rect = new Rect(location[0], location[1], location[0] + child.getWidth(), location[1] + child.getHeight());
