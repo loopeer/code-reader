@@ -159,6 +159,9 @@ public class BrushToJsMap {
         list = new ArrayList();
         list.add("swift");
         mapping.put("Swift", list);
+        list = new ArrayList();
+        list.add("go");
+        mapping.put("Go", list);
         /*Iterator iterator = G.settings.customFileToJSMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry localEntry = (Map.Entry) ((Iterator) list).next();

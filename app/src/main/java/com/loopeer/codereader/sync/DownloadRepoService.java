@@ -100,7 +100,14 @@ public class DownloadRepoService extends Service {
                 .onErrorResumeNext(Observable.empty())
                 .subscribeOn(Schedulers.io())
                 .doOnError(e -> Log.d(TAG, e.toString()))
+                .doOnCompleted(this::checkTaskEmptyToFinish)
                 .subscribe();
+    }
+
+    private void checkTaskEmptyToFinish() {
+        if (mDownloadRepoIds.isEmpty()) {
+            stopSelf();
+        }
     }
 
     private void downloadFile(String url, Repo repo) {
