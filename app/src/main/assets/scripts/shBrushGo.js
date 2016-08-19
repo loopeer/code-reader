@@ -12,11 +12,12 @@
 		this.regexList = [
 			{ regex: SyntaxHighlighter.regexLib.singleLineCComments,	css: 'color1' },		// one line comments
 			{ regex: /\/\*([^\*][\s\S]*)?\*\//gm,						css: 'color1' },	 	// multiline comments
-			{ regex: /`[\s\S]*?`/gm,					                    	css: 'string' },	 	// multiline comments
+			{ regex: /`[\s\S]*?`/gm,				                    css: 'string' },	 	// multiline comments
 			{ regex: /\/\*(?!\*\/)\*[\s\S]*?\*\//gm,					css: 'preprocessor' },	// documentation comments
 			{ regex: SyntaxHighlighter.regexLib.doubleQuotedString,		css: 'string' },		// strings
 			{ regex: SyntaxHighlighter.regexLib.singleQuotedString,		css: 'string' },		// strings
 			{ regex: /\b([\d]+(\.[\d]+)?|0x[a-f0-9]+)\b/gi,				css: 'value' },			// numbers
+			{ regex: /:\=/g,                         css: 'keyword' },
 			{ regex: new RegExp(this.getKeywords(keywords), 'gm'),		css: 'keyword' }		// java keyword
 			];
 
