@@ -78,6 +78,7 @@ public class DownloadRepoService extends Service {
                     if (status == DownloadManager.STATUS_SUCCESSFUL) { // 下载成功
                         File zipFile = new File(path);
                         FileCache fileCache = FileCache.getInstance();
+                        fileCache.deleteFilesByDirectory(new File(fileCache.getCacheDir().getPath() + File.separator + name));
                         Unzip decomp = new Unzip(zipFile.getPath()
                                 , fileCache.getCacheDir().getPath() + File.separator + name, getApplicationContext());
                         decomp.DecompressZip();

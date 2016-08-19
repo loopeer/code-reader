@@ -138,6 +138,7 @@ public class BrushToJsMap {
         list.add("plist");
         list.add("storyboard");
         list.add("xcworkspacedata");
+        list.add("xcscheme");
         mapping.put("Xml", list);
         list = new ArrayList();
         list.add("gradle");

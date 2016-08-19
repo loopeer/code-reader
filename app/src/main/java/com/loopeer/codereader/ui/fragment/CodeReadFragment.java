@@ -19,7 +19,7 @@ import com.loopeer.codereader.model.DirectoryNode;
 import com.loopeer.codereader.ui.loader.CodeFragmentContentLoader;
 import com.loopeer.codereader.ui.loader.ILoadHelper;
 import com.loopeer.codereader.ui.view.NestedScrollWebView;
-import com.loopeer.codereader.utils.FileUtils;
+import com.loopeer.codereader.utils.FileTypeUtils;
 import com.loopeer.codereader.utils.G;
 import com.loopeer.codereader.utils.Utils;
 import com.todou.markdownj.MarkdownProcessor;
@@ -102,9 +102,9 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
         if (mNode == null) {
             if (mOpenFileAfterLoadFinish)
                 mCodeContentLoader.showEmpty(getString(R.string.code_read_no_file_open));
-        } else if (FileUtils.isImageFileType(mNode.absolutePath)) {
+        } else if (FileTypeUtils.isImageFileType(mNode.absolutePath)) {
             openImageFile();
-        } else if (FileUtils.isMdFileType(mNode.absolutePath)) {
+        } else if (FileTypeUtils.isMdFileType(mNode.absolutePath)) {
             openMdShowFile();
         } else {
             openCodeFile();
@@ -274,5 +274,9 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
 
     public void updateRootNode(DirectoryNode directoryNode) {
         mRootNode = directoryNode;
+    }
+
+    public ILoadHelper getCodeContentLoader() {
+        return mCodeContentLoader;
     }
 }

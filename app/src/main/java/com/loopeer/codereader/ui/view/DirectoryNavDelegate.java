@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.loopeer.codereader.model.DirectoryNode;
 import com.loopeer.codereader.ui.adapter.DirectoryAdapter;
 import com.loopeer.codereader.utils.FileCache;
-import com.loopeer.codereader.utils.FileUtils;
+import com.loopeer.codereader.utils.FileTypeUtils;
 
 import java.io.File;
 
@@ -91,7 +91,7 @@ public class DirectoryNavDelegate {
         if (node.isDirectory && node.pathNodes != null) {
             boolean haveOpen = false;
             for (DirectoryNode n : node.pathNodes) {
-                if (FileUtils.isMdFileType(n.name)) {
+                if (FileTypeUtils.isMdFileType(n.name)) {
                     mFileClickListener.doOpenFile(n);
                     haveOpen = true;
                 }

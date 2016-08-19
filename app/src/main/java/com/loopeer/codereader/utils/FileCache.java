@@ -11,7 +11,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class FileCache {
+public class
+
+
+FileCache {
     private static String EXTERNAL_STORAGE_PERMISSION = "android.permission.WRITE_EXTERNAL_STORAGE";
     private static FileCache instance;
     private static String cachePath = Environment.getExternalStorageDirectory() + "/CodeReader/repo/";
@@ -84,5 +87,17 @@ public class FileCache {
     public static boolean hasExternalStoragePermission(Context context) {
         int perm = context.checkCallingOrSelfPermission(EXTERNAL_STORAGE_PERMISSION);
         return perm == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static void deleteFilesByDirectory(File directory) {
+        if (directory != null && directory.exists() && directory.list() != null) {
+            for (File item : directory.listFiles()) {
+                if (item.isDirectory()) {
+                    deleteFilesByDirectory(item);
+                } else {
+                    item.delete();
+                }
+            }
+        }
     }
 }

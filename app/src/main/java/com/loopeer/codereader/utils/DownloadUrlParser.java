@@ -1,6 +1,11 @@
 package com.loopeer.codereader.utils;
 
+import android.content.Context;
 import android.text.TextUtils;
+
+import com.loopeer.codereader.Navigator;
+import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
+import com.loopeer.codereader.model.Repo;
 
 import java.io.File;
 
@@ -8,7 +13,23 @@ public class DownloadUrlParser {
     private static final String GITHUB_REPO_URL_BASE = "https://codeload.github.com/";
     private static final String ZIP_SUFFIX = ".zip";
 
-    public static String parseUrl(String url) {
+    public static void parseUrlAndDownload(Context context, String url) {
+        String downloadUrl = DownloadUrlParser.parseGithubDownloadUrl(url);
+        String repoName = DownloadUrlParser.getRepoName(url);
+        Repo repo = new Repo(repoName
+                , FileCache.getInstance().getRepoAbsolutePath(repoName), downloadUrl, true, 0);
+        Repo sameRepo = CoReaderDbHelper.getInstance(context).readSameRepo(repo);
+        long repoId;
+        if (sameRepo != null) {
+            repoId = Long.parseLong(sameRepo.id);
+        } else {
+            repoId = CoReaderDbHelper.getInstance(context).insertRepo(repo);
+        }
+        repo.id = String.valueOf(repoId);
+        Navigator.startDownloadRepoService(context, downloadUrl, repo);
+    }
+
+    public static String parseGithubDownloadUrl(String url) {
         if (TextUtils.isEmpty(url)) return null;
         StringBuilder sb = new StringBuilder();
         String[] strings = url.split("/");

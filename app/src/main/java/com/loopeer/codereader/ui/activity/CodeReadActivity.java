@@ -133,12 +133,12 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
 
     @Override
     public void onFileOpenStart() {
-        showProgressLoading("");
+        if (mFragment != null && mFragment.isVisible()) mFragment.getCodeContentLoader().showProgress();
     }
 
     @Override
     public void onFileOpenEnd() {
-        dismissProgressLoading();
+
     }
 
 }

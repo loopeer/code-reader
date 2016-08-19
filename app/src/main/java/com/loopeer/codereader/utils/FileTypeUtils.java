@@ -3,7 +3,7 @@ package com.loopeer.codereader.utils;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class FileUtils {
+public class FileTypeUtils {
 
     // comma separated list of all file extensions supported by the media scanner
     public static String sFileExtensions;
