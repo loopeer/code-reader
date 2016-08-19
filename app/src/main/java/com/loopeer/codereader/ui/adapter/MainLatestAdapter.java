@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopeer.codereader.CodeReaderApplication;
 import com.loopeer.codereader.DownloadProgressEvent;
@@ -58,7 +59,8 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
             viewHolder.mProgressRelativeLayout.setOnClickListener(view -> {
                 if (!var1.isDownloading() && !var1.isUnzip) Navigator.startCodeReadActivity(getContext(), var1);
             });
-            viewHolder.mActionView.setOnClickListener(view -> doRepoDelete(var3));
+            viewHolder.mActionDeleteView.setOnClickListener(view -> doRepoDelete(var3));
+            viewHolder.mActionSyncView.setOnClickListener(view -> Toast.makeText(getContext(), "sdgdg", Toast.LENGTH_SHORT).show());
         }
         if (var3 instanceof MainHeaderHolder) {
             MainHeaderHolder viewHolder = (MainHeaderHolder) var3;
@@ -108,7 +110,9 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
         TextView mTextRepoTime;
         @BindView(R.id.view_progress_list_repo)
         ForegroundProgressRelativeLayout mProgressRelativeLayout;
-        @BindView(R.id.view_list_repo_action_view) View mActionView;
+        @BindView(R.id.view_list_repo_action_delete) View mActionDeleteView;
+        @BindView(R.id.view_list_repo_action_update) View mActionSyncView;
+        @BindView(R.id.view_list_repo_action_container) View mActionContainer;
 
         Subscription mSubscription;
 
@@ -155,7 +159,7 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
 
         @Override
         public float getActionWidth() {
-            return mActionView.getWidth();
+            return mActionContainer.getWidth();
         }
 
     }

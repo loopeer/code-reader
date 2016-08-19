@@ -5,18 +5,35 @@
     android:layout_height="wrap_content"
     android:background="@android:color/holo_red_light">
 
-    <com.loopeer.codereader.ui.view.ForegroundTextView
-        android:id="@+id/view_list_repo_action_view"
+
+    <LinearLayout
+        android:id="@+id/view_list_repo_action_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="right"
-        android:gravity="center"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:text="@string/repo_delete"
-        android:foreground="?selectableItemBackground"
-        android:textColor="@android:color/white"/>
+        android:orientation="horizontal"
+        android:layout_gravity="right">
+
+        <ImageView
+            android:id="@+id/view_list_repo_action_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_delete_white"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/view_list_repo_action_update"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/color_8BC34A"
+            android:src="@drawable/ic_sync_white"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:gravity="center"/>
+
+    </LinearLayout>
 
     <include layout="@layout/view_list_repo_item_content"/>
-
 </FrameLayout>
 
