@@ -46,5 +46,10 @@ WHERE download_id = ?;
 
 update_download_progress:
 UPDATE db_repo
+SET factor = ?
+WHERE download_id = ?;
+
+update_unzip_progress:
+UPDATE db_repo
 SET factor = ?, is_unzip = ?
 WHERE download_id = ?;

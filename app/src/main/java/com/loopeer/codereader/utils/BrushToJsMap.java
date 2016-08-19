@@ -137,6 +137,7 @@ public class BrushToJsMap {
         list.add("iml");
         list.add("plist");
         list.add("storyboard");
+        list.add("xcworkspacedata");
         mapping.put("Xml", list);
         list = new ArrayList();
         list.add("gradle");
@@ -144,6 +145,7 @@ public class BrushToJsMap {
         list = new ArrayList();
         list.add("txt");
         list.add("bat");
+        list.add("pbxproj");
         mapping.put("NoF", list);
         list = new ArrayList();
         list.add("pro");

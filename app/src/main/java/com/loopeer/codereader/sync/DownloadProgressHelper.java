@@ -53,7 +53,7 @@ public class DownloadProgressHelper {
                             if (repo.factor > 0) {
                                 if (repo.factor == 1f) repo.isUnzip = true;
                                 CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
-                                        .updateRepoDownloadProgress(repo.downloadId, repo.factor, repo.isUnzip);
+                                        .updateRepoDownloadProgress(repo.downloadId, repo.factor);
                                 RxBus.getInstance().send(new DownloadProgressEvent(repo.downloadId, repo.factor, repo.isUnzip));
                             }
                             cursor.close();

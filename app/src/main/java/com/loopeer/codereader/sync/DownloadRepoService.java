@@ -57,7 +57,7 @@ public class DownloadRepoService extends Service {
 
     private void doRepoDownloadComplete(long id) {
         CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
-                .updateRepoDownloadProgress(id, 1, true);
+                .updateRepoUnzipProgress(id, 1, true);
         RxBus.getInstance().send(new DownloadProgressEvent(id, true));
         Log.e(TAG, "Unzip start...");
         Observable.create((Observable.OnSubscribe<Void>) subscriber -> {
@@ -83,7 +83,7 @@ public class DownloadRepoService extends Service {
                         decomp.DecompressZip();
                         if (zipFile.exists()) zipFile.delete();
                         CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
-                                .updateRepoDownloadProgress(id, 1, false);
+                                .updateRepoUnzipProgress(id, 1, false);
                         RxBus.getInstance().send(new DownloadProgressEvent(id, false));
                         Log.d(TAG, "Unzip Success");
                     } else {
