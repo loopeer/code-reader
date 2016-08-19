@@ -7,13 +7,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.loopeer.codereader.CodeReaderApplication;
-import com.loopeer.codereader.DownloadProgressEvent;
+import com.loopeer.codereader.event.DownloadProgressEvent;
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
+import com.loopeer.codereader.event.DownloadRepoStartEvent;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.utils.FileCache;
 import com.loopeer.codereader.utils.RxBus;
@@ -45,13 +45,12 @@ public class DownloadRepoService extends Service {
 
     private void parseIntent(Intent intent) {
         Intent in = intent;
-        String url = in.getStringExtra(Navigator.EXTRA_DOWNLOAD_URL);
         Repo repo = (Repo) in.getSerializableExtra(Navigator.EXTRA_REPO);
         long id = in.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
-        if (TextUtils.isEmpty(url)) {
+        if (repo == null) {
             doRepoDownloadComplete(id);
         } else {
-            downloadFile(url, repo);
+            downloadFile(repo);
         }
     }
 
@@ -111,11 +110,12 @@ public class DownloadRepoService extends Service {
         }
     }
 
-    private void downloadFile(String url, Repo repo) {
-        RemoteRepoFetcher dataFetcher = new RemoteRepoFetcher(this, url, repo.name);
+    private void downloadFile(Repo repo) {
+        RemoteRepoFetcher dataFetcher = new RemoteRepoFetcher(this, repo.netDownloadUrl, repo.name);
         long downloadId = dataFetcher.download();
         CoReaderDbHelper.getInstance(getApplicationContext()).updateRepoDownloadId(downloadId, repo.id);
         mDownloadRepoIds.add(downloadId);
+        RxBus.getInstance().send(new DownloadRepoStartEvent());
     }
 
     @Nullable

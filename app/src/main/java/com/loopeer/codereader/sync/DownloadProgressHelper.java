@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.loopeer.codereader.CodeReaderApplication;
-import com.loopeer.codereader.DownloadProgressEvent;
+import com.loopeer.codereader.event.DownloadProgressEvent;
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.utils.RxBus;

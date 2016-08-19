@@ -9,23 +9,19 @@ public class Repo extends BaseModel{
     public String name;
     public long lastModify;
     public String absolutePath;
-    public String netUrl;
+    public String netDownloadUrl;
     public boolean isFolder;
     public long downloadId;
     public float factor;
     public boolean isUnzip;
 
-    public boolean isLocal() {
-        return !TextUtils.isEmpty(absolutePath);
-    }
-
     public Repo() {
     }
 
-    public Repo(String name, String absolutePath, String netUrl, boolean isFolder, long downloadId) {
+    public Repo(String name, String absolutePath, String netDownloadUrl, boolean isFolder, long downloadId) {
         this.name = name;
         this.absolutePath = absolutePath;
-        this.netUrl = netUrl;
+        this.netDownloadUrl = netDownloadUrl;
         this.isFolder = isFolder;
         this.downloadId = downloadId;
     }
@@ -48,5 +44,13 @@ public class Repo extends BaseModel{
         node.absolutePath = absolutePath;
         node.isDirectory = isFolder;
         return node;
+    }
+
+    public boolean isNetRepo() {
+        return !TextUtils.isEmpty(netDownloadUrl);
+    }
+
+    public boolean isLocalRepo() {
+        return !TextUtils.isEmpty(absolutePath);
     }
 }

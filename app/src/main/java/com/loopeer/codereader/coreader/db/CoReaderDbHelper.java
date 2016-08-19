@@ -65,7 +65,7 @@ public class CoReaderDbHelper extends SQLiteOpenHelper {
                 .name(repo.name)
                 .absolute_path(repo.absolutePath)
                 .last_modify(repo.lastModify)
-                .net_url(repo.netUrl)
+                .net_url(repo.netDownloadUrl)
                 .is_folder(repo.isFolder)
                 .download_id(repo.downloadId)
                 .factor(repo.factor)
@@ -100,7 +100,7 @@ public class CoReaderDbHelper extends SQLiteOpenHelper {
         repo.id = String.valueOf(dbRepo._id());
         repo.name = dbRepo.name();
         repo.absolutePath = dbRepo.absolute_path();
-        repo.netUrl = dbRepo.net_url();
+        repo.netDownloadUrl = dbRepo.net_url();
         repo.isFolder = dbRepo.is_folder();
         repo.lastModify = dbRepo.last_modify();
         repo.downloadId = dbRepo.download_id();

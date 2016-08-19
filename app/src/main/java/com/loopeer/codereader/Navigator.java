@@ -40,9 +40,8 @@ public class Navigator {
         context.startActivity(intent);
     }
 
-    public static void startDownloadRepoService(Context context, String url, Repo repo) {
+    public static void startDownloadRepoService(Context context, Repo repo) {
         Intent intent = new Intent(context, DownloadRepoService.class);
-        intent.putExtra(EXTRA_DOWNLOAD_URL, url);
         intent.putExtra(EXTRA_REPO, repo);
         context.startService(intent);
     }

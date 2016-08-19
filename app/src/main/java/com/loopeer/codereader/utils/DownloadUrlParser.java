@@ -26,7 +26,7 @@ public class DownloadUrlParser {
             repoId = CoReaderDbHelper.getInstance(context).insertRepo(repo);
         }
         repo.id = String.valueOf(repoId);
-        Navigator.startDownloadRepoService(context, downloadUrl, repo);
+        Navigator.startDownloadRepoService(context, repo);
     }
 
     public static String parseGithubDownloadUrl(String url) {

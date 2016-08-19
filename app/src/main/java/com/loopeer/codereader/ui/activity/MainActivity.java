@@ -16,6 +16,7 @@ import com.loopeer.codereader.CodeReaderApplication;
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
+import com.loopeer.codereader.event.DownloadRepoStartEvent;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.sync.DownloadProgressHelper;
 import com.loopeer.codereader.ui.adapter.ItemTouchHelperCallback;
@@ -25,6 +26,7 @@ import com.loopeer.codereader.ui.decoration.DividerItemDecorationMainList;
 import com.loopeer.codereader.ui.loader.ILoadHelper;
 import com.loopeer.codereader.ui.loader.RecyclerLoader;
 import com.loopeer.codereader.utils.G;
+import com.loopeer.codereader.utils.RxBus;
 import com.loopeer.codereader.utils.Settings;
 import com.loopeer.directorychooser.FileNod;
 import com.loopeer.directorychooser.NavigatorChooser;
@@ -50,6 +52,7 @@ public class MainActivity extends BaseActivity {
     private ILoadHelper mRecyclerLoader;
     private MainLatestAdapter mMainLatestAdapter;
     private Subscription mProgressSubscription;
+    private Subscription mDownloadStartSubscription;
 
     public ItemTouchHelperExtension mItemTouchHelper;
     public ItemTouchHelperExtension.Callback mCallback;
@@ -85,6 +88,10 @@ public class MainActivity extends BaseActivity {
         super.onResume();
         mRecyclerLoader.showProgress();
         loadLocalData();
+        mDownloadStartSubscription = RxBus.getInstance()
+                .toObservable()
+                .filter(o -> o instanceof DownloadRepoStartEvent)
+                .doOnNext(o -> loadLocalData()).subscribe();
     }
 
     private void setUpView() {
@@ -152,7 +159,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
+        mDownloadStartSubscription.unsubscribe();
         mMainLatestAdapter.clearSubscription();
         if (mProgressSubscription != null && !mProgressSubscription.isUnsubscribed()) {
             mProgressSubscription.unsubscribe();

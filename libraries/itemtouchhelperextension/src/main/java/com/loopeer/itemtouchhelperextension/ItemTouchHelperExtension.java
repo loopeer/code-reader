@@ -437,16 +437,22 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
             if (child instanceof ViewGroup && child.getVisibility() == View.VISIBLE) {
                 return findConsumeView((ViewGroup) child, x, y);
             } else {
-                int[] location = new int[2];
-                child.getLocationOnScreen(location);
-                Rect rect = new Rect(location[0], location[1], location[0] + child.getWidth(), location[1] + child.getHeight());
-                if (rect.contains((int) x, (int) y) && ViewCompat.hasOnClickListeners(child)
-                        && child.getVisibility() == View.VISIBLE) {
-                    return child;
-                }
+                if (isInBoundsClickable((int) x, (int) y, child)) return child;
             }
         }
+        if (isInBoundsClickable((int) x, (int) y, parent)) return parent;
         return null;
+    }
+
+    private boolean isInBoundsClickable(int x, int y, View child) {
+        int[] location = new int[2];
+        child.getLocationOnScreen(location);
+        Rect rect = new Rect(location[0], location[1], location[0] + child.getWidth(), location[1] + child.getHeight());
+        if (rect.contains(x, y) && ViewCompat.hasOnClickListeners(child)
+                && child.getVisibility() == View.VISIBLE) {
+            return true;
+        }
+        return false;
     }
 
     /**

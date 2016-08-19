@@ -1,4 +1,4 @@
-package com.loopeer.codereader;
+package com.loopeer.codereader.event;
 
 public class DownloadProgressEvent {
 

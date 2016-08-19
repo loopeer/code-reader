@@ -9,10 +9,9 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.loopeer.codereader.CodeReaderApplication;
-import com.loopeer.codereader.DownloadProgressEvent;
+import com.loopeer.codereader.event.DownloadProgressEvent;
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
@@ -57,10 +56,13 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
                 mAllSubscription.add(subscription);
             }
             viewHolder.mProgressRelativeLayout.setOnClickListener(view -> {
-                if (!var1.isDownloading() && !var1.isUnzip) Navigator.startCodeReadActivity(getContext(), var1);
+                if (!var1.isDownloading() && !var1.isUnzip)
+                    Navigator.startCodeReadActivity(getContext(), var1);
             });
             viewHolder.mActionDeleteView.setOnClickListener(view -> doRepoDelete(var3));
-            viewHolder.mActionSyncView.setOnClickListener(view -> Toast.makeText(getContext(), "sdgdg", Toast.LENGTH_SHORT).show());
+            viewHolder.mActionSyncView.setOnClickListener(view ->
+                    Navigator.startDownloadRepoService(getContext(), var1)
+            );
         }
         if (var3 instanceof MainHeaderHolder) {
             MainHeaderHolder viewHolder = (MainHeaderHolder) var3;
@@ -110,9 +112,16 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
         TextView mTextRepoTime;
         @BindView(R.id.view_progress_list_repo)
         ForegroundProgressRelativeLayout mProgressRelativeLayout;
-        @BindView(R.id.view_list_repo_action_delete) View mActionDeleteView;
-        @BindView(R.id.view_list_repo_action_update) View mActionSyncView;
-        @BindView(R.id.view_list_repo_action_container) View mActionContainer;
+        @BindView(R.id.view_list_repo_action_delete)
+        View mActionDeleteView;
+        @BindView(R.id.view_list_repo_action_update)
+        View mActionSyncView;
+        @BindView(R.id.view_list_repo_action_container)
+        View mActionContainer;
+        @BindView(R.id.img_list_repo_cloud)
+        View mCloud;
+        @BindView(R.id.img_list_repo_phone)
+        View mLocalPhone;
 
         Subscription mSubscription;
 
@@ -126,6 +135,9 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
             mImgRepoType.setImageResource(repo.isFolder ? R.drawable.ic_repo_white : R.drawable.ic_document_white);
             mTextRepoName.setText(repo.name);
             mTextRepoTime.setText(DateUtils.getRelativeTimeSpanString(itemView.getContext(), repo.lastModify));
+            mActionSyncView.setVisibility(repo.isNetRepo() ? View.VISIBLE : View.GONE);
+            mCloud.setVisibility(repo.isNetRepo() ? View.VISIBLE : View.GONE);
+            mLocalPhone.setVisibility(repo.isLocalRepo() ? View.VISIBLE : View.GONE);
             resetSubScription(repo);
             if (repo.isDownloading()) {
                 mProgressRelativeLayout.setProgress(repo.factor);
