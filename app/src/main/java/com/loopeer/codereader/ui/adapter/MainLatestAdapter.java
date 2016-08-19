@@ -33,8 +33,18 @@ import rx.subscriptions.CompositeSubscription;
 public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
     private static final String TAG = "MainLatestAdapter";
 
+    public interface Messager{
+        void showMessage(String string);
+    }
+
+    private Messager mMessager;
+
     public MainLatestAdapter(Context context) {
         super(context);
+    }
+
+    public void setMessager(Messager messager) {
+        mMessager = messager;
     }
 
     private final CompositeSubscription mAllSubscription = new CompositeSubscription();
@@ -138,7 +148,7 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
             mActionSyncView.setVisibility(repo.isNetRepo() ? View.VISIBLE : View.GONE);
             mCloud.setVisibility(repo.isNetRepo() ? View.VISIBLE : View.GONE);
             mLocalPhone.setVisibility(repo.isLocalRepo() ? View.VISIBLE : View.GONE);
-            resetSubScription(repo);
+            resetSubscription(repo);
             if (repo.isDownloading()) {
                 mProgressRelativeLayout.setProgress(repo.factor);
             } else {
@@ -148,7 +158,7 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
             return mSubscription;
         }
 
-        private void resetSubScription(Repo repo) {
+        private void resetSubscription(Repo repo) {
             if (mSubscription != null && !mSubscription.isUnsubscribed()) {
                 mSubscription.unsubscribe();
             }
@@ -156,8 +166,11 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
                     .toObservable()
                     .filter(o -> o instanceof DownloadProgressEvent)
                     .map(o -> (DownloadProgressEvent) o)
-                    .filter(o -> (o.downloadId == repo.downloadId))
+                    .filter(o -> (o.downloadId == repo.downloadId) || repo.id.equals(o.repoId))
                     .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext(o -> {
+                        if (repo.downloadId == 0) repo.downloadId = o.downloadId;
+                    })
                     .doOnNext(o -> mProgressRelativeLayout.setProgress(o.factor))
                     .filter(o -> o.factor == 1f)
                     .doOnNext(o -> repo.isUnzip = o.isUnzip)
@@ -166,6 +179,8 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
                     .doOnNext(o -> CoReaderDbHelper.getInstance(
                             CodeReaderApplication.getAppContext()).resetRepoDownloadId(repo.downloadId))
                     .doOnNext(o -> repo.downloadId = 0)
+                    .doOnNext(o -> mMessager.showMessage(
+                            getContext().getString(R.string.repo_down_load_complete, repo.name)))
                     .subscribe();
         }
 

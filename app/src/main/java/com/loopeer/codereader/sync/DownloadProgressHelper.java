@@ -41,9 +41,11 @@ public class DownloadProgressHelper {
                             cursor.moveToFirst();
                             int bytes_downloaded = cursor.getInt(cursor
                                     .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
-                            int bytes_total = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+                            int bytes_total = cursor.getInt(
+                                    cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
 
-                            if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) != DownloadManager.STATUS_SUCCESSFUL) {
+                            if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
+                                    != DownloadManager.STATUS_SUCCESSFUL) {
                                 ++downloadNum;
                                 final float dl_progress = 1f * bytes_downloaded / bytes_total;
                                 repo.factor = dl_progress;
@@ -53,7 +55,8 @@ public class DownloadProgressHelper {
                             if (repo.factor > 0) {
                                 CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
                                         .updateRepoDownloadProgress(repo.downloadId, repo.factor);
-                                RxBus.getInstance().send(new DownloadProgressEvent(repo.downloadId, repo.factor, repo.isUnzip));
+                                RxBus.getInstance().send(new DownloadProgressEvent(repo.id,
+                                        repo.downloadId, repo.factor, repo.isUnzip));
                             }
                             cursor.close();
                         }

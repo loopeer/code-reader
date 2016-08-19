@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,7 +40,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements MainLatestAdapter.Messager {
     private static final String TAG = "MainActivity";
 
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000;
@@ -48,6 +50,8 @@ public class MainActivity extends BaseActivity {
     ViewAnimator mAnimatorRecyclerContent;
     @BindView(R.id.fab_main)
     FloatingActionButton mFabMain;
+    @BindView(R.id.container_main)
+    CoordinatorLayout mContainerMain;
 
     private ILoadHelper mRecyclerLoader;
     private MainLatestAdapter mMainLatestAdapter;
@@ -91,13 +95,15 @@ public class MainActivity extends BaseActivity {
         mDownloadStartSubscription = RxBus.getInstance()
                 .toObservable()
                 .filter(o -> o instanceof DownloadRepoStartEvent)
-                .doOnNext(o -> loadLocalData()).subscribe();
+                .doOnNext(o -> checkDownloadProgress())
+                .subscribe();
     }
 
     private void setUpView() {
         mRecyclerLoader = new RecyclerLoader(mAnimatorRecyclerContent);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mMainLatestAdapter = new MainLatestAdapter(this);
+        mMainLatestAdapter.setMessager(this);
         mRecyclerView.setAdapter(mMainLatestAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecorationMainList(this, DividerItemDecoration.VERTICAL_LIST
                 , getResources().getDimensionPixelSize(R.dimen.repo_list_divider_start)
@@ -120,6 +126,10 @@ public class MainActivity extends BaseActivity {
         List<Repo> repos =
                 CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext()).readRepos();
         setUpContent(repos);
+        checkDownloadProgress();
+    }
+
+    private void checkDownloadProgress() {
         if (mProgressSubscription != null && !mProgressSubscription.isUnsubscribed()) {
             mProgressSubscription.unsubscribe();
         }
@@ -178,5 +188,9 @@ public class MainActivity extends BaseActivity {
                 return;
             }
         }
+    }
+
+    public void showMessage(String string) {
+        Snackbar.make(mContainerMain, string, Snackbar.LENGTH_LONG).show();
     }
 }

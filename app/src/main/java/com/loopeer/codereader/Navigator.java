@@ -18,9 +18,6 @@ public class Navigator {
     public final static String EXTRA_DIRETORY_SELECTING = "extra_diretory_selecting";
     public final static String EXTRA_WEB_URL = "extra_web_url";
     public final static String EXTRA_HTML_STRING = "extra_html_string";
-    public final static String EXTRA_DOWNLOAD_URL = "extra_download_url";
-    public final static String EXTRA_DOWNLOAD_REPO_NAME = "extra_download_repo_name";
-    public final static String EXTRA_DOWNLOAD_REPO_ID = "extra_download_repo_id";
 
     public static void startMainActivity(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
