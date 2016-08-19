@@ -316,7 +316,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                 mVelocityTracker.addMovement(event);
             }
 
-            if (mPreSelected != null && mPreSelected != mSelected) {
+            if (mPreSelected != null && mSelected != null && mPreSelected != mSelected) {
                 closeOpenedPreItem();
             }
             return mSelected != null;
