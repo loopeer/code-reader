@@ -21,6 +21,9 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
+    <include layout="@layout/content_recycler"/>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_main"
         android:layout_width="wrap_content"
@@ -29,7 +32,4 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_folder_white"
         app:layout_behavior="@string/scroll_aware_fab_behavior"/>
-
-    <include layout="@layout/content_recycler"/>
-
 </android.support.design.widget.CoordinatorLayout>
