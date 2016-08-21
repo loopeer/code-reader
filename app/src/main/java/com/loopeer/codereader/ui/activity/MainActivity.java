@@ -38,7 +38,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 
-public class MainActivity extends BaseActivity implements MainLatestAdapter.Messager {
+public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
 
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000;
@@ -99,7 +99,6 @@ public class MainActivity extends BaseActivity implements MainLatestAdapter.Mess
         mRecyclerLoader = new RecyclerLoader(mAnimatorRecyclerContent);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mMainLatestAdapter = new MainLatestAdapter(this);
-        mMainLatestAdapter.setMessager(this);
         mRecyclerView.setAdapter(mMainLatestAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecorationMainList(this,
                 DividerItemDecoration.VERTICAL_LIST
@@ -176,8 +175,4 @@ public class MainActivity extends BaseActivity implements MainLatestAdapter.Mess
         }
     }
 
-    @Override
-    public void showMessageFromAdapter(String string) {
-        showMessage(string);
-    }
 }

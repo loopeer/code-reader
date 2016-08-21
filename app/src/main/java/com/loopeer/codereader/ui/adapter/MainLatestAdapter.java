@@ -33,18 +33,8 @@ import rx.subscriptions.CompositeSubscription;
 public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
     private static final String TAG = "MainLatestAdapter";
 
-    public interface Messager{
-        void showMessageFromAdapter(String string);
-    }
-
-    private Messager mMessager;
-
     public MainLatestAdapter(Context context) {
         super(context);
-    }
-
-    public void setMessager(Messager messager) {
-        mMessager = messager;
     }
 
     private final CompositeSubscription mAllSubscription = new CompositeSubscription();
@@ -83,7 +73,9 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
 
     private void doRepoDelete(RecyclerView.ViewHolder var3) {
         int position = var3.getAdapterPosition();
-        CoReaderDbHelper.getInstance(getContext()).deleteRepo(Long.parseLong(mData.get(position).id));
+        Repo repo = mData.get(position);
+        CoReaderDbHelper.getInstance(getContext()).deleteRepo(Long.parseLong(repo.id));
+        if (repo.downloadId > 0) Navigator.startDownloadRepoServiceRemove(getContext(), repo.downloadId);
         mData.remove(position);
         notifyItemRemoved(position);
     }

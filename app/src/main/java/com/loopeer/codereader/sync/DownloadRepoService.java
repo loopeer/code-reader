@@ -35,6 +35,7 @@ public class DownloadRepoService extends Service {
     public static final int DOWNLOAD_COMPLETE = 0;
     public static final int DOWNLOAD_REPO = 1;
     public static final int DOWNLOAD_PROGRESS = 2;
+    public static final int DOWNLOAD_REMOVE_DOWNLOAD = 3;
 
     private static final String TAG = "DownloadRepoService";
 
@@ -67,6 +68,9 @@ public class DownloadRepoService extends Service {
                 break;
             case DOWNLOAD_PROGRESS:
                 checkDownloadProgress();
+                break;
+            case DOWNLOAD_REMOVE_DOWNLOAD:
+                removeDownloadingRepo(id);
                 break;
         }
     }
@@ -239,6 +243,13 @@ public class DownloadRepoService extends Service {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
+    }
+
+    private void removeDownloadingRepo(long id) {
+        DownloadManager downloadManager =
+                (DownloadManager) this.getSystemService(Context.DOWNLOAD_SERVICE);
+        int i = downloadManager.remove(id);
+        if (i > 0) mDownloadingRepos.remove(id);
     }
 
     @Nullable
