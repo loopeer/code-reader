@@ -168,7 +168,6 @@ public class DownloadRepoService extends Service {
     }
 
     public Subscription checkDownloadingProgress(Context context) {
-        Log.e(TAG, "check");
         return Observable.create(new Observable.OnSubscribe<List<Repo>>() {
 
             @Override

@@ -1,5 +1,6 @@
 package com.loopeer.codereader.ui.view;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -15,7 +16,9 @@ public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
     private Paint mRemainderPaint;
     private Paint mProgressPaint;
 
-    private float mProgress;
+    private float mProgressCurrent;
+    private float mProgressPre;
+    private float mProgressShow;
     private boolean mIsUnzip;
     private int mRemainderColor;
     private static int sProgressTextPadding;
@@ -37,6 +40,7 @@ public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
         mRemainderColor = a.getColor(R.styleable.ForegroundProgressRelativeLayout_remainderColor
                 , ContextCompat.getColor(getContext(), R.color.repo_download_remainder_color));
         init();
+        setWillNotDraw(false);
     }
 
     private void init() {
@@ -54,16 +58,38 @@ public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
         mProgressPaint.setTextSize(getResources().getDimension(R.dimen.text_size_xxsmall));
     }
 
-    public void setProgress(float i) {
-        if (mProgress != i) {
-            mProgress = i;
+    public void setProgressCurrent(float i) {
+        if (mProgressCurrent != i && i != 0f) {
+            mProgressPre = mProgressCurrent;
+            mProgressCurrent = i;
+            postProgressAnimation();
+        } else if (i == 0f){
+            mProgressCurrent = i;
+            mProgressShow = 0;
             invalidate();
         }
     }
 
+    public void setInitProgress(float i) {
+        mProgressCurrent = i;
+        mProgressShow = i;
+        invalidate();
+    }
+
+    private void postProgressAnimation() {
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1f);
+        valueAnimator.addUpdateListener(valueAnimator1 -> {
+            float fraction = valueAnimator1.getAnimatedFraction();
+            mProgressShow = mProgressPre + fraction * (mProgressCurrent - mProgressPre);
+            invalidate();
+        });
+        valueAnimator.setDuration(500);
+        valueAnimator.start();
+    }
+
     public void setUnzip(boolean b) {
         mIsUnzip = b;
-        if (mProgress == 1.f) {
+        if (mProgressCurrent == 1.f) {
             invalidate();
         }
     }
@@ -72,20 +98,20 @@ public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (mProgress < 1f) {
-            canvas.drawRect(getWidth() * mProgress, 0, getWidth(), getHeight(), mRemainderPaint);
-            String content = String.format("%.0f",mProgress * 100) + "%";
+        if (mProgressCurrent <= 1f) {
+            canvas.drawRect(getWidth() * mProgressShow, 0, getWidth(), getHeight(), mRemainderPaint);
+            String content = String.format("%.0f", mProgressShow * 100) + "%";
             Rect bounds = new Rect();
             mProgressPaint.getTextBounds(content, 0, content.length(), bounds);
-            if (getWidth() * (1 - mProgress) > bounds.width()) {
+            if (getWidth() * (1 - mProgressShow) > bounds.width()) {
                 canvas.drawText(content
-                        , getWidth() * mProgress + sProgressTextPadding
+                        , getWidth() * mProgressShow + sProgressTextPadding
                         , getHeight() - sProgressTextPadding
                         , mProgressPaint);
             }
         }
 
-        if (mProgress == 1f && mIsUnzip) {
+        if (mProgressCurrent == 1f && mIsUnzip) {
             String content = getResources().getString(R.string.repo_download_isunzip);
             Rect bounds = new Rect();
             mProgressPaint.getTextBounds(content, 0, content.length(), bounds);

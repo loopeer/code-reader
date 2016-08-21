@@ -150,9 +150,9 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
             mLocalPhone.setVisibility(repo.isLocalRepo() ? View.VISIBLE : View.GONE);
             resetSubscription(repo);
             if (repo.isDownloading()) {
-                mProgressRelativeLayout.setProgress(repo.factor);
+                mProgressRelativeLayout.setInitProgress(repo.factor);
             } else {
-                mProgressRelativeLayout.setProgress(1f);
+                mProgressRelativeLayout.setInitProgress(1f);
             }
             mProgressRelativeLayout.setUnzip(repo.isUnzip);
             return mSubscription;
@@ -171,7 +171,7 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
                     .doOnNext(o -> {
                         if (repo.downloadId == 0) repo.downloadId = o.downloadId;
                     })
-                    .doOnNext(o -> mProgressRelativeLayout.setProgress(o.factor))
+                    .doOnNext(o -> mProgressRelativeLayout.setProgressCurrent(o.factor))
                     .filter(o -> o.factor == 1f)
                     .doOnNext(o -> repo.isUnzip = o.isUnzip)
                     .doOnNext(o -> mProgressRelativeLayout.setUnzip(o.isUnzip))
