@@ -1,7 +1,6 @@
 package com.loopeer.codereader.utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -46,7 +45,6 @@ public class Unzip {
             zin = new ZipInputStream(fin);
             ZipEntry ze;
             while ((ze = zin.getNextEntry()) != null) {
-                Log.d("Decompress", "Unzipping " + ze.getName());
                 if (ze.isDirectory()) {
                     dirChecker(ze);
                 } else {

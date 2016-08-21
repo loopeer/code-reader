@@ -13,6 +13,7 @@ import com.loopeer.codereader.ui.activity.SimpleWebActivity;
 public class Navigator {
 
     public final static String EXTRA_REPO = "extra_repo";
+    public final static String EXTRA_DOWNLOAD_SERVICE_TYPE = "extra_download_service_type";
     public final static String EXTRA_DIRETORY_ROOT = "extra_diretory_root";
     public final static String EXTRA_DIRETORY_ROOT_NODE_INSTANCE = "extra_diretory_root_node_instance";
     public final static String EXTRA_DIRETORY_SELECTING = "extra_diretory_selecting";
@@ -40,6 +41,13 @@ public class Navigator {
     public static void startDownloadRepoService(Context context, Repo repo) {
         Intent intent = new Intent(context, DownloadRepoService.class);
         intent.putExtra(EXTRA_REPO, repo);
+        intent.putExtra(EXTRA_DOWNLOAD_SERVICE_TYPE, DownloadRepoService.DOWNLOAD_REPO);
+        context.startService(intent);
+    }
+
+    public static void startDownloadRepoService(Context context, int type) {
+        Intent intent = new Intent(context, DownloadRepoService.class);
+        intent.putExtra(EXTRA_DOWNLOAD_SERVICE_TYPE, type);
         context.startService(intent);
     }
 

@@ -179,8 +179,6 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
                     .doOnNext(o -> CoReaderDbHelper.getInstance(
                             CodeReaderApplication.getAppContext()).resetRepoDownloadId(repo.downloadId))
                     .doOnNext(o -> repo.downloadId = 0)
-                    .doOnNext(o -> mMessager.showMessageFromAdapter(
-                            getContext().getString(R.string.repo_download_complete, repo.name)))
                     .subscribe();
         }
 

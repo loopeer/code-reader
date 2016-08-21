@@ -18,7 +18,7 @@ import android.widget.ProgressBar;
 
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
-import com.loopeer.codereader.event.DownloadRepoStartEvent;
+import com.loopeer.codereader.event.DownloadRepoMessageEvent;
 import com.loopeer.codereader.ui.view.NestedScrollWebView;
 import com.loopeer.codereader.utils.DownloadUrlParser;
 import com.loopeer.codereader.utils.RxBus;
@@ -50,10 +50,10 @@ public class SimpleWebActivity extends BaseActivity {
         registerSubscription(
                 RxBus.getInstance()
                         .toObservable()
-                        .filter(o -> o instanceof DownloadRepoStartEvent)
-                        .map(o -> (DownloadRepoStartEvent)o)
+                        .filter(o -> o instanceof DownloadRepoMessageEvent)
+                        .map(o -> (DownloadRepoMessageEvent)o)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnNext(o -> showMessage(o.getReason(SimpleWebActivity.this)))
+                        .doOnNext(o -> showMessage(o.getMessage()))
                         .subscribe());
     }
 

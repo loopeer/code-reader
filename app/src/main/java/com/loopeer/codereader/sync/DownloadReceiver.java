@@ -17,6 +17,7 @@ public class DownloadReceiver extends BroadcastReceiver {
             if (downloadId > 0) {
                 Intent i = new Intent(context, DownloadRepoService.class);
                 i.putExtra(DownloadManager.EXTRA_DOWNLOAD_ID, downloadId);
+                i.putExtra(Navigator.EXTRA_DOWNLOAD_SERVICE_TYPE, DownloadRepoService.DOWNLOAD_COMPLETE);
                 context.startService(i);
             }
         }

@@ -148,7 +148,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void showMessage(String message) {
-        Snackbar.make(mCoordinatorContainer, message, Snackbar.LENGTH_LONG)
+        Snackbar.make(mCoordinatorContainer, message, Snackbar.LENGTH_SHORT)
                 .show();
     }
 }

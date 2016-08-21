@@ -16,9 +16,9 @@ import com.loopeer.codereader.CodeReaderApplication;
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
-import com.loopeer.codereader.event.DownloadRepoStartEvent;
+import com.loopeer.codereader.event.DownloadRepoMessageEvent;
 import com.loopeer.codereader.model.Repo;
-import com.loopeer.codereader.sync.DownloadProgressHelper;
+import com.loopeer.codereader.sync.DownloadRepoService;
 import com.loopeer.codereader.ui.adapter.ItemTouchHelperCallback;
 import com.loopeer.codereader.ui.adapter.MainLatestAdapter;
 import com.loopeer.codereader.ui.decoration.DividerItemDecoration;
@@ -51,7 +51,6 @@ public class MainActivity extends BaseActivity implements MainLatestAdapter.Mess
 
     private ILoadHelper mRecyclerLoader;
     private MainLatestAdapter mMainLatestAdapter;
-    private Subscription mProgressSubscription;
     private Subscription mDownloadStartSubscription;
 
     public ItemTouchHelperExtension mItemTouchHelper;
@@ -63,6 +62,7 @@ public class MainActivity extends BaseActivity implements MainLatestAdapter.Mess
         setContentView(R.layout.activity_main);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        Navigator.startDownloadRepoService(this, DownloadRepoService.DOWNLOAD_PROGRESS);
         G.settings = new Settings(this);
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -90,8 +90,8 @@ public class MainActivity extends BaseActivity implements MainLatestAdapter.Mess
         loadLocalData();
         mDownloadStartSubscription = RxBus.getInstance()
                 .toObservable()
-                .filter(o -> o instanceof DownloadRepoStartEvent)
-                .doOnNext(o -> checkDownloadProgress())
+                .filter(o -> o instanceof DownloadRepoMessageEvent)
+                .doOnNext(o -> showMessage(((DownloadRepoMessageEvent) o).getMessage()))
                 .subscribe();
     }
 
@@ -123,14 +123,6 @@ public class MainActivity extends BaseActivity implements MainLatestAdapter.Mess
         List<Repo> repos =
                 CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext()).readRepos();
         setUpContent(repos);
-        checkDownloadProgress();
-    }
-
-    private void checkDownloadProgress() {
-        if (mProgressSubscription != null && !mProgressSubscription.isUnsubscribed()) {
-            mProgressSubscription.unsubscribe();
-        }
-        mProgressSubscription = DownloadProgressHelper.checkDownloadingProgress(this);
     }
 
     private void setUpContent(List<Repo> repos) {
@@ -168,9 +160,6 @@ public class MainActivity extends BaseActivity implements MainLatestAdapter.Mess
         super.onPause();
         mDownloadStartSubscription.unsubscribe();
         mMainLatestAdapter.clearSubscription();
-        if (mProgressSubscription != null && !mProgressSubscription.isUnsubscribed()) {
-            mProgressSubscription.unsubscribe();
-        }
     }
 
     @Override

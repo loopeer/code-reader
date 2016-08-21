@@ -1,28 +1,9 @@
 package com.loopeer.codereader.sync;
 
-import android.app.DownloadManager;
-import android.content.Context;
-import android.database.Cursor;
-import android.util.Log;
-
-import com.loopeer.codereader.CodeReaderApplication;
-import com.loopeer.codereader.event.DownloadProgressEvent;
-import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
-import com.loopeer.codereader.model.Repo;
-import com.loopeer.codereader.utils.RxBus;
-
-import java.util.List;
-
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-
 public class DownloadProgressHelper {
     private static final String TAG = "DownloadProgressHelper";
 
-    public static Subscription checkDownloadingProgress(Context context) {
+    /*public static Subscription checkDownloadingProgress(Context context) {
         return Observable.create(new Observable.OnSubscribe<List<Repo>>() {
 
             @Override
@@ -95,6 +76,6 @@ public class DownloadProgressHelper {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
+    }*/
 
 }
