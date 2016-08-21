@@ -34,7 +34,7 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
     private static final String TAG = "MainLatestAdapter";
 
     public interface Messager{
-        void showMessage(String string);
+        void showMessageFromAdapter(String string);
     }
 
     private Messager mMessager;
@@ -179,7 +179,7 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
                     .doOnNext(o -> CoReaderDbHelper.getInstance(
                             CodeReaderApplication.getAppContext()).resetRepoDownloadId(repo.downloadId))
                     .doOnNext(o -> repo.downloadId = 0)
-                    .doOnNext(o -> mMessager.showMessage(
+                    .doOnNext(o -> mMessager.showMessageFromAdapter(
                             getContext().getString(R.string.repo_download_complete, repo.name)))
                     .subscribe();
         }

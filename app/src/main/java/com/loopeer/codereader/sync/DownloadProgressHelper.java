@@ -3,6 +3,7 @@ package com.loopeer.codereader.sync;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.loopeer.codereader.CodeReaderApplication;
 import com.loopeer.codereader.event.DownloadProgressEvent;
@@ -19,6 +20,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class DownloadProgressHelper {
+    private static final String TAG = "DownloadProgressHelper";
 
     public static Subscription checkDownloadingProgress(Context context) {
         return Observable.create(new Observable.OnSubscribe<List<Repo>>() {
@@ -44,6 +46,11 @@ public class DownloadProgressHelper {
                             int bytes_total = cursor.getInt(
                                     cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
 
+
+                            //TODO
+                            String reasonString = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_REASON));
+                            int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+                            Log.e(TAG, "reason: " + reasonString + "    status : " + status);
                             if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
                                     != DownloadManager.STATUS_SUCCESSFUL) {
                                 ++downloadNum;

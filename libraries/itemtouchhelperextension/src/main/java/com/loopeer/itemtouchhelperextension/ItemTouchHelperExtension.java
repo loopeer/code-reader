@@ -140,7 +140,6 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
      */
     RecyclerView.ViewHolder mSelected = null;
     RecyclerView.ViewHolder mPreOpened = null;
-    RecyclerView.ViewHolder nCurrentOpened = null;
 
     /**
      * The reference coordinates for the action start. For drag & drop, this is the time long

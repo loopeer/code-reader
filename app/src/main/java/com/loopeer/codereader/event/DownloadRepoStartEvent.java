@@ -1,9 +1,21 @@
 package com.loopeer.codereader.event;
 
-public class DownloadRepoStartEvent {
-    public String reason;
+import android.content.Context;
 
-    public DownloadRepoStartEvent(String reason) {
-        this.reason = reason;
+import com.loopeer.codereader.R;
+
+public class DownloadRepoStartEvent {
+    public int status;
+
+    public DownloadRepoStartEvent(int status) {
+        this.status = status;
+    }
+
+    public String getReason(Context context) {
+        switch (status) {
+            case 190:
+                return context.getString(R.string.repo_download_start);
+        }
+        return null;
     }
 }

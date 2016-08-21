@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,8 +48,6 @@ public class MainActivity extends BaseActivity implements MainLatestAdapter.Mess
     ViewAnimator mAnimatorRecyclerContent;
     @BindView(R.id.fab_main)
     FloatingActionButton mFabMain;
-    @BindView(R.id.container_main)
-    CoordinatorLayout mContainerMain;
 
     private ILoadHelper mRecyclerLoader;
     private MainLatestAdapter mMainLatestAdapter;
@@ -105,7 +101,8 @@ public class MainActivity extends BaseActivity implements MainLatestAdapter.Mess
         mMainLatestAdapter = new MainLatestAdapter(this);
         mMainLatestAdapter.setMessager(this);
         mRecyclerView.setAdapter(mMainLatestAdapter);
-        mRecyclerView.addItemDecoration(new DividerItemDecorationMainList(this, DividerItemDecoration.VERTICAL_LIST
+        mRecyclerView.addItemDecoration(new DividerItemDecorationMainList(this,
+                DividerItemDecoration.VERTICAL_LIST
                 , getResources().getDimensionPixelSize(R.dimen.repo_list_divider_start)
                 , -1
                 , -1));
@@ -190,7 +187,8 @@ public class MainActivity extends BaseActivity implements MainLatestAdapter.Mess
         }
     }
 
-    public void showMessage(String string) {
-        Snackbar.make(mContainerMain, string, Snackbar.LENGTH_LONG).show();
+    @Override
+    public void showMessageFromAdapter(String string) {
+        showMessage(string);
     }
 }

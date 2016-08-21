@@ -3,6 +3,8 @@ package com.loopeer.codereader.ui.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +24,9 @@ public class BaseActivity extends AppCompatActivity {
     @Nullable
     @BindView(R.id.toolbar)
     protected Toolbar mToolbar;
+    @Nullable
+    @BindView(R.id.view_coordinator_container)
+    CoordinatorLayout mCoordinatorContainer;
 
     private final CompositeSubscription mAllSubscription = new CompositeSubscription();
 
@@ -140,5 +145,10 @@ public class BaseActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void showMessage(String message) {
+        Snackbar.make(mCoordinatorContainer, message, Snackbar.LENGTH_LONG)
+                .show();
     }
 }

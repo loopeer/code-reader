@@ -4,8 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -27,14 +25,13 @@ import com.loopeer.codereader.utils.RxBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class SimpleWebActivity extends BaseActivity {
     private static final String TAG = "SimpleWebActivity";
 
     @BindView(R.id.web_content)
     NestedScrollWebView mWebContent;
-    @BindView(R.id.container_simple_web)
-    CoordinatorLayout mContainerWeb;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.progress_bar_web)
@@ -55,7 +52,8 @@ public class SimpleWebActivity extends BaseActivity {
                         .toObservable()
                         .filter(o -> o instanceof DownloadRepoStartEvent)
                         .map(o -> (DownloadRepoStartEvent)o)
-                        .doOnNext(o -> showMessage(o.reason))
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnNext(o -> showMessage(o.getReason(SimpleWebActivity.this)))
                         .subscribe());
     }
 
@@ -134,11 +132,6 @@ public class SimpleWebActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void showMessage(String message) {
-        Snackbar.make(mContainerWeb, message, Snackbar.LENGTH_LONG)
-                .show();
     }
 
     @Override

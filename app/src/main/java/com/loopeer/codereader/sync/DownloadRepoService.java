@@ -125,8 +125,8 @@ public class DownloadRepoService extends Service {
                 (DownloadManager) getApplicationContext().getSystemService(Context.DOWNLOAD_SERVICE);
         Cursor cursor = downloadManager.query(q);
         cursor.moveToFirst();
-        String reason = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
-        RxBus.getInstance().send(new DownloadRepoStartEvent(reason));
+        int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+        RxBus.getInstance().send(new DownloadRepoStartEvent(status));
 
     }
 
