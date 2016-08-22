@@ -31,12 +31,12 @@
         <activity
             android:name="com.loopeer.directorychooser.DirectoryFileChooserActivity"
             android:theme="@style/Theme.CodeReader.NoActionBar" />
-
         <activity
             android:name=".ui.activity.SearchActivity"
             android:label=""
             android:launchMode="singleTop"
-            android:theme="@style/Theme.CodeReader.SearchView">
+            android:theme="@style/Theme.CodeReader.NoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

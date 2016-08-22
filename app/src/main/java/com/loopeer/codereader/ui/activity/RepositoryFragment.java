@@ -12,6 +12,7 @@ import com.loopeer.codereader.R;
 import com.loopeer.codereader.api.ServiceFactory;
 import com.loopeer.codereader.api.service.GithubService;
 import com.loopeer.codereader.ui.adapter.RepositoryAdapter;
+import com.loopeer.codereader.ui.decoration.DividerItemDecoration;
 import com.loopeer.codereader.ui.fragment.BaseFragment;
 
 import butterknife.BindView;
@@ -50,6 +51,7 @@ public class RepositoryFragment extends BaseFragment {
     private void setupRecyclerView() {
         mViewRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mViewRecycler.setAdapter(mRepositoryAdapter);
+        mViewRecycler.addItemDecoration(new DividerItemDecoration(getContext()));
     }
 
     public void setSearchText(String searchText) {
