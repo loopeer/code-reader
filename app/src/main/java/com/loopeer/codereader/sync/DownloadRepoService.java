@@ -151,7 +151,6 @@ public class DownloadRepoService extends Service {
     }
 
     private void checkDownloadProgress() {
-
         if (mDownloadingRepos.isEmpty()) {
             List<Repo> repos = CoReaderDbHelper.getInstance(this).readRepos();
             for (Repo repo : repos) {
@@ -187,64 +186,37 @@ public class DownloadRepoService extends Service {
             public void call(Subscriber<? super List<Repo>> subscriber) {
                 DownloadManager downloadManager =
                         (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-                final boolean[] downloading = {true};
-                while (downloading[0]) {
-                    List<Repo> repos = new ArrayList(mDownloadingRepos.values());
-                    if (repos.isEmpty()) break;
-                    int downloadNum = 0;
-                    for (Repo repo : repos) {
-                        DownloadManager.Query q = new DownloadManager.Query();
-                        q.setFilterById(repo.downloadId);
+                List<Repo> repos = new ArrayList(mDownloadingRepos.values());;
+                for (Repo repo : repos) {
+                    DownloadManager.Query q = new DownloadManager.Query();
+                    q.setFilterById(repo.downloadId);
 
-                        Cursor cursor = downloadManager.query(q);
-                        cursor.moveToFirst();
-                        int bytes_downloaded = cursor.getInt(cursor
-                                .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
-                        int bytes_total = cursor.getInt(
-                                cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+                    Cursor cursor = downloadManager.query(q);
+                    cursor.moveToFirst();
+                    int bytes_downloaded = cursor.getInt(cursor
+                            .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+                    int bytes_total = cursor.getInt(
+                            cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
 
-
-                        //TODO
-                        String reasonString = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_REASON));
-                        int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
-                        Log.e(TAG, "reason: " + reasonString + "    status : " + status);
-                        if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
-                                != DownloadManager.STATUS_SUCCESSFUL) {
-                            ++downloadNum;
-                            final float dl_progress = 1f * bytes_downloaded / bytes_total;
-                            repo.factor = dl_progress;
-                        } else {
-                            repo.factor = 1;
-                        }
-                        if (repo.factor < 0) repo.factor = 0;
-                        if (repo.factor >= 0) {
-                            CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
-                                    .updateRepoDownloadProgress(repo.downloadId, repo.factor);
-                            RxBus.getInstance().send(new DownloadProgressEvent(repo.id,
-                                    repo.downloadId, repo.factor, repo.isUnzip));
-                        }
-                        cursor.close();
+                    //TODO
+                    String reasonString = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_REASON));
+                    int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+                    Log.e(TAG, "reason: " + reasonString + "    status : " + status);
+                    if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
+                            != DownloadManager.STATUS_SUCCESSFUL) {
+                        final float dl_progress = 1f * bytes_downloaded / bytes_total;
+                        repo.factor = dl_progress;
+                    } else {
+                        repo.factor = 1;
                     }
-                    if (downloadNum == 0) {
-                        downloading[0] = false;
+                    if (repo.factor < 0) repo.factor = 0;
+                    if (repo.factor >= 0) {
+                        CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
+                                .updateRepoDownloadProgress(repo.downloadId, repo.factor);
+                        RxBus.getInstance().send(new DownloadProgressEvent(repo.id,
+                                repo.downloadId, repo.factor, repo.isUnzip));
                     }
-                    subscriber.add(new Subscription() {
-                        @Override
-                        public void unsubscribe() {
-                            downloading[0] = false;
-                            return;
-                        }
-
-                        @Override
-                        public boolean isUnsubscribed() {
-                            return false;
-                        }
-                    });
-                    try {
-                        Thread.currentThread().sleep(500);
-                    } catch (InterruptedException e) {
-                        subscriber.onError(e);
-                    }
+                    cursor.close();
                 }
                 subscriber.onCompleted();
             }
@@ -275,7 +247,7 @@ public class DownloadRepoService extends Service {
 
         @Override
         public void onChange(boolean selfChange) {
-            //查询进度
+            checkDownloadProgress();
         }
 
     }
