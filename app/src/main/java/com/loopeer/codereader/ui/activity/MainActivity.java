@@ -16,6 +16,7 @@ import com.loopeer.codereader.CodeReaderApplication;
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
+import com.loopeer.codereader.event.DownloadFailDeleteEvent;
 import com.loopeer.codereader.event.DownloadRepoMessageEvent;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.sync.DownloadRepoService;
@@ -37,6 +38,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
@@ -81,6 +83,14 @@ public class MainActivity extends BaseActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setUpView();
+        registerSubscription(
+                RxBus.getInstance().toObservable()
+                        .filter(o -> o instanceof DownloadFailDeleteEvent)
+                        .map(o -> ((DownloadFailDeleteEvent) o).deleteRepo)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnNext(mMainLatestAdapter::deleteRepo)
+                        .subscribe()
+        );
     }
 
     @Override

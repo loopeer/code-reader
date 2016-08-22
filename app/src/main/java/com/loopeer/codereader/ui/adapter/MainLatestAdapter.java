@@ -11,10 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.loopeer.codereader.CodeReaderApplication;
-import com.loopeer.codereader.event.DownloadProgressEvent;
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
+import com.loopeer.codereader.event.DownloadProgressEvent;
 import com.loopeer.codereader.model.MainHeaderItem;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.ui.view.ForegroundProgressRelativeLayout;
@@ -76,6 +76,16 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
         Repo repo = mData.get(position);
         CoReaderDbHelper.getInstance(getContext()).deleteRepo(Long.parseLong(repo.id));
         if (repo.downloadId > 0) Navigator.startDownloadRepoServiceRemove(getContext(), repo.downloadId);
+        deleteItem(position);
+    }
+
+    public void deleteRepo(Repo repo) {
+        int index = mData.indexOf(repo);
+        if (index == -1) return;
+        deleteItem(index);
+    }
+
+    private void deleteItem(int position) {
         mData.remove(position);
         notifyItemRemoved(position);
     }

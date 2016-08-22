@@ -26,7 +26,6 @@ public class RemoteRepoFetcher {
         DownloadManager.Request request = new DownloadManager.Request(downloadUri);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
         request.setVisibleInDownloadsUi(false);
-        request.setAllowedOverRoaming(false);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE| DownloadManager.Request.NETWORK_WIFI);
         request.setDescription(mRepoName);
         request.setDestinationUri(mDestinationUri);

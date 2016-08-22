@@ -34,7 +34,8 @@
     <string name="search_hint_project">Search projects</string>
 
     <!-- download -->
-    <string name="repo_download_start">Task start...</string>
+    <string name="repo_download_start">%s start download</string>
+    <string name="repo_download_fail">%s download fail by error url</string>
     <string name="repo_download_complete">%s download complete</string>
     <string name="repo_download_url_parse_error">This url can\'t parse to downloadUrl</string>
 </resources>

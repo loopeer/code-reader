@@ -53,4 +53,43 @@ public class Repo extends BaseModel{
     public boolean isLocalRepo() {
         return !TextUtils.isEmpty(absolutePath);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Repo repo = (Repo) o;
+
+        if (id != null ? !id.equals(repo.id) : repo.id != null) return false;
+        if (name != null ? !name.equals(repo.name) : repo.name != null) return false;
+        if (absolutePath != null ? !absolutePath.equals(repo.absolutePath) : repo.absolutePath != null)
+            return false;
+        return netDownloadUrl != null ? netDownloadUrl.equals(repo.netDownloadUrl) : repo.netDownloadUrl == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (absolutePath != null ? absolutePath.hashCode() : 0);
+        result = 31 * result + (netDownloadUrl != null ? netDownloadUrl.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Repo{" +
+                "id='" + id + '\'' +
+                "name='" + name + '\'' +
+                ", lastModify=" + lastModify +
+                ", absolutePath='" + absolutePath + '\'' +
+                ", netDownloadUrl='" + netDownloadUrl + '\'' +
+                ", isFolder=" + isFolder +
+                ", downloadId=" + downloadId +
+                ", factor=" + factor +
+                ", isUnzip=" + isUnzip +
+                '}';
+    }
 }

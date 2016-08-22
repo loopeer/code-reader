@@ -16,6 +16,7 @@ import com.loopeer.codereader.CodeReaderApplication;
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
+import com.loopeer.codereader.event.DownloadFailDeleteEvent;
 import com.loopeer.codereader.event.DownloadProgressEvent;
 import com.loopeer.codereader.event.DownloadRepoMessageEvent;
 import com.loopeer.codereader.model.Repo;
@@ -102,7 +103,7 @@ public class DownloadRepoService extends Service {
                     final long status = cursor.getLong(statusColumnId);
                     final String path = cursor.getString(localFilenameColumnId);
                     final String name = cursor.getString(descName);
-                    if (status == DownloadManager.STATUS_SUCCESSFUL) { // 下载成功
+                    if (status == DownloadManager.STATUS_SUCCESSFUL) {
                         File zipFile = new File(path);
                         FileCache fileCache = FileCache.getInstance();
                         fileCache.deleteFilesByDirectory(new File(fileCache.getCacheDir().getPath() + File.separator + name));
@@ -113,11 +114,11 @@ public class DownloadRepoService extends Service {
                         CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
                                 .updateRepoUnzipProgress(id, 1, false);
                         RxBus.getInstance().send(new DownloadProgressEvent(id, false));
+                        RxBus.getInstance().send(new DownloadRepoMessageEvent(
+                                getString(R.string.repo_download_complete, mDownloadingRepos.get(id).name)));
                     } else {
                     }
                 }
-                RxBus.getInstance().send(new DownloadRepoMessageEvent(
-                        getString(R.string.repo_download_complete, mDownloadingRepos.get(id).name)));
                 mDownloadingRepos.remove(id);
                 subscriber.onCompleted();
             } catch (Exception e) {
@@ -145,7 +146,7 @@ public class DownloadRepoService extends Service {
         repo.downloadId = downloadId;
         mDownloadingRepos.put(downloadId, repo);
         CoReaderDbHelper.getInstance(getApplicationContext()).updateRepoDownloadId(downloadId, repo.id);
-        RxBus.getInstance().send(new DownloadRepoMessageEvent(getString(R.string.repo_download_start)));
+        RxBus.getInstance().send(new DownloadRepoMessageEvent(getString(R.string.repo_download_start, repo.name)));
         checkDownloadProgress();
 
     }
@@ -202,14 +203,20 @@ public class DownloadRepoService extends Service {
                             cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
 
                     //TODO
-                    String reasonString = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_REASON));
+                    String mediaType = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_MEDIA_TYPE));
                     int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
-                    Log.e(TAG, "reason: " + reasonString + "    status : " + status);
-                    if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
-                            != DownloadManager.STATUS_SUCCESSFUL) {
+                    Log.e(TAG, "MEDIA: " + mediaType + "    status : " + status);
+                    if (status == DownloadManager.STATUS_FAILED && mediaType == null) {
+                        RxBus.getInstance()
+                                .send(new DownloadRepoMessageEvent(
+                                        getString(R.string.repo_download_fail, repo.name)));
+                        RxBus.getInstance()
+                                .send(new DownloadFailDeleteEvent(repo));
+                        CoReaderDbHelper.getInstance(context).deleteRepo(Long.parseLong(repo.id));
+                    } else if (status != DownloadManager.STATUS_SUCCESSFUL) {
                         final float dl_progress = 1f * bytes_downloaded / bytes_total;
                         repo.factor = dl_progress;
-                    } else {
+                    } else if (status == DownloadManager.STATUS_SUCCESSFUL){
                         repo.factor = 1;
                     }
                     if (repo.factor < 0) repo.factor = 0;
