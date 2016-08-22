@@ -8,11 +8,8 @@ import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 
 import com.loopeer.codereader.R;
-
-import butterknife.BindView;
 
 public class SearchActivity extends BaseActivity implements SearchView.OnQueryTextListener {
 
@@ -25,7 +22,6 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
         setContentView(R.layout.activity_search);
         mRepositoryFragment = (RepositoryFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_repository);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -11,6 +11,9 @@
     <string name="action_go_out">Go Out</string>
     <string name="action_save">Save repo</string>
 
+    <!-- menu -->
+    <string name="menu_web_input">Input url</string>
+
     <!-- main -->
     <string name="scroll_aware_fab_behavior">com.loopeer.codereader.ui.view.ScrollAwareFABBehavior</string>
     <string name="header_item_github_search">Search</string>
@@ -38,4 +41,7 @@
     <string name="repo_download_fail">%s download fail by error url</string>
     <string name="repo_download_complete">%s download complete</string>
     <string name="repo_download_url_parse_error">This url can\'t parse to downloadUrl</string>
+
+    <!-- web -->
+    <string name="web_url_input_hint">Please input url</string>
 </resources>

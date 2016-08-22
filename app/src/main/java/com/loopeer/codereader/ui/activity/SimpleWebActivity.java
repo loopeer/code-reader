@@ -1,15 +1,20 @@
 package com.loopeer.codereader.ui.activity;
 
 import android.annotation.TargetApi;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -27,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class SimpleWebActivity extends BaseActivity {
+public class SimpleWebActivity extends BaseActivity implements SearchView.OnQueryTextListener {
     private static final String TAG = "SimpleWebActivity";
 
     @BindView(R.id.web_content)
@@ -36,6 +41,7 @@ public class SimpleWebActivity extends BaseActivity {
     Toolbar mToolbar;
     @BindView(R.id.progress_bar_web)
     ProgressBar mProgressBar;
+    private SearchView mSearchView;
 
     private String mUrl;
 
@@ -68,42 +74,25 @@ public class SimpleWebActivity extends BaseActivity {
         mWebContent.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                mUrl = url;
-                view.loadUrl(mUrl);
+                mSearchView.setQuery(url, true);
                 return true;
             }
 
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                mUrl = String.valueOf(request.getUrl());
-                view.loadUrl(mUrl);
+                mSearchView.setQuery(String.valueOf(request.getUrl()), true);
                 return true;
             }
         });
         mWebContent.setWebChromeClient(new WebChromeClient());
     }
 
-    public class WebChromeClient extends android.webkit.WebChromeClient {
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-            if (newProgress == 100) {
-                mProgressBar.setVisibility(View.GONE);
-            } else {
-                if (mProgressBar.getVisibility() == View.GONE)
-                    mProgressBar.setVisibility(View.VISIBLE);
-                mProgressBar.setProgress(newProgress);
-            }
-            super.onProgressChanged(view, newProgress);
-        }
-
-    }
-
     private void parseIntent() {
         Intent intent = getIntent();
         mUrl = intent.getStringExtra(Navigator.EXTRA_WEB_URL);
         String htmlString = intent.getStringExtra(Navigator.EXTRA_HTML_STRING);
-        if (mUrl != null) loadUrl(mUrl);
+        if (mUrl == null) mUrl = intent.getDataString();
         if (htmlString != null) loadData(htmlString);
     }
 
@@ -117,6 +106,29 @@ public class SimpleWebActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_web_input, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        MenuItem inputView = menu.findItem(R.id.action_web_input);
+        mSearchView= (SearchView) inputView.getActionView();
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        mSearchView.setIconified(false);
+        mSearchView.setOnQueryTextListener(this);
+        mSearchView.setImeOptions(EditorInfo.IME_ACTION_GO);
+        mSearchView.setQueryHint(getString(R.string.web_url_input_hint));
+        if (mUrl != null && mSearchView != null) mSearchView.setQuery(mUrl, true);
+        mSearchView.onActionViewExpanded();
+        MenuItemCompat.setOnActionExpandListener(inputView, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                mSearchView.setQuery(mUrl, false);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                return true;
+            }
+        });
         getMenuInflater().inflate(R.menu.menu_web_save, menu);
         return true;
     }
@@ -148,6 +160,36 @@ public class SimpleWebActivity extends BaseActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        if (!TextUtils.isEmpty(query)) {
+            mUrl = query;
+            loadUrl(mUrl);
+            mSearchView.clearFocus();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
+    public class WebChromeClient extends android.webkit.WebChromeClient {
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            if (newProgress == 100) {
+                mProgressBar.setVisibility(View.GONE);
+            } else {
+                if (mProgressBar.getVisibility() == View.GONE)
+                    mProgressBar.setVisibility(View.VISIBLE);
+                mProgressBar.setProgress(newProgress);
+            }
+            super.onProgressChanged(view, newProgress);
+        }
+
     }
 
     @Override
