@@ -4,12 +4,10 @@ package com.loopeer.codereader.sync;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
 import com.loopeer.codereader.utils.DownloadUrlParser;
 
 public class RemoteRepoFetcher {
-    private static final String TAG = "RemoteRepoFetcher";
     private Context mContext;
     private String mUrl;
     private Uri mDestinationUri;
@@ -28,10 +26,11 @@ public class RemoteRepoFetcher {
         DownloadManager.Request request = new DownloadManager.Request(downloadUri);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
         request.setVisibleInDownloadsUi(false);
+        request.setAllowedOverRoaming(false);
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE| DownloadManager.Request.NETWORK_WIFI);
         request.setDescription(mRepoName);
         request.setDestinationUri(mDestinationUri);
         long downloadId = manager.enqueue(request);
-        Log.e(TAG, "downloadID:----- " + downloadId);
         return downloadId;
     }
 

@@ -4,7 +4,10 @@ import android.app.DownloadManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -38,14 +41,18 @@ public class DownloadRepoService extends Service {
     public static final int DOWNLOAD_REMOVE_DOWNLOAD = 3;
 
     private static final String TAG = "DownloadRepoService";
-
+    public static final Uri DOWNLOAD_CONTENT_URI = Uri.parse("content://downloads/my_downloads");
     private HashMap<Long, Repo> mDownloadingRepos;
     private Subscription mProgressSubscription;
+    private DownloadChangeObserver mDownloadChangeObserver;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mDownloadingRepos = new HashMap<>();
+        mDownloadChangeObserver = new DownloadChangeObserver();
+        getContentResolver().registerContentObserver(DOWNLOAD_CONTENT_URI, true,
+                mDownloadChangeObserver);
     }
 
     @Override
@@ -76,6 +83,7 @@ public class DownloadRepoService extends Service {
     }
 
     private void doRepoDownloadComplete(long id) {
+
         CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
                 .updateRepoUnzipProgress(id, 1, true);
         RxBus.getInstance().send(new DownloadProgressEvent(id, true));
@@ -169,6 +177,7 @@ public class DownloadRepoService extends Service {
     public void onDestroy() {
         super.onDestroy();
         clearDownloadProgressSubscription();
+        getContentResolver().unregisterContentObserver(mDownloadChangeObserver);
     }
 
     public Subscription checkDownloadingProgress(Context context) {
@@ -256,5 +265,18 @@ public class DownloadRepoService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    class DownloadChangeObserver extends ContentObserver {
+
+        public DownloadChangeObserver(){
+            super(new Handler());
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            //查询进度
+        }
+
     }
 }

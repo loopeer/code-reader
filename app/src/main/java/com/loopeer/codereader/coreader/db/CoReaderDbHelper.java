@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CoReaderDbHelper extends SQLiteOpenHelper {
+    private static final String TAG = "CoReaderDbHelper";
 
     private static final String DATABASE_NAME = "coreader.db";
     private static final int DATABASE_VERSION = 1;
