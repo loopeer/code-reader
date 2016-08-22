@@ -159,11 +159,14 @@ public class DownloadRepoService extends Service {
                 }
             }
         }
+        if (mDownloadingRepos.isEmpty()) {
+            stopSelf();
+            return;
+        }
         if (mProgressSubscription != null && !mProgressSubscription.isUnsubscribed()) {
             mProgressSubscription.unsubscribe();
         }
         mProgressSubscription = checkDownloadingProgress(this);
-        if (mDownloadingRepos.isEmpty()) stopSelf();
     }
 
     private void clearDownloadProgressSubscription() {
