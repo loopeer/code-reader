@@ -43,6 +43,7 @@ public class DownloadRepoService extends Service {
 
     private static final String TAG = "DownloadRepoService";
     public static final Uri DOWNLOAD_CONTENT_URI = Uri.parse("content://downloads/my_downloads");
+    public static final String MEDIA_TYPE_ZIP = "application/zip";
     private HashMap<Long, Repo> mDownloadingRepos;
     private Subscription mProgressSubscription;
     private DownloadChangeObserver mDownloadChangeObserver;
@@ -204,9 +205,12 @@ public class DownloadRepoService extends Service {
 
                     //TODO
                     String mediaType = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_MEDIA_TYPE));
+                    int reason = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_REASON));
                     int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
-                    Log.e(TAG, "MEDIA: " + mediaType + "    status : " + status);
-                    if (status == DownloadManager.STATUS_FAILED && mediaType == null) {
+                    Log.e(TAG, "MEDIA: " + mediaType + "    status : " + status + "    reason: " + reason);
+                    if (status == DownloadManager.STATUS_FAILED
+                            && !MEDIA_TYPE_ZIP.equals(mediaType)
+                            && reason == DownloadManager.ERROR_UNKNOWN) {
                         RxBus.getInstance()
                                 .send(new DownloadRepoMessageEvent(
                                         getString(R.string.repo_download_fail, repo.name)));
