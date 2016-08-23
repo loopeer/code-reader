@@ -15,7 +15,6 @@
 
         <item name="android:textColorHint">@color/text_color_hint</item>
         <item name="android:textSize">@dimen/text_size_xmedium</item>
-
     </style>
 
     <style name="Theme.CodeReader.NoActionBar">

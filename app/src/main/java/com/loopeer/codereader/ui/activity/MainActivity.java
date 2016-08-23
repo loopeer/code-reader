@@ -92,7 +92,7 @@ public class MainActivity extends BaseActivity {
 
                 break;
             case R.id.action_repo_add:
-
+                Navigator.startAddRepoActivity(this);
                 break;
         }
         return super.onOptionsItemSelected(item);

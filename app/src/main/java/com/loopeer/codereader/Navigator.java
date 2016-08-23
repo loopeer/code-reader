@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.sync.DownloadRepoService;
+import com.loopeer.codereader.ui.activity.AddRepoActivity;
 import com.loopeer.codereader.ui.activity.CodeReadActivity;
 import com.loopeer.codereader.ui.activity.MainActivity;
 import com.loopeer.codereader.ui.activity.SearchActivity;
@@ -62,6 +63,11 @@ public class Navigator {
 
     public static void startSearchActivity(Context context) {
         Intent intent = new Intent(context, SearchActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void startAddRepoActivity(Context context) {
+        Intent intent = new Intent(context, AddRepoActivity.class);
         context.startActivity(intent);
     }
 
