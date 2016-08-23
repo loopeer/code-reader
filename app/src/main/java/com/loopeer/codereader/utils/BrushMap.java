@@ -6,10 +6,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class BrushToJsMap {
+public class BrushMap {
     public static HashMap<String, List<String>> mapping;
 
-    public BrushToJsMap() {
+    static {
+        new BrushMap();
+    }
+
+    public BrushMap() {
         if (mapping == null) {
             mapping = new HashMap();
             init();
@@ -163,15 +167,9 @@ public class BrushToJsMap {
         list = new ArrayList();
         list.add("go");
         mapping.put("Go", list);
-        /*Iterator iterator = G.settings.customFileToJSMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry localEntry = (Map.Entry) ((Iterator) list).next();
-            List localList = Arrays.asList(((String) localEntry.getValue()).split(","));
-            ((List) mapping.get(localEntry.getKey())).addAll(localList);
-        }*/
     }
 
-    public String getJsFileForExtension(String paramString) {
+    public static String getJsFileForExtension(String paramString) {
         paramString = paramString.toLowerCase();
         Iterator localIterator = mapping.entrySet().iterator();
         while (localIterator.hasNext()) {
@@ -181,8 +179,5 @@ public class BrushToJsMap {
             }
         }
         return null;
-    }
-
-    public void refreshMaping() {
     }
 }

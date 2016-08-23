@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">CoReader</string>
     <string name="title_activity_code_read">CoReader</string>
-
+    <string name="title_activity_add_repo">Add Repo</string>
+    <string name="title_activity_setting">Settings</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -45,7 +46,6 @@
 
     <!-- web -->
     <string name="web_url_input_hint">Please input url</string>
-    <string name="title_activity_add_repo">Add Repo</string>
 
     <!-- add repo -->
     <string name="add_repo_name_hint">Repo Name</string>

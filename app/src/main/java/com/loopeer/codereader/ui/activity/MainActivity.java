@@ -27,9 +27,7 @@ import com.loopeer.codereader.ui.decoration.DividerItemDecoration;
 import com.loopeer.codereader.ui.decoration.DividerItemDecorationMainList;
 import com.loopeer.codereader.ui.loader.ILoadHelper;
 import com.loopeer.codereader.ui.loader.RecyclerLoader;
-import com.loopeer.codereader.utils.G;
 import com.loopeer.codereader.utils.RxBus;
-import com.loopeer.codereader.utils.Settings;
 import com.loopeer.directorychooser.FileNod;
 import com.loopeer.directorychooser.NavigatorChooser;
 import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension;
@@ -64,7 +62,6 @@ public class MainActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         Navigator.startDownloadRepoService(this, DownloadRepoService.DOWNLOAD_PROGRESS);
-        G.settings = new Settings(this);
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -89,7 +86,7 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-
+                Navigator.startSettingActivity(this);
                 break;
             case R.id.action_repo_add:
                 Navigator.startAddRepoActivity(this);

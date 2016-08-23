@@ -11,6 +11,7 @@ import com.loopeer.codereader.ui.activity.AddRepoActivity;
 import com.loopeer.codereader.ui.activity.CodeReadActivity;
 import com.loopeer.codereader.ui.activity.MainActivity;
 import com.loopeer.codereader.ui.activity.SearchActivity;
+import com.loopeer.codereader.ui.activity.SettingActivity;
 import com.loopeer.codereader.ui.activity.SimpleWebActivity;
 
 public class Navigator {
@@ -81,6 +82,11 @@ public class Navigator {
 
     public static void startAddRepoActivity(Context context) {
         Intent intent = new Intent(context, AddRepoActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void startSettingActivity(Context context) {
+        Intent intent = new Intent(context, SettingActivity.class);
         context.startActivity(intent);
     }
 

@@ -19,9 +19,9 @@ import com.loopeer.codereader.model.DirectoryNode;
 import com.loopeer.codereader.ui.loader.CodeFragmentContentLoader;
 import com.loopeer.codereader.ui.loader.ILoadHelper;
 import com.loopeer.codereader.ui.view.NestedScrollWebView;
+import com.loopeer.codereader.utils.BrushMap;
 import com.loopeer.codereader.utils.FileTypeUtils;
-import com.loopeer.codereader.utils.G;
-import com.loopeer.codereader.utils.Utils;
+import com.loopeer.codereader.utils.HtmlParser;
 import com.todou.markdownj.MarkdownProcessor;
 
 import java.io.BufferedReader;
@@ -145,7 +145,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                 }
                 final InputStream finalStream = stream;
                 String[] names = mNode.name.split("\\.");
-                String jsFile = G.fileExtToJSMap.getJsFileForExtension(names[names.length - 1]);
+                String jsFile = BrushMap.getJsFileForExtension(names[names.length - 1]);
                 if (jsFile == null) {
                     jsFile = "txt";
                 }
@@ -168,7 +168,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                     sb.append(";'>");
                     sb.append(TextUtils.htmlEncode(localStringBuilder.toString()));
                     sb.append("</pre>");
-                    subscriber.onNext(Utils.buildHtmlContent(getActivity(), sb.toString(), jsFile, mNode.name));
+                    subscriber.onNext(HtmlParser.buildHtmlContent(getActivity(), sb.toString(), jsFile, mNode.name));
                 } catch (OutOfMemoryError e) {
                     subscriber.onError(e);
                 } catch (FileNotFoundException e) {
