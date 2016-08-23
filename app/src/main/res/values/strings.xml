@@ -10,6 +10,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_go_out">Go Out</string>
     <string name="action_save">Save repo</string>
+    <string name="action_repo_add">Add repo</string>
 
     <!-- menu -->
     <string name="menu_web_input">Input url</string>
