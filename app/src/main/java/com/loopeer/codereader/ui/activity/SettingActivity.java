@@ -2,19 +2,24 @@ package com.loopeer.codereader.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.view.View;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.loopeer.codereader.R;
+import com.loopeer.codereader.ui.view.ForegroundRelativeLayout;
 import com.loopeer.codereader.utils.PrefUtils;
 import com.loopeer.directorychooser.ForegroundLinearLayout;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SettingActivity extends BaseActivity {
+public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener {
 
     @BindView(R.id.item_setting_font_size)
-    ForegroundLinearLayout mItemSettingFontSize;
+    ForegroundRelativeLayout mItemSettingFontSize;
     @BindView(R.id.item_setting_line_number)
     ForegroundLinearLayout mItemSettingLineNumber;
     @BindView(R.id.item_setting_use_menlo)
@@ -25,11 +30,16 @@ public class SettingActivity extends BaseActivity {
     AppCompatCheckBox mCheckboxShowLineNumber;
     @BindView(R.id.checkbox_menlo_font)
     AppCompatCheckBox mCheckboxMenloFont;
+    @BindView(R.id.text_setting_font_size_temp)
+    TextView mTextSettingFontSizeTemp;
+    @BindView(R.id.seekbar_setting_font_size)
+    AppCompatSeekBar mSeekbarSettingFontSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        ButterKnife.bind(this);
 
         initViewData();
         setUpView();
@@ -38,6 +48,9 @@ public class SettingActivity extends BaseActivity {
     private void initViewData() {
         mCheckboxShowLineNumber.setChecked(PrefUtils.getPrefDisplayLineNumber(this));
         mCheckboxMenloFont.setChecked(PrefUtils.getPrefMenlofont(this));
+        int fontSize = (int) PrefUtils.getPrefFontSize(this);
+        mSeekbarSettingFontSize.setProgress(fontSize);
+        mTextSettingFontSizeTemp.setTextSize(fontSize);
     }
 
     private void setUpView() {
@@ -45,6 +58,7 @@ public class SettingActivity extends BaseActivity {
                 -> PrefUtils.setPrefDisplayLineNumber(SettingActivity.this, b));
         mCheckboxMenloFont.setOnCheckedChangeListener((compoundButton, b)
                 -> PrefUtils.setPrefMenlofont(SettingActivity.this, b));
+        mSeekbarSettingFontSize.setOnSeekBarChangeListener(this);
     }
 
     @OnClick({
@@ -69,5 +83,21 @@ public class SettingActivity extends BaseActivity {
 
                 break;
         }
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+        mTextSettingFontSizeTemp.setTextSize(i);
+        PrefUtils.setPrefFontSize(this, i);
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
 }

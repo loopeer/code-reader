@@ -10,16 +10,35 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/medium_padding"/>
 
-    <com.loopeer.directorychooser.ForegroundLinearLayout
+    <com.loopeer.codereader.ui.view.ForegroundRelativeLayout
         android:id="@+id/item_setting_font_size"
-        style="@style/ListItemSettingStyle">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/medium_padding"
+        android:background="@android:color/white">
 
         <TextView
             style="@style/ListItemSettingTitleStyle"
+            android:id="@+id/text_setting_font_size_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/setting_font_size"/>
-    </com.loopeer.directorychooser.ForegroundLinearLayout>
+
+        <TextView
+            android:id="@+id/text_setting_font_size_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Hello World"/>
+
+        <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/seekbar_setting_font_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_padding"
+            android:max="30"
+            android:layout_below="@+id/text_setting_font_size_title"/>
+    </com.loopeer.codereader.ui.view.ForegroundRelativeLayout>
 
     <include layout="@layout/view_divider"/>
 
