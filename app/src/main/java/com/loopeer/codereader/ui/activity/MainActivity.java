@@ -19,7 +19,6 @@ import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
 import com.loopeer.codereader.event.DownloadFailDeleteEvent;
-import com.loopeer.codereader.event.DownloadRepoMessageEvent;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.sync.DownloadRepoService;
 import com.loopeer.codereader.ui.adapter.ItemTouchHelperCallback;
@@ -39,7 +38,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends BaseActivity {
@@ -55,7 +53,6 @@ public class MainActivity extends BaseActivity {
 
     private ILoadHelper mRecyclerLoader;
     private MainLatestAdapter mMainLatestAdapter;
-    private Subscription mDownloadStartSubscription;
 
     public ItemTouchHelperExtension mItemTouchHelper;
     public ItemTouchHelperExtension.Callback mCallback;
@@ -120,11 +117,6 @@ public class MainActivity extends BaseActivity {
         super.onResume();
         mRecyclerLoader.showProgress();
         loadLocalData();
-        mDownloadStartSubscription = RxBus.getInstance()
-                .toObservable()
-                .filter(o -> o instanceof DownloadRepoMessageEvent)
-                .doOnNext(o -> showMessage(((DownloadRepoMessageEvent) o).getMessage()))
-                .subscribe();
     }
 
     private void setUpView() {
@@ -189,7 +181,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mDownloadStartSubscription.unsubscribe();
         mMainLatestAdapter.clearSubscription();
     }
 

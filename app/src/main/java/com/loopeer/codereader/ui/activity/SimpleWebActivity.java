@@ -23,14 +23,11 @@ import android.widget.ProgressBar;
 
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
-import com.loopeer.codereader.event.DownloadRepoMessageEvent;
 import com.loopeer.codereader.ui.view.NestedScrollWebView;
 import com.loopeer.codereader.utils.DownloadUrlParser;
-import com.loopeer.codereader.utils.RxBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.android.schedulers.AndroidSchedulers;
 
 public class SimpleWebActivity extends BaseActivity implements SearchView.OnQueryTextListener {
     private static final String TAG = "SimpleWebActivity";
@@ -53,14 +50,6 @@ public class SimpleWebActivity extends BaseActivity implements SearchView.OnQuer
 
         initWeb();
         parseIntent();
-        registerSubscription(
-                RxBus.getInstance()
-                        .toObservable()
-                        .filter(o -> o instanceof DownloadRepoMessageEvent)
-                        .map(o -> (DownloadRepoMessageEvent)o)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnNext(o -> showMessage(o.getMessage()))
-                        .subscribe());
     }
 
     private void initWeb() {

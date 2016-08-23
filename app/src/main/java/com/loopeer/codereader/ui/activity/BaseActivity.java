@@ -2,6 +2,7 @@ package com.loopeer.codereader.ui.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -12,11 +13,14 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.loopeer.codereader.R;
+import com.loopeer.codereader.event.DownloadRepoMessageEvent;
 import com.loopeer.codereader.ui.view.ProgressLoading;
+import com.loopeer.codereader.utils.RxBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class BaseActivity extends AppCompatActivity {
@@ -29,6 +33,20 @@ public class BaseActivity extends AppCompatActivity {
     CoordinatorLayout mCoordinatorContainer;
 
     private final CompositeSubscription mAllSubscription = new CompositeSubscription();
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        registerSubscription(
+                RxBus.getInstance()
+                        .toObservable()
+                        .filter(o -> o instanceof DownloadRepoMessageEvent)
+                        .map(o -> (DownloadRepoMessageEvent) o)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnNext(o -> showMessage(o.getMessage()))
+                        .subscribe());
+    }
 
     @Override
     public void onContentChanged() {
@@ -148,7 +166,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void showMessage(String message) {
-        Snackbar.make(mCoordinatorContainer, message, Snackbar.LENGTH_SHORT)
-                .show();
+        if (mCoordinatorContainer != null)
+            Snackbar.make(mCoordinatorContainer, message, Snackbar.LENGTH_SHORT).show();
     }
 }
