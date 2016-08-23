@@ -104,6 +104,7 @@ public class SimpleWebActivity extends BaseActivity implements SearchView.OnQuer
         mSearchView.setOnQueryTextListener(this);
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_GO);
         mSearchView.setQueryHint(getString(R.string.web_url_input_hint));
+        mSearchView.setMaxWidth(Integer.MAX_VALUE);
         if (mUrl != null && mSearchView != null) mSearchView.setQuery(mUrl, true);
         MenuItemCompat.setOnActionExpandListener(inputView, new MenuItemCompat.OnActionExpandListener() {
             @Override

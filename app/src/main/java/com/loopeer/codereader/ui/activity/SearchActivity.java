@@ -30,6 +30,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
         mSearchView= (SearchView) menu.findItem(R.id.action_search).getActionView();
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         mSearchView.setIconified(false);
+        mSearchView.setMaxWidth(Integer.MAX_VALUE);
         mSearchView.setOnQueryTextListener(this);
         return true;
     }
