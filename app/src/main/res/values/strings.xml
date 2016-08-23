@@ -58,4 +58,10 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- settings -->
+    <string name="setting_font_size">Font size</string>
+    <string name="setting_show_line_number">Show line number</string>
+    <string name="setting_use_menlo_font">Use Menlo Font</string>
+    <string name="setting_theme">Theme</string>
 </resources>

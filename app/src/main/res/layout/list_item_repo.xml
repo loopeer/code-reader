@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:background="@android:color/holo_red_light">
 
-
     <LinearLayout
         android:id="@+id/view_list_repo_action_container"
         android:layout_width="wrap_content"

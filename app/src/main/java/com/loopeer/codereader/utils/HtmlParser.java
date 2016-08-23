@@ -39,13 +39,11 @@ public class HtmlParser {
                         .replace("!SYNTAXHIGHLIGHTER!"
                                 , localStringBuilder.toString())
                         .replace("!JS_FIX_HSCROLL!", temp);
-                if (PrefUtils.getPrefMonospacefont(context)) {
-                    temp = "<link type='text/css' rel='stylesheet' href='style_monospace.css'/>";
-                    return jsFile
-                            .replace("!STYLE_MONOSPACE!", temp)
-                            .replace("!THEME!", PrefUtils.getPrefTheme(context))
-                            .replace("!CODE!", paramString1);
-                }
+                temp = "<link type='text/css' rel='stylesheet' href='style_menlo.css'/>";
+                return jsFile
+                        .replace("!STYLE_MENLO!", PrefUtils.getPrefMenlofont(context) ? temp : "")
+                        .replace("!THEME!", PrefUtils.getPrefTheme(context))
+                        .replace("!CODE!", paramString1);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } finally {

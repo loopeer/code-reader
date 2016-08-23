@@ -8,7 +8,7 @@ public class PrefUtils {
 
     public static final String PREF_FONT_SIZE = "pref_font_size";
     public static final String PREF_DISPLAY_LINE_NUMBER = "pref_display_line_number";
-    public static final String PREF_MONOSPACEFONT = "pref_monospacefont";
+    public static final String PREF_MENLO_FONT = "pref_menlo_font";
     public static final String PREF_THEME = "pref_theme";
 
     public static float getPrefFontSize(final Context context) {
@@ -31,14 +31,14 @@ public class PrefUtils {
         sp.edit().putString(PREF_THEME, theme).commit();
     }
 
-    public static boolean getPrefMonospacefont(final Context context) {
+    public static boolean getPrefMenlofont(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_MONOSPACEFONT, true);
+        return sp.getBoolean(PREF_MENLO_FONT, true);
     }
 
-    public static void setPrefMonospacefont(final Context context, boolean b) {
+    public static void setPrefMenlofont(final Context context, boolean b) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_MONOSPACEFONT, b).commit();
+        sp.edit().putBoolean(PREF_MENLO_FONT, b).commit();
     }
 
     public static boolean getPrefDisplayLineNumber(final Context context) {

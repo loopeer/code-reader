@@ -1,9 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:theme="@style/AccentControlNormalStyle">
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_padding"/>
+
+    <com.loopeer.directorychooser.ForegroundLinearLayout
+        android:id="@+id/item_setting_font_size"
+        style="@style/ListItemSettingStyle">
+
+        <TextView
+            style="@style/ListItemSettingTitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_font_size"/>
+    </com.loopeer.directorychooser.ForegroundLinearLayout>
+
+    <include layout="@layout/view_divider"/>
+
+    <com.loopeer.directorychooser.ForegroundLinearLayout
+        android:id="@+id/item_setting_line_number"
+        style="@style/ListItemSettingStyle"
+        android:paddingTop="@dimen/default_padding"
+        android:paddingBottom="@dimen/default_padding">
+
+        <TextView
+            style="@style/ListItemSettingTitleStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/setting_show_line_number"/>
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_show_line_number"
+            android:layout_width="36dp"
+            android:layout_height="36dp"/>
+    </com.loopeer.directorychooser.ForegroundLinearLayout>
+
+    <include layout="@layout/view_divider"/>
+
+    <com.loopeer.directorychooser.ForegroundLinearLayout
+        android:id="@+id/item_setting_use_menlo"
+        style="@style/ListItemSettingStyle"
+        android:paddingTop="@dimen/default_padding"
+        android:paddingBottom="@dimen/default_padding">
+
+        <TextView
+            style="@style/ListItemSettingTitleStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/setting_use_menlo_font"/>
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_menlo_font"
+            android:layout_width="36dp"
+            android:layout_height="36dp"/>
+    </com.loopeer.directorychooser.ForegroundLinearLayout>
+
+    <include layout="@layout/view_divider"/>
+
+    <com.loopeer.directorychooser.ForegroundLinearLayout
+        android:id="@+id/item_setting_theme"
+        style="@style/ListItemSettingStyle">
+
+        <TextView
+            style="@style/ListItemSettingTitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_theme"/>
+    </com.loopeer.directorychooser.ForegroundLinearLayout>
 
 </LinearLayout>
