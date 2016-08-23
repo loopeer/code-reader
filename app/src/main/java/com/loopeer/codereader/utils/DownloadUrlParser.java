@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.loopeer.codereader.Navigator;
-import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
 import com.loopeer.codereader.model.Repo;
 
 import java.io.File;
@@ -19,15 +18,7 @@ public class DownloadUrlParser {
         String repoName = DownloadUrlParser.getRepoName(url);
         Repo repo = new Repo(repoName
                 , FileCache.getInstance().getRepoAbsolutePath(repoName), downloadUrl, true, 0);
-        Repo sameRepo = CoReaderDbHelper.getInstance(context).readSameRepo(repo);
-        long repoId;
-        if (sameRepo != null) {
-            repoId = Long.parseLong(sameRepo.id);
-        } else {
-            repoId = CoReaderDbHelper.getInstance(context).insertRepo(repo);
-        }
-        repo.id = String.valueOf(repoId);
-        Navigator.startDownloadRepoService(context, repo);
+        Navigator.startDownloadNewRepoService(context, repo);
         return true;
     }
 

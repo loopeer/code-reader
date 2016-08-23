@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:id="@+id/login_form"
+<android.support.design.widget.CoordinatorLayout
+    android:id="@id/view_coordinator_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:padding="@dimen/medium_padding">
+    android:background="@android:color/white"
+    android:gravity="center_horizontal">
 
     <LinearLayout
-        android:id="@+id/email_login_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/medium_padding">
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/email"
+                android:id="@+id/edit_add_repo_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/add_repo_name_hint"
                 android:maxLines="1"
-                android:theme="@style/EditTextStyle"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:theme="@style/EditTextStyle"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -34,26 +34,27 @@
             android:layout_marginTop="@dimen/medium_padding">
 
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/edit_add_repo_url"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/add_repo_url_hint"
-                android:theme="@style/EditTextStyle"
                 android:imeOptions="actionUnspecified"
                 android:maxLines="1"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:theme="@style/EditTextStyle"/>
 
         </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:id="@+id/email_sign_in_button"
+            android:id="@+id/btn_add_repo"
             android:layout_width="match_parent"
             android:layout_height="?attr/listPreferredItemHeightSmall"
             android:layout_marginTop="36dp"
-            android:textColor="@android:color/white"
-            android:backgroundTint="@color/colorAccent"
+            android:background="@drawable/bg_button"
+            android:enabled="false"
             android:text="@string/add_repo_btn"
+            android:textColor="@android:color/white"
             android:textStyle="bold"/>
 
     </LinearLayout>
-</ScrollView>
+</android.support.design.widget.CoordinatorLayout>

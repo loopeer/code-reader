@@ -4,6 +4,7 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 
+import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.sync.DownloadRepoService;
 import com.loopeer.codereader.ui.activity.AddRepoActivity;
@@ -39,6 +40,18 @@ public class Navigator {
         Intent intent = new Intent(context, SimpleWebActivity.class);
         intent.putExtra(EXTRA_WEB_URL, url);
         context.startActivity(intent);
+    }
+
+    public static void startDownloadNewRepoService(Context context, Repo repo) {
+        Repo sameRepo = CoReaderDbHelper.getInstance(context).readSameRepo(repo);
+        long repoId;
+        if (sameRepo != null) {
+            repoId = Long.parseLong(sameRepo.id);
+        } else {
+            repoId = CoReaderDbHelper.getInstance(context).insertRepo(repo);
+        }
+        repo.id = String.valueOf(repoId);
+        Navigator.startDownloadRepoService(context, repo);
     }
 
     public static void startDownloadRepoService(Context context, Repo repo) {

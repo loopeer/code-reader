@@ -1,5 +1,6 @@
 package com.loopeer.codereader.ui.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.event.DownloadRepoMessageEvent;
@@ -153,6 +155,13 @@ public class BaseActivity extends AppCompatActivity {
     public void dismissUnBackProgressLoading() {
         if (mUnBackProgressLoading != null && !isFinishing()) {
             mUnBackProgressLoading.dismiss();
+        }
+    }
+
+    public void hideSoftInputMethod() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(imm.isActive()){
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
 
