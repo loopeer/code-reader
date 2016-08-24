@@ -120,9 +120,28 @@
 
         <TextView
             style="@style/ListItemSettingTitleStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/setting_theme"/>
+
+        <ImageView
+            android:id="@+id/view_setting_theme_day"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/default_padding"
+            android:src="@drawable/theme_shape_day"
+            android:clickable="true"/>
+
+        <ImageView
+            android:id="@+id/view_setting_theme_night"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/theme_shape_night"
+            android:clickable="true"/>
+
     </com.loopeer.directorychooser.ForegroundLinearLayout>
 
 </LinearLayout>

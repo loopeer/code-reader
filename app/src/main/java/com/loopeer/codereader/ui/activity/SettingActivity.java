@@ -4,18 +4,21 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.ui.view.ForegroundRelativeLayout;
+import com.loopeer.codereader.ui.view.ThemeChooser;
 import com.loopeer.codereader.utils.PrefUtils;
 import com.loopeer.directorychooser.ForegroundLinearLayout;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener {
+public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener, ThemeChooser.OnItemSelectListener {
 
     @BindView(R.id.item_setting_font_size)
     ForegroundRelativeLayout mItemSettingFontSize;
@@ -35,12 +38,22 @@ public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarCh
     AppCompatSeekBar mSeekbarSettingFontSize;
     @BindView(R.id.text_setting_font_current)
     TextView mTextSettingFontCurrent;
+    @BindView(R.id.view_setting_theme_day)
+    ImageView mViewSettingThemeDay;
+    @BindView(R.id.view_setting_theme_night)
+    ImageView mViewSettingThemeNight;
+
+    private ThemeChooser mThemeChooser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        ButterKnife.bind(this);
 
+        mThemeChooser = new ThemeChooser(this, this);
+        mThemeChooser.addItem(mViewSettingThemeDay.getId(), "Default");
+        mThemeChooser.addItem(mViewSettingThemeNight.getId(), "Night");
         initViewData();
         setUpView();
     }
@@ -52,6 +65,7 @@ public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarCh
         mSeekbarSettingFontSize.setProgress(fontSize);
         mTextSettingFontCurrent.setText(String.valueOf(fontSize));
         mTextSettingFontSizeTemp.setTextSize(fontSize);
+        mThemeChooser.onItemSelectByTag(PrefUtils.getPrefTheme(this));
     }
 
     private void setUpView() {
@@ -66,7 +80,9 @@ public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarCh
             R.id.item_setting_font_size,
             R.id.item_setting_line_number,
             R.id.item_setting_use_menlo,
-            R.id.item_setting_theme
+            R.id.item_setting_theme,
+            R.id.view_setting_theme_day,
+            R.id.view_setting_theme_night
     })
     @SuppressWarnings("unused")
     public void onClick(View view) {
@@ -82,6 +98,10 @@ public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarCh
                 break;
             case R.id.item_setting_theme:
 
+                break;
+            case R.id.view_setting_theme_day:
+            case R.id.view_setting_theme_night:
+                mThemeChooser.onItemSelect(view);
                 break;
         }
     }
@@ -101,5 +121,10 @@ public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarCh
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+
+    @Override
+    public void onItemSelect(int id, String tag) {
+        PrefUtils.setPrefTheme(this, tag);
     }
 }
