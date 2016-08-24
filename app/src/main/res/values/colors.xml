@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="window_background_grey">@color/color_F7F7F7</color>
+    <color name="window_background_grey">#F7F7F7</color>
     <color name="item_background">@android:color/white</color>
 
     <color name="colorPrimary">#607D8B</color>
@@ -18,13 +18,10 @@
     <color name="color_icons">#FFFFFF</color>
     <color name="color_divider">#E7E7E7</color>
 
-    <color name="repo_color">@color/color_795548</color>
-    <color name="document_color">@color/color_03A9F4</color>
+    <color name="repo_color">#795548</color>
+    <color name="document_color">#03a9f4</color>
     <color name="repo_download_remainder_color">#EEEEEE</color>
-
-    <color name="color_795548">#795548</color>
-    <color name="color_03A9F4">#03a9f4</color>
-    <color name="color_F7F7F7">#F7F7F7</color>
-    <color name="color_8BC34A">#8BC34A</color>
+    <color name="repo_refresh_color">#8BC34A</color>
+    <color name="repo_delete_color">#FF4444</color>
 
 </resources>

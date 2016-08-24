@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/holo_red_light">
+    android:background="@color/repo_delete_color">
 
     <LinearLayout
         android:id="@+id/view_list_repo_action_container"
@@ -25,7 +25,7 @@
             android:id="@+id/view_list_repo_action_update"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/color_8BC34A"
+            android:background="@color/repo_refresh_color"
             android:src="@drawable/ic_cloud_download"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"

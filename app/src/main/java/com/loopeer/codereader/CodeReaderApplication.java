@@ -2,8 +2,10 @@ package com.loopeer.codereader;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.facebook.stetho.Stetho;
+import com.loopeer.codereader.utils.ThemeUtils;
 
 public class CodeReaderApplication extends Application {
     private static CodeReaderApplication mInstance;
@@ -19,6 +21,7 @@ public class CodeReaderApplication extends Application {
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                         .build());
+        AppCompatDelegate.setDefaultNightMode(ThemeUtils.getCurrentNightMode(this));
     }
 
     public static Context getAppContext() {
