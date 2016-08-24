@@ -83,7 +83,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         dividerHeight = DEFAULT_DIVIDER_HEIGHT;
 
         mPaddingPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaddingPaint.setColor(ContextCompat.getColor(mContext, android.R.color.white));
+        mPaddingPaint.setColor(ContextCompat.getColor(mContext, R.color.item_background));
         mPaddingPaint.setStyle(Paint.Style.FILL);
 
         mDividerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

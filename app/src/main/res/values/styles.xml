@@ -1,7 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Widget.Styled.ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="android:colorControlNormal" tools:targetApi="lollipop">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="titleTextStyle">@style/ActionBarTitleText</item>
+    </style>
 
-    <style name="ActionBarStyle" parent="Widget.AppCompat.Toolbar">
-        <item name="contentInsetStartWithNavigation">0dp</item>
+    <style name="ActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="TextAppearence.App.TextInputLayout" parent="TextAppearance.AppCompat">
@@ -31,7 +36,7 @@
         <item name="android:paddingTop">@dimen/medium_padding</item>
         <item name="android:paddingBottom">@dimen/medium_padding</item>
         <item name="android:foreground">?selectableItemBackground</item>
-        <item name="android:background">@android:color/white</item>
+        <item name="android:background">@color/item_background</item>
         <item name="android:clickable">true</item>
         <item name="android:gravity">center_vertical</item>
     </style>

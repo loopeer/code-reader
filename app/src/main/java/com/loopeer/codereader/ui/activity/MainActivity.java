@@ -59,7 +59,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         Navigator.startDownloadRepoService(this, DownloadRepoService.DOWNLOAD_PROGRESS);
         if (ContextCompat.checkSelfPermission(this,

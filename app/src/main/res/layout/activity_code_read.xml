@@ -16,7 +16,7 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@android:color/white"
+        android:background="?android:windowBackground"
         android:clipToPadding="false">
 
         <android.support.v7.widget.RecyclerView

@@ -1,6 +1,7 @@
 package com.loopeer.codereader.ui.activity;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.loopeer.codereader.R;
 import com.loopeer.codereader.ui.view.ForegroundRelativeLayout;
 import com.loopeer.codereader.ui.view.ThemeChooser;
 import com.loopeer.codereader.utils.PrefUtils;
+import com.loopeer.codereader.utils.ThemeUtils;
 import com.loopeer.directorychooser.ForegroundLinearLayout;
 
 import butterknife.BindView;
@@ -19,6 +21,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener, ThemeChooser.OnItemSelectListener {
+
+
 
     @BindView(R.id.item_setting_font_size)
     ForegroundRelativeLayout mItemSettingFontSize;
@@ -52,8 +56,8 @@ public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarCh
         ButterKnife.bind(this);
 
         mThemeChooser = new ThemeChooser(this, this);
-        mThemeChooser.addItem(mViewSettingThemeDay.getId(), "Default");
-        mThemeChooser.addItem(mViewSettingThemeNight.getId(), "Night");
+        mThemeChooser.addItem(mViewSettingThemeDay.getId(), ThemeUtils.THEME_DAY);
+        mThemeChooser.addItem(mViewSettingThemeNight.getId(), ThemeUtils.THEME_NIGHT);
         initViewData();
         setUpView();
     }
@@ -125,6 +129,10 @@ public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarCh
 
     @Override
     public void onItemSelect(int id, String tag) {
+        AppCompatDelegate.setDefaultNightMode(tag.equals(ThemeUtils.THEME_DAY)
+                ? AppCompatDelegate.MODE_NIGHT_NO
+                : AppCompatDelegate.MODE_NIGHT_YES);
+        recreate();
         PrefUtils.setPrefTheme(this, tag);
     }
 }
