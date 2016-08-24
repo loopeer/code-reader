@@ -20,6 +20,7 @@ import com.loopeer.codereader.ui.loader.CodeFragmentContentLoader;
 import com.loopeer.codereader.ui.loader.ILoadHelper;
 import com.loopeer.codereader.ui.view.NestedScrollWebView;
 import com.loopeer.codereader.utils.BrushMap;
+import com.loopeer.codereader.utils.ColorUtils;
 import com.loopeer.codereader.utils.FileTypeUtils;
 import com.loopeer.codereader.utils.HtmlParser;
 import com.todou.markdownj.MarkdownProcessor;
@@ -216,6 +217,10 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
 
                             if (textString != null) {
                                 MarkdownProcessor m = new MarkdownProcessor(mRootNode.absolutePath);
+                                m.setTextColorString(ColorUtils.getColorString(getContext()
+                                        , R.color.text_color_primary));
+                                m.setBackgroundColorString(ColorUtils.getColorString(getContext()
+                                        , R.color.window_background_grey));
                                 String html = m.markdown(textString);
                                 subscriber.onNext(html);
                             }

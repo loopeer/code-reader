@@ -71,6 +71,8 @@ public class MarkdownProcessor {
             "</style>";
     private int listLevel;
     private int tabWidth = 4;
+    private String textColor;
+    private String backgroundColor;
     private String localHostPath;
 
     /**
@@ -115,7 +117,9 @@ public class MarkdownProcessor {
     public String wrapHtml(String content) {
         String result = "<html>"
                 + sCss
-                + "<body style=\"margin-top: 40px; margin-bottom: 40px; vertical-align: center;\">"
+                + "<body style=\"margin-top: 40px; margin-bottom: 40px; vertical-align: center;background-color:"
+                + backgroundColor
+                + ";\">"
                 + content
                 + "</body></html>";
         return result;
@@ -293,12 +297,12 @@ public class MarkdownProcessor {
             String paragraph = paragraphs[i];
             String decoded = HTML_PROTECTOR.decode(paragraph);
             if (decoded != null) {
-                paragraphs[i] = decoded;
+                paragraphs[i] = "<font color=\""+ textColor +"\">" + decoded +"</font>";
             } else if (isCodeParagraph(paragraph)) {
                 paragraphs[i] = handleCodeParagraph(paragraph);
             } else {
                 paragraph = runSpanGamut(new TextEditor(paragraph)).toString();
-                paragraphs[i] = "<p>" + paragraph + "</p>";
+                paragraphs[i] = "<p style=\"color:"+ textColor +";\">" + paragraph + "</p>";
             }
         }
         return new TextEditor(join("\n\n", paragraphs));
@@ -964,5 +968,13 @@ public class MarkdownProcessor {
             System.err.println("Error reading input: " + e.getMessage());
             System.exit(1);
         }
+    }
+
+    public void setTextColorString(String colorString) {
+        textColor = colorString;
+    }
+
+    public void setBackgroundColorString(String colorString) {
+        backgroundColor = colorString;
     }
 }
