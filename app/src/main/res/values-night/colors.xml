@@ -21,7 +21,7 @@
 
     <color name="repo_color">#48332b</color>
     <color name="document_color">#046895</color>
-    <color name="repo_download_remainder_color">#EEEEEE</color>
+    <color name="repo_download_remainder_color">#4b4b4b</color>
     <color name="repo_refresh_color">#5B812F</color>
     <color name="repo_delete_color">#BE3333</color>
 

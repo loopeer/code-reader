@@ -203,11 +203,9 @@ public class DownloadRepoService extends Service {
                     int bytes_total = cursor.getInt(
                             cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
 
-                    //TODO
                     String mediaType = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_MEDIA_TYPE));
                     int reason = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_REASON));
                     int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
-                    Log.e(TAG, "MEDIA: " + mediaType + "    status : " + status + "    reason: " + reason);
                     if (status == DownloadManager.STATUS_FAILED
                             && !MEDIA_TYPE_ZIP.equals(mediaType)
                             && reason == DownloadManager.ERROR_UNKNOWN) {
