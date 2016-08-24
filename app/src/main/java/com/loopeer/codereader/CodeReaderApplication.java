@@ -1,14 +1,12 @@
 package com.loopeer.codereader;
 
-import android.app.Application;
 import android.content.Context;
 import android.support.v7.app.AppCompatDelegate;
 
-import com.facebook.stetho.Stetho;
 import com.loopeer.codereader.utils.ThemeUtils;
 
-public class CodeReaderApplication extends Application {
-    private static CodeReaderApplication mInstance;
+public class CodeReaderApplication extends BaseApp {
+    private static BaseApp mInstance;
     private static Context sAppContext;
 
     @Override
@@ -16,11 +14,6 @@ public class CodeReaderApplication extends Application {
         super.onCreate();
         mInstance = this;
         sAppContext = getApplicationContext();
-        Stetho.initialize(
-                Stetho.newInitializerBuilder(this)
-                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
-                        .build());
         AppCompatDelegate.setDefaultNightMode(ThemeUtils.getCurrentNightMode(this));
     }
 
@@ -28,7 +21,7 @@ public class CodeReaderApplication extends Application {
         return sAppContext;
     }
 
-    public static CodeReaderApplication getInstance() {
+    public static BaseApp getInstance() {
         return mInstance;
     }
 

@@ -34,6 +34,7 @@ android {
     }
 
     buildTypes {
+        debug{}
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -43,6 +44,19 @@ android {
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
+    }
+
+    productFlavors {
+        develop {
+        }
+        developV21 {
+            minSdkVersion 21
+        }
+        fir {
+        }
+        loopeer{
+
+        }
     }
 }
 
