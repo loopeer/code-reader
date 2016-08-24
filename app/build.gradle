@@ -15,10 +15,29 @@ android {
         versionCode Integer.parseInt(version_code)
         versionName version_name
     }
+
+
+    signingConfigs {
+        release {
+            Properties properties = new Properties()
+
+            FileInputStream fis = new FileInputStream("$project.rootDir/keystore.properties")
+            properties.load(fis)
+            fis.close()
+
+            keyAlias = properties.key_alias
+            storeFile = file(properties.store_file)
+
+            storePassword = properties.store_password
+            keyPassword = properties.key_password
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
