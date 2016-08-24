@@ -3,6 +3,8 @@ package com.loopeer.codereader.utils;
 import android.content.Context;
 import android.os.Build;
 
+import com.loopeer.codereader.R;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -43,7 +45,10 @@ public class HtmlParser {
                 return jsFile
                         .replace("!STYLE_MENLO!", PrefUtils.getPrefMenlofont(context) ? temp : "")
                         .replace("!THEME!", PrefUtils.getPrefTheme(context))
-                        .replace("!CODE!", paramString1);
+                        .replace("!CODE!", paramString1)
+
+                        .replace("!WINDOW_BACK_GROUND_COLOR!"
+                                , ColorUtils.getColorString(context, R.color.code_read_background_color));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } finally {

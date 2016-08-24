@@ -2,6 +2,7 @@
 <resources>
     <color name="window_background_grey">#2B2B2B</color>
     <color name="item_background">#303030</color>
+    <color name="code_read_background_color">#2B2B2B</color>
 
     <color name="colorPrimary">#41555E</color>
     <color name="colorPrimaryDark">#2A383E</color>

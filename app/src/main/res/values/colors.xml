@@ -2,6 +2,7 @@
 <resources>
     <color name="window_background_grey">#F7F7F7</color>
     <color name="item_background">@android:color/white</color>
+    <color name="code_read_background_color">#FFFFFF</color>
 
     <color name="colorPrimary">#607D8B</color>
     <color name="colorPrimaryDark">#455A64</color>
