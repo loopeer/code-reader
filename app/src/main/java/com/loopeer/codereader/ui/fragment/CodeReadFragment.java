@@ -64,7 +64,8 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container
+            , @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_code_read, container, false);
     }
 
@@ -114,7 +115,9 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
 
     private void openImageFile() {
         String string = "<html>" +
-                "<body style=\"margin-top: 40px; margin-bottom: 40px; text-align: center; vertical-align: center;\">"
+                "<body style=\"background-color:"
+                + ColorUtils.getColorString(getContext(), R.color.code_read_background_color)
+                + ";margin-top: 40px; margin-bottom: 40px; text-align: center; vertical-align: center;\">"
                 + "<img src='file:///" + mNode.absolutePath + "'>"
                 + "</body></html>";
         mWebCodeRead.loadDataWithBaseURL(null, string
@@ -153,7 +156,8 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                 StringBuilder sb = new StringBuilder();
                 StringBuilder localStringBuilder = new StringBuilder();
                 try {
-                    BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(finalStream, "UTF-8"));
+                    BufferedReader localBufferedReader = new BufferedReader(
+                            new InputStreamReader(finalStream, "UTF-8"));
                     for (; ; ) {
                         String str = localBufferedReader.readLine();
                         if (str == null) {
@@ -169,7 +173,8 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                     sb.append(";'>");
                     sb.append(TextUtils.htmlEncode(localStringBuilder.toString()));
                     sb.append("</pre>");
-                    subscriber.onNext(HtmlParser.buildHtmlContent(getActivity(), sb.toString(), jsFile, mNode.name));
+                    subscriber.onNext(HtmlParser.buildHtmlContent(getActivity(), sb.toString()
+                            , jsFile, mNode.name));
                 } catch (OutOfMemoryError e) {
                     subscriber.onError(e);
                 } catch (FileNotFoundException e) {
@@ -182,7 +187,8 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(o -> mWebCodeRead.loadDataWithBaseURL("file:///android_asset/", o, "text/html", "UTF-8", ""))
+                .doOnNext(o -> mWebCodeRead.loadDataWithBaseURL("file:///android_asset/"
+                        , o, "text/html", "UTF-8", ""))
                 .doOnError(e -> mCodeContentLoader.showEmpty(e.getMessage()))
                 .onErrorResumeNext(Observable.empty())
                 .subscribe();
@@ -204,7 +210,8 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                         final InputStream finalStream = stream;
                         StringBuilder localStringBuilder = new StringBuilder();
                         try {
-                            BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(finalStream, "UTF-8"));
+                            BufferedReader localBufferedReader = new BufferedReader(
+                                    new InputStreamReader(finalStream, "UTF-8"));
                             for (; ; ) {
                                 String str = localBufferedReader.readLine();
                                 if (str == null) {
@@ -220,7 +227,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                                 m.setTextColorString(ColorUtils.getColorString(getContext()
                                         , R.color.text_color_primary));
                                 m.setBackgroundColorString(ColorUtils.getColorString(getContext()
-                                        , R.color.window_background_grey));
+                                        , R.color.code_read_background_color));
                                 String html = m.markdown(textString);
                                 subscriber.onNext(html);
                             }
@@ -236,7 +243,8 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                 })
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnNext(s -> mWebCodeRead.loadDataWithBaseURL("fake://", s, "text/html", "UTF-8", ""))
+                        .doOnNext(s -> mWebCodeRead.loadDataWithBaseURL("fake://", s, "text/html"
+                                , "UTF-8", ""))
                         .doOnError(e -> mCodeContentLoader.showEmpty(e.getMessage()))
                         .onErrorResumeNext(Observable.empty())
                         .subscribe()
