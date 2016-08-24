@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@color/colorControlNormal</item>
+        <item name="colorControlHighlight">@color/colorControlNormal</item>
 
         <item name="android:textColorPrimary">@color/text_color_primary</item>
         <item name="android:textColorSecondary">@color/text_color_secondary</item>
@@ -17,6 +18,10 @@
 
         <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
+
+        <item name="actionBarTheme">@style/Widget.Theme.ActionBar</item>
+        <item name="android:actionBarTheme" tools:targetApi="lollipop">@style/Widget.Theme.ActionBar</item>
+
     </style>
 
     <style name="Theme.CodeReader.NoActionBar">

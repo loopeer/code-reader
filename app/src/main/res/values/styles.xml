@@ -5,6 +5,13 @@
         <item name="titleTextStyle">@style/ActionBarTitleText</item>
     </style>
 
+    <style name="Widget.Theme.ActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:colorControlNormal" tools:targetApi="lollipop">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
+
+
     <style name="ActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@android:color/white</item>
     </style>

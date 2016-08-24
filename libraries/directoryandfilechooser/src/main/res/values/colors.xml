@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="color_divider">#E7E7E7</color>
+    <color name="window_background_grey">#F7F7F7</color>
+    <color name="item_background">@android:color/white</color>
 </resources>
