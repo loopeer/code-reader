@@ -13,7 +13,6 @@ import com.loopeer.codereader.utils.PrefUtils;
 import com.loopeer.directorychooser.ForegroundLinearLayout;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener {
@@ -34,12 +33,13 @@ public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarCh
     TextView mTextSettingFontSizeTemp;
     @BindView(R.id.seekbar_setting_font_size)
     AppCompatSeekBar mSeekbarSettingFontSize;
+    @BindView(R.id.text_setting_font_current)
+    TextView mTextSettingFontCurrent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        ButterKnife.bind(this);
 
         initViewData();
         setUpView();
@@ -50,6 +50,7 @@ public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarCh
         mCheckboxMenloFont.setChecked(PrefUtils.getPrefMenlofont(this));
         int fontSize = (int) PrefUtils.getPrefFontSize(this);
         mSeekbarSettingFontSize.setProgress(fontSize);
+        mTextSettingFontCurrent.setText(String.valueOf(fontSize));
         mTextSettingFontSizeTemp.setTextSize(fontSize);
     }
 
@@ -89,6 +90,7 @@ public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarCh
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
         mTextSettingFontSizeTemp.setTextSize(i);
         PrefUtils.setPrefFontSize(this, i);
+        mTextSettingFontCurrent.setText(String.valueOf(i));
     }
 
     @Override

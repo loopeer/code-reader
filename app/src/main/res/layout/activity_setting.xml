@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -14,12 +15,12 @@
         android:id="@+id/item_setting_font_size"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/medium_padding"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        android:padding="@dimen/medium_padding">
 
         <TextView
-            style="@style/ListItemSettingTitleStyle"
             android:id="@+id/text_setting_font_size_title"
+            style="@style/ListItemSettingTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/setting_font_size"/>
@@ -29,15 +30,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/text_setting_font_size_title"
             android:text="Hello World"/>
 
         <android.support.v7.widget.AppCompatSeekBar
             android:id="@+id/seekbar_setting_font_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/text_setting_font_size_title"
             android:layout_marginTop="@dimen/large_padding"
-            android:max="30"
-            android:layout_below="@+id/text_setting_font_size_title"/>
+            android:max="30"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seekbar_setting_font_size"
+            android:layout_marginTop="@dimen/inline_padding"
+            android:text="0"
+            android:textSize="@dimen/text_size_small"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/seekbar_setting_font_size"
+            android:layout_marginTop="@dimen/inline_padding"
+            android:text="30"
+            android:textSize="@dimen/text_size_small"/>
+
+        <TextView
+            android:id="@+id/text_setting_font_current"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/seekbar_setting_font_size"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/inline_padding"
+            android:textColor="?attr/colorAccent"
+            android:textSize="@dimen/text_size_small"
+            tools:text="12"/>
     </com.loopeer.codereader.ui.view.ForegroundRelativeLayout>
 
     <include layout="@layout/view_divider"/>
@@ -45,8 +75,8 @@
     <com.loopeer.directorychooser.ForegroundLinearLayout
         android:id="@+id/item_setting_line_number"
         style="@style/ListItemSettingStyle"
-        android:paddingTop="@dimen/default_padding"
-        android:paddingBottom="@dimen/default_padding">
+        android:paddingBottom="@dimen/default_padding"
+        android:paddingTop="@dimen/default_padding">
 
         <TextView
             style="@style/ListItemSettingTitleStyle"
@@ -66,8 +96,8 @@
     <com.loopeer.directorychooser.ForegroundLinearLayout
         android:id="@+id/item_setting_use_menlo"
         style="@style/ListItemSettingStyle"
-        android:paddingTop="@dimen/default_padding"
-        android:paddingBottom="@dimen/default_padding">
+        android:paddingBottom="@dimen/default_padding"
+        android:paddingTop="@dimen/default_padding">
 
         <TextView
             style="@style/ListItemSettingTitleStyle"
