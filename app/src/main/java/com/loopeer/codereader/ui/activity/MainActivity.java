@@ -144,6 +144,13 @@ public class MainActivity extends BaseActivity {
         setUpContent(repos);
     }
 
+    @Override
+    protected void reCreateRefresh() {
+        super.reCreateRefresh();
+        mRecyclerView.getRecycledViewPool().clear();
+        mMainLatestAdapter.notifyDataSetChanged();
+    }
+
     private void setUpContent(List<Repo> repos) {
         mRecyclerLoader.showContent();
         mMainLatestAdapter.updateData(repos);

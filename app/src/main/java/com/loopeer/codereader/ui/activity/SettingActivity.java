@@ -10,9 +10,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.loopeer.codereader.R;
+import com.loopeer.codereader.event.ThemeRecreateEvent;
 import com.loopeer.codereader.ui.view.ForegroundRelativeLayout;
 import com.loopeer.codereader.ui.view.ThemeChooser;
 import com.loopeer.codereader.utils.PrefUtils;
+import com.loopeer.codereader.utils.RxBus;
 import com.loopeer.codereader.utils.ThemeUtils;
 import com.loopeer.directorychooser.ForegroundLinearLayout;
 
@@ -132,7 +134,8 @@ public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarCh
         AppCompatDelegate.setDefaultNightMode(tag.equals(ThemeUtils.THEME_DAY)
                 ? AppCompatDelegate.MODE_NIGHT_NO
                 : AppCompatDelegate.MODE_NIGHT_YES);
-        recreate();
+
+        RxBus.getInstance().send(new ThemeRecreateEvent());
         PrefUtils.setPrefTheme(this, tag);
     }
 }

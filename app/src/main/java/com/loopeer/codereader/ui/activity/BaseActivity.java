@@ -9,7 +9,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -17,9 +16,9 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.event.DownloadRepoMessageEvent;
+import com.loopeer.codereader.event.ThemeRecreateEvent;
 import com.loopeer.codereader.ui.view.ProgressLoading;
 import com.loopeer.codereader.utils.RxBus;
-import com.loopeer.codereader.utils.ThemeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +48,14 @@ public class BaseActivity extends AppCompatActivity {
                         .map(o -> (DownloadRepoMessageEvent) o)
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(o -> showMessage(o.getMessage()))
+                        .subscribe());
+
+        registerSubscription(
+                RxBus.getInstance()
+                        .toObservable()
+                        .filter(o -> o instanceof ThemeRecreateEvent)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnNext(o -> recreate())
                         .subscribe());
     }
 
@@ -84,13 +91,8 @@ public class BaseActivity extends AppCompatActivity {
         mAllSubscription.clear();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (ThemeUtils.getCurrentNightMode(this) != AppCompatDelegate.getDefaultNightMode()) {
-            AppCompatDelegate.setDefaultNightMode(ThemeUtils.getCurrentNightMode(this));
-            recreate();
-        }
+    protected  void reCreateRefresh() {
+
     }
 
     @Override
