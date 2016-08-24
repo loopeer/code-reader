@@ -36,7 +36,7 @@
   color: #b0b0b0 !important;
 }
 .syntaxhighlighter .gutter .line {
-  border-right: 1px solid #efefef !important;
+  border-right: 1px solid #555557 !important;
 }
 .syntaxhighlighter .gutter .line.highlighted {
   background-color: #6ce26c !important;

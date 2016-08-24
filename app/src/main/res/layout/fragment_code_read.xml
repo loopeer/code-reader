@@ -15,8 +15,7 @@
         <com.loopeer.codereader.ui.view.NestedScrollWebView
             android:id="@+id/web_code_read"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent"/>
 
         <com.loopeer.codereader.ui.view.ProgressIndicatorView
             android:id="@+id/progress_code_fragment"
