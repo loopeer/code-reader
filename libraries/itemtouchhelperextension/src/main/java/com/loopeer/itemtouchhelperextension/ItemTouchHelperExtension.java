@@ -300,6 +300,9 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                 }
             } else if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
                 mActivePointerId = ACTIVE_POINTER_ID_NONE;
+                if (mClick) {
+                    doChildClickEvent(event.getRawX(), event.getRawY());
+                }
                 select(null, ACTION_STATE_IDLE);
             } else if (mActivePointerId != ACTIVE_POINTER_ID_NONE) {
                 // in a non scroll orientation, if distance change is above threshold, we
@@ -315,17 +318,6 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
             if (mVelocityTracker != null) {
                 mVelocityTracker.addMovement(event);
             }
-
-            /*if (mPreOpened != null && mPreOpened != mSelected && mSelected != null) {
-                closeOpenedPreItem();
-                return false;
-            }*/
-/*
-            if (mPreOpened != null && mPreOpened != mSelected) {
-                closeOpenedPreItem();
-                return false;
-            }
-*/
             return mSelected != null;
         }
 
@@ -433,6 +425,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
     }
 
     private void doChildClickEvent(float x, float y) {
+        if (mSelected == null) return;
         View view = mSelected.itemView;
         View consumeEventView = findConsumeView((ViewGroup) view, x, y);
         if (consumeEventView != null) {
@@ -903,7 +896,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                 < viewHolder.itemView.getWidth() * threshold) {
             return;
         }
-        List<RecyclerView.ViewHolder> swapTargets = findSwapTargets(viewHolder);
+        List<ViewHolder> swapTargets = findSwapTargets(viewHolder);
         if (swapTargets.size() == 0) {
             return;
         }
@@ -2104,7 +2097,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
          * ItemTouchHelper also takes care of drawing the child after other children if it is being
          * dragged. This is done using child re-ordering mechanism. On platforms prior to L, this
          * is
-         * achieved via {@link android.view.ViewGroup#getChildDrawingOrder(int, int)} and on L
+         * achieved via {@link ViewGroup#getChildDrawingOrder(int, int)} and on L
          * and after, it changes View's elevation value to be greater than all other children.)
          *
          * @param c                 The canvas which RecyclerView is drawing its children
@@ -2138,7 +2131,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
          * ItemTouchHelper also takes care of drawing the child after other children if it is being
          * dragged. This is done using child re-ordering mechanism. On platforms prior to L, this
          * is
-         * achieved via {@link android.view.ViewGroup#getChildDrawingOrder(int, int)} and on L
+         * achieved via {@link ViewGroup#getChildDrawingOrder(int, int)} and on L
          * and after, it changes View's elevation value to be greater than all other children.)
          *
          * @param c                 The canvas which RecyclerView is drawing its children
