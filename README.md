@@ -6,12 +6,16 @@ One Android App support mutil program language.C C# C++ java swift go php xml js
 * Add repo by name and download url
 * Open local file.
 
+###Download
+[Fir Download](http://fir.im/coreader)
+[Download from release](https://github.com/loopeer/code-reader/releases/tag/V1.0.1)
+
 Screeshot
 ====
 ###Day night theme  
 ![](/screenshot/codereader_setting_day_h.gif)   ![](/screenshot/codereader_setting_night_h.gif)     
 ![](/screenshot/codereader_setting_day.gif)   ![](/screenshot/codereader_setting_night.gif)     
-###Repo item swipe action
+###Repo item swipe action(Sea [itemtouchhelper-extension](https://github.com/loopeer/itemtouchhelper-extension))
 ![](/screenshot/codereader_itemtouch.gif)  
 ###Download repo from github trending
 ![](/screenshot/codereader_trending.gif)   
