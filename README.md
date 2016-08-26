@@ -1,5 +1,5 @@
 ![](/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)   
-# code-reader  
+# CoReader  
 One Android App support mutil program language.C C# C++ java swift go php xml json...It's useful for developer to read on the phone.  
 ###Add repo:
 * Can download repo from github trending
