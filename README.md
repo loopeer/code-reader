@@ -1,4 +1,4 @@
-# code-reader
+# ![](/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)code-reader
 One Android App support mutil program language.C C# C++ java swift go php xml json...It's useful for developer to read on the phone.
 ###Add repo:
 * Can download repo from github trending
@@ -7,7 +7,7 @@ One Android App support mutil program language.C C# C++ java swift go php xml js
 * Open local file.
 
 ###Download
-[Fir Download](http://fir.im/coreader)
+[Fir Download](http://fir.im/coreader)  
 [Download from release](https://github.com/loopeer/code-reader/releases/tag/V1.0.1)
 
 Screeshot
