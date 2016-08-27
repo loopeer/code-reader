@@ -1,5 +1,7 @@
 package com.loopeer.codereader.ui.fragment;
 
+import android.annotation.TargetApi;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,9 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.model.DirectoryNode;
 import com.loopeer.codereader.ui.loader.CodeFragmentContentLoader;
@@ -84,10 +89,27 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
         mWebCodeRead.getSettings().setBuiltInZoomControls(true);
         mWebCodeRead.setWebViewClient(new WebViewClient() {
             @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
                 mCodeContentLoader.showContent();
             }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Navigator.startWebActivity(getContext(), url);
+                return true;
+            }
+
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                Navigator.startWebActivity(getContext(), String.valueOf(request.getUrl()));
+                return true;
+            }
+        });
+
+        mWebCodeRead.setWebChromeClient(new WebChromeClient(){
+
         });
         if (Build.VERSION.SDK_INT >= 11) {
             ((Runnable) () -> mWebCodeRead.getSettings().setDisplayZoomControls(false)).run();

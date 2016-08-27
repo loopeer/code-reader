@@ -734,7 +734,7 @@ public class MarkdownProcessor {
             doLocalImage(text);
         }
         text.replaceAll("!\\[(.*)\\]\\((.*) \"(.*)\"\\)", "<img src=\"$2\" alt=\"$1\" title=\"$3\" />");
-        text.replaceAll("!\\[(.*)\\]\\((.*)\\)", "<img src=\"$2\" alt=\"$1\" />");
+        text.replaceAll("!\\[([^\\[\\]]*)\\]\\(([^\\(\\)]*)\\)", "<img src=\"$2\" alt=\"$1\" />");
         /*text.replaceAll("!\\[(.*)\\]\\((.*) \"(.*)\"\\)", "<img src=\"$2\" alt=\"$1\" title=\"$3\" />");
         text.replaceAll("!\\[(.*)\\]\\((.*)\\)", "<img src=\"$2\" alt=\"$1\" />");*/
         // Reference-style image syntax
