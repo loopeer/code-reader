@@ -151,7 +151,7 @@ public class BrushMap {
         list.add("txt");
         list.add("bat");
         list.add("pbxproj");
-        mapping.put("NoF", list);
+        mapping.put("Txt", list);
         list = new ArrayList();
         list.add("pro");
         mapping.put("Pro", list);

@@ -173,7 +173,7 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                 String[] names = mNode.name.split("\\.");
                 String jsFile = BrushMap.getJsFileForExtension(names[names.length - 1]);
                 if (jsFile == null) {
-                    jsFile = "txt";
+                    jsFile = "Txt";
                 }
                 StringBuilder sb = new StringBuilder();
                 StringBuilder localStringBuilder = new StringBuilder();

@@ -12,7 +12,7 @@
 	Brush.prototype	= new SyntaxHighlighter.Highlighter();
 	Brush.aliases	= ['bat', 'txt', 'pbxproj'];
 
-	SyntaxHighlighter.brushes.Nof = Brush;
+	SyntaxHighlighter.brushes.Txt = Brush;
 
 	// CommonJS
 	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
