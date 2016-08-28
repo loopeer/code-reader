@@ -71,8 +71,9 @@ public class MarkdownProcessor {
             "</style>";
     private int listLevel;
     private int tabWidth = 4;
-    private String textColor;
-    private String backgroundColor;
+    private String textColor = "#333333";
+    private String backgroundColor = "#FFFFFF";
+    private String codeBlockColor = "#F7F7F7";
     private String localHostPath;
 
     /**
@@ -395,7 +396,9 @@ public class MarkdownProcessor {
             }
 
             public String genericCodeBlock(String text) {
-                String codeBlockTemplate = "<div style=\"background-color:#f7f7f7;padding:10px;" +
+                String codeBlockTemplate = "<div style=\"background-color:" +
+                        codeBlockColor +
+                        ";padding:10px;" +
                         "display: inline-block;margin-bottom:10px;\">" +
                         "<pre><code>%s</code></pre>" +
                         "</div>";
@@ -905,5 +908,9 @@ public class MarkdownProcessor {
 
     public void setBackgroundColorString(String colorString) {
         backgroundColor = colorString;
+    }
+
+    public void setCodeBlockColor(String codeBlockColor) {
+        this.codeBlockColor = codeBlockColor;
     }
 }
