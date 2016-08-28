@@ -421,9 +421,9 @@ public class MarkdownProcessor {
 
     private TextEditor doTableBlocks(TextEditor markup) {
         Pattern p = Pattern.compile(
-                "(\\|(?:[^\\n]*\\|)+\\n" +
-                        "\\|(?:[ ]*-+[ ]*\\|)+\\n" +
-                        "(?:\\|(?:[^\\n]*\\|)+[^\n]*\\n)+)", Pattern.DOTALL);
+                "(\\|?(?:[^\\n]*\\|)+[^\\n]*\\n" +
+                        "\\|?(?:[ ]*-+[ ]*\\|)+[^\\n]*\\n" +
+                        "(?:\\|?(?:[^\\n]*\\|)+[^\n]*\\n)+)", Pattern.DOTALL);
         return markup.replaceAll(p, new Replacement() {
             @Override
             public String replacement(Matcher m) {
@@ -431,8 +431,6 @@ public class MarkdownProcessor {
                 String[] lines = tableMd.split("\\n");
                 StringBuilder sb = new StringBuilder();
                 sb.append("<table class=\"table\"");
-                /*sb.append("<table class=\"table\" cellspacing=\"0px\" cellPadding=\"5\" bordercolor=\""
-                        + tableBorderColor + "\"");*/
                 sb.append(createTableHeaders(lines[0]));
                 for (int i = 2; i < lines.length; i++) {
                     sb.append(createTableRow(lines[i], (i & 1) == 1));
