@@ -25,6 +25,18 @@ Screeshot
 ###Add repo to download
 ![](/screenshot/codereader_add.gif)
 
+Collaborators 
+====
+[kKumaJ](https://github.com/kKumaJ)
+[yanxinit](https://github.com/yanxinit)
+
+Contact me: 
+====
+Github:[ToDou](https://github.com/ToDou)   
+Gmail:[yytodou123@gmail.com](yytodou123@gmail.com)
+
+**Code Reader for us.If you find some suggestion or bug.Can contact me or add issues...Welcome your help**
+
 License
 ====
 <pre>
