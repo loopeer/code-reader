@@ -394,7 +394,7 @@ public class MarkdownProcessor {
     private TextEditor doCodeBlocks(TextEditor markup) {
         Pattern p = Pattern.compile(
                 "(?:`{3}[a-zA-Z]*)" +
-                        "([^```]*)" +
+                        "((?:(?!(```)).)*)" +
                         "(?:`{3})", Pattern.DOTALL);
         return markup.replaceAll(p, new Replacement() {
 
