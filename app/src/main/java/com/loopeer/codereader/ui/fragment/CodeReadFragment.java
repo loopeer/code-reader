@@ -252,6 +252,8 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                                         , R.color.code_read_background_color));
                                 m.setCodeBlockColor(ColorUtils.getColorString(getContext()
                                         , R.color.code_block_color));
+                                m.setTableBorderColor(ColorUtils.getColorString(getContext()
+                                        , R.color.table_block_border_color));
                                 String html = m.markdown(textString);
                                 subscriber.onNext(html);
                             }

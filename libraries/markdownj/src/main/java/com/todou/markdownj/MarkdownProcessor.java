@@ -56,24 +56,12 @@ public class MarkdownProcessor {
     private Map<String, LinkDefinition> linkDefinitions = new TreeMap<String, LinkDefinition>();
     private static final CharacterProtector HTML_PROTECTOR = new CharacterProtector();
     private static final CharacterProtector CHAR_PROTECTOR = new CharacterProtector();
-    private static final String sCss = "<style type=\"text/css\">\n" +
-            ".a {\n" +
-            "    background-color: #c7dec6;\n" +
-            "    border: 1px solid #000;\n" +
-            "    border-top-left-radius: 10px;\n" +
-            "    border-top-right-radius: 10px;\n" +
-            "border-bottom-left-radius: 10px;\n" +
-            "border-bottom-right-radius: 10px;\n" +
-            "height:auto;\n" +
-            "width:auto;\n" +
-            "padding:20px;\n" +
-            "}\n" +
-            "</style>";
     private int listLevel;
     private int tabWidth = 4;
     private String textColor = "#333333";
     private String backgroundColor = "#FFFFFF";
     private String codeBlockColor = "#F7F7F7";
+    private String tableBorderColor = "#EAEAEA";
     private String localHostPath;
 
     /**
@@ -117,13 +105,35 @@ public class MarkdownProcessor {
 
     public String wrapHtml(String content) {
         String result = "<html>"
-                + sCss
-                + "<body style=\"margin-top: 40px; margin-bottom: 40px; vertical-align: center;background-color:"
+                + createCss()
+                + "<body text=\"" + textColor + "\" style=\"margin-top: 40px; margin-bottom: 40px; vertical-align: center;background-color:"
                 + backgroundColor
                 + ";\">"
                 + content
                 + "</body></html>";
         return result;
+    }
+
+    private String createCss() {
+        return "<style type=\"text/css\">\n" +
+                ".table{border: 1px solid " +
+                tableBorderColor +
+                ";border-collapse: collapse;}" +
+                ".table th,.table td{border: 1px solid " +
+                tableBorderColor +
+                ";padding: 10px;}" +
+                ".a {\n" +
+                "    background-color: #c7dec6;\n" +
+                "    border: 1px solid #000;\n" +
+                "    border-top-left-radius: 10px;\n" +
+                "    border-top-right-radius: 10px;\n" +
+                "border-bottom-left-radius: 10px;\n" +
+                "border-bottom-right-radius: 10px;\n" +
+                "height:auto;\n" +
+                "width:auto;\n" +
+                "padding:20px;\n" +
+                "}\n" +
+                "</style>";
     }
 
     private TextEditor encodeBackslashEscapes(TextEditor text) {
@@ -178,6 +188,7 @@ public class MarkdownProcessor {
         doHorizontalRules(text);
         doLists(text);
         doCodeBlocks(text);
+        doTableBlocks(text);
         doBlockQuotes(text);
 
         hashHTMLBlocks(text);
@@ -298,10 +309,10 @@ public class MarkdownProcessor {
             String paragraph = paragraphs[i];
             String decoded = HTML_PROTECTOR.decode(paragraph);
             if (decoded != null) {
-                paragraphs[i] = "<font color=\"" + textColor + "\">" + decoded + "</font>";
+                paragraphs[i] = decoded;
             } else {
                 paragraph = runSpanGamut(new TextEditor(paragraph)).toString();
-                paragraphs[i] = "<p style=\"color:" + textColor + ";\">" + paragraph + "</p>";
+                paragraphs[i] = "<p>" + paragraph + "</p>";
             }
         }
         return new TextEditor(join("\n\n", paragraphs));
@@ -404,6 +415,63 @@ public class MarkdownProcessor {
                         "<pre><code>%s</code></pre>" +
                         "</div>";
                 return String.format(codeBlockTemplate, text);
+            }
+        });
+    }
+
+    private TextEditor doTableBlocks(TextEditor markup) {
+        doAnchors(markup);
+        Pattern p = Pattern.compile(
+                "(\\|(?:[^-]*\\|)+\\n" +
+                        "\\|(?:[ ]*-+[ ]*\\|)+\\n" +
+                        "(?:\\|(?:[^\\n]*\\|)+[^\n]*\\n)+)", Pattern.DOTALL);
+        return markup.replaceAll(p, new Replacement() {
+            @Override
+            public String replacement(Matcher m) {
+                String tableMd = m.group(1);
+                String[] lines = tableMd.split("\\n");
+                StringBuilder sb = new StringBuilder();
+                sb.append("<table class=\"table\"");
+                /*sb.append("<table class=\"table\" cellspacing=\"0px\" cellPadding=\"5\" bordercolor=\""
+                        + tableBorderColor + "\"");*/
+                sb.append(createTableHeaders(lines[0]));
+                for (int i = 2; i < lines.length; i++) {
+                    sb.append(createTableRow(lines[i], (i & 1) == 1));
+                }
+                sb.append("</table>");
+                return sb.toString();
+            }
+
+            private String createTableRow(String headerLine, boolean addColor) {
+                StringBuilder sb = new StringBuilder();
+                String[] tableHeaders = headerLine.split("\\|");
+                if (addColor) {
+                    sb.append("<tr bgcolor=\"" + codeBlockColor + "\">");
+                } else {
+                    sb.append("<tr>");
+                }
+                for (String th : tableHeaders) {
+                    if (th.length() <= 0) continue;
+                    sb.append("<td>");
+                    sb.append(th);
+                    sb.append("</td>");
+                }
+                sb.append("</tr>");
+                return sb.toString();
+            }
+
+            private String createTableHeaders(String headerLine) {
+                StringBuilder sb = new StringBuilder();
+                String[] tableHeaders = headerLine.split("\\|");
+                sb.append("<tr>");
+                for (String th : tableHeaders) {
+                    if (th.length() <= 0) continue;
+                    sb.append("<th>");
+                    sb.append(th);
+                    sb.append("</th>");
+                }
+                sb.append("</tr>");
+                return sb.toString();
             }
         });
     }
@@ -913,5 +981,9 @@ public class MarkdownProcessor {
 
     public void setCodeBlockColor(String codeBlockColor) {
         this.codeBlockColor = codeBlockColor;
+    }
+
+    public void setTableBorderColor(String tableBorderColor) {
+        this.tableBorderColor = tableBorderColor;
     }
 }

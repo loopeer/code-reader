@@ -25,5 +25,6 @@
     <color name="repo_refresh_color">#8BC34A</color>
     <color name="repo_delete_color">#FF4444</color>
     <color name="code_block_color">#F7F7F7</color>
+    <color name="table_block_border_color">#EAEAEA</color>
 
 </resources>
