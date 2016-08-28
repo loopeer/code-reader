@@ -420,7 +420,6 @@ public class MarkdownProcessor {
     }
 
     private TextEditor doTableBlocks(TextEditor markup) {
-        doAnchors(markup);
         Pattern p = Pattern.compile(
                 "(\\|(?:[^\\n]*\\|)+\\n" +
                         "\\|(?:[ ]*-+[ ]*\\|)+\\n" +
@@ -428,7 +427,7 @@ public class MarkdownProcessor {
         return markup.replaceAll(p, new Replacement() {
             @Override
             public String replacement(Matcher m) {
-                String tableMd = m.group(1);
+                String tableMd = getAnchorsString(m.group(1));
                 String[] lines = tableMd.split("\\n");
                 StringBuilder sb = new StringBuilder();
                 sb.append("<table class=\"table\"");
@@ -785,6 +784,47 @@ public class MarkdownProcessor {
             sb.append("\n");
         }
         text.update(sb.toString());
+    }
+
+    private String getAnchorsString(String s) {
+        Pattern internalLink = Pattern.compile("(" +
+                "\\[(.*?)\\]" + // Link text = $2
+                "[ ]?(?:\\n[ ]*)?" +
+                "\\[(.*?)\\]" + // ID = $3
+                ")");
+
+        return replaceAll(s, internalLink, new Replacement() {
+            @Override
+            public String replacement(Matcher m) {
+                String replacementText;
+                String wholeMatch = m.group(1);
+                String linkText = m.group(2);
+                String id = m.group(3).toLowerCase();
+                if ("".equals(id)) { // for shortcut links like [this][]
+                    id = linkText.toLowerCase();
+                }
+
+                LinkDefinition defn = linkDefinitions.get(id);
+                if (defn != null) {
+                    String url = defn.getUrl();
+                    // protect emphasis (* and _) within urls
+                    url = url.replaceAll("\\*", CHAR_PROTECTOR.encode("*"));
+                    url = url.replaceAll("_", CHAR_PROTECTOR.encode("_"));
+                    String title = defn.getTitle();
+                    String titleTag = "";
+                    if (title != null && !title.equals("")) {
+                        // protect emphasis (* and _) within urls
+                        title = title.replaceAll("\\*", CHAR_PROTECTOR.encode("*"));
+                        title = title.replaceAll("_", CHAR_PROTECTOR.encode("_"));
+                        titleTag = " title=\"" + title + "\"";
+                    }
+                    replacementText = "<a href=\"" + url + "\"" + titleTag + ">" + linkText + "</a>";
+                } else {
+                    replacementText = wholeMatch;
+                }
+                return replacementText;
+            }
+        });
     }
 
     private TextEditor doAnchors(TextEditor markup) {
