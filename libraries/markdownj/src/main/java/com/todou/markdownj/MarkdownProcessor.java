@@ -298,10 +298,10 @@ public class MarkdownProcessor {
             String paragraph = paragraphs[i];
             String decoded = HTML_PROTECTOR.decode(paragraph);
             if (decoded != null) {
-                paragraphs[i] = "<font color=\""+ textColor +"\">" + decoded +"</font>";
+                paragraphs[i] = "<font color=\"" + textColor + "\">" + decoded + "</font>";
             } else {
                 paragraph = runSpanGamut(new TextEditor(paragraph)).toString();
-                paragraphs[i] = "<p style=\"color:"+ textColor +";\">" + paragraph + "</p>";
+                paragraphs[i] = "<p style=\"color:" + textColor + ";\">" + paragraph + "</p>";
             }
         }
         return new TextEditor(join("\n\n", paragraphs));
@@ -396,6 +396,7 @@ public class MarkdownProcessor {
             }
 
             public String genericCodeBlock(String text) {
+                if (text.startsWith("\n")) text = text.substring(1, text.length());
                 String codeBlockTemplate = "<div style=\"background-color:" +
                         codeBlockColor +
                         ";padding:10px;" +
@@ -662,7 +663,7 @@ public class MarkdownProcessor {
         text.replaceAll("!\\[(.*)\\]\\((.*) \"(.*)\"\\)", "<img src=\"$2\"/>");
 
 
-        if (!text.toString().contains("http://") && !text.toString().contains("https://")){
+        if (!text.toString().contains("http://") && !text.toString().contains("https://")) {
             doLocalImage(text);
         }
         text.replaceAll("!\\[(.*)\\]\\((.*) \"(.*)\"\\)", "<img src=\"$2\" alt=\"$1\" title=\"$3\" />");
