@@ -298,43 +298,12 @@ public class MarkdownProcessor {
             String decoded = HTML_PROTECTOR.decode(paragraph);
             if (decoded != null) {
                 paragraphs[i] = "<font color=\""+ textColor +"\">" + decoded +"</font>";
-            } else if (isCodeParagraph(paragraph)) {
-                paragraphs[i] = handleCodeParagraph(paragraph);
             } else {
                 paragraph = runSpanGamut(new TextEditor(paragraph)).toString();
                 paragraphs[i] = "<p style=\"color:"+ textColor +";\">" + paragraph + "</p>";
             }
         }
         return new TextEditor(join("\n\n", paragraphs));
-    }
-
-    private boolean isCodeParagraph(String text) {
-        if (text.contains("```")) {
-            return true;
-        }
-        return false;
-    }
-
-    private String handleCodeParagraph(String text) {
-        if (text.contains("```")) {
-            String paragraph = text.replaceAll("```.*", "");
-            paragraph = paragraph.replace("<", "&lt;");
-            paragraph = paragraph.replace(">", "&gt;");
-            StringBuilder sb = new StringBuilder();
-            sb.append("<div style=\"background-color:#f7f7f7;padding:10px;display: inline-block;\">");
-            sb.append("<pre>");
-            if (paragraph.startsWith("\n")) {
-                paragraph = paragraph.substring("\n".length(), paragraph.length());
-            }
-            if (paragraph.endsWith("\n")) {
-                paragraph = paragraph.substring(0, paragraph.length() - "\n".length());
-            }
-            sb.append(paragraph);
-            sb.append("</pre>");
-            sb.append("</div></p>");
-            return sb.toString();
-        }
-        return text;
     }
 
     private TextEditor doAutoLinks(TextEditor markup) {
@@ -411,65 +380,25 @@ public class MarkdownProcessor {
     }
 
     private TextEditor doCodeBlocks(TextEditor markup) {
-        Pattern p = Pattern.compile("" +
-                "(?:\\n\\n|\\A)" +
-                "((?:" +
-                "(?:[ ]{4})" +
-                ".*\\n+" +
-                ")+" +
-                ")" +
-                "((?=^[ ]{0,4}\\S)|\\Z)", Pattern.MULTILINE);
+        Pattern p = Pattern.compile(
+                "(?:`{3}[a-zA-Z]*)" +
+                        "([^```]*)" +
+                        "(?:`{3})", Pattern.DOTALL);
         return markup.replaceAll(p, new Replacement() {
-            private static final String LANG_IDENTIFIER = "lang:";
 
             public String replacement(Matcher m) {
                 String codeBlock = m.group(1);
                 TextEditor ed = new TextEditor(codeBlock);
-                ed.outdent();
                 encodeCode(ed);
-                ed.detabify().deleteAll("\\A\\n+").deleteAll("\\s+\\z");
                 String text = ed.toString();
-                String out;
-                String firstLine = firstLine(text);
-                if (isLanguageIdentifier(firstLine)) {
-                    out = languageBlock(firstLine, text);
-                } else {
-                    out = genericCodeBlock(text);
-                }
-                return out;
-            }
-
-            public String firstLine(String text) {
-                if (text == null) {
-                    return "";
-                }
-                String[] splitted = text.split("\\n");
-                return splitted[0];
-            }
-
-            public boolean isLanguageIdentifier(String line) {
-                if (line == null) {
-                    return false;
-                }
-                String lang = "";
-                if (line.startsWith(LANG_IDENTIFIER)) {
-                    lang = line.replaceFirst(LANG_IDENTIFIER, "").trim();
-                }
-                return lang.length() > 0;
-            }
-
-            public String languageBlock(String firstLine, String text) {
-                // dont'use %n in format string (markdown aspect every new line char as "\n")
-                //String codeBlockTemplate = "<pre class=\"brush: %s\">%n%s%n</pre>"; // http://alexgorbatchev.com/wiki/SyntaxHighlighter
-                String codeBlockTemplate = "\n\n<pre class=\"%s\">\n%s\n</pre>\n\n"; // http://shjs.sourceforge.net/doc/documentation.html
-                String lang = firstLine.replaceFirst(LANG_IDENTIFIER, "").trim();
-                String block = text.replaceFirst(firstLine + "\n", "");
-                return String.format(codeBlockTemplate, lang, block);
+                return genericCodeBlock(text);
             }
 
             public String genericCodeBlock(String text) {
-                // dont'use %n in format string (markdown aspect every new line char as "\n")
-                String codeBlockTemplate = "\n\n<pre><code>%s\n</code></pre>\n\n";
+                String codeBlockTemplate = "<div style=\"background-color:#f7f7f7;padding:10px;" +
+                        "display: inline-block;margin-bottom:10px;\">" +
+                        "<pre><code>%s</code></pre>" +
+                        "</div>";
                 return String.format(codeBlockTemplate, text);
             }
         });
