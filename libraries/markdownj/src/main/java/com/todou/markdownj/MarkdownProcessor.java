@@ -428,6 +428,9 @@ public class MarkdownProcessor {
             @Override
             public String replacement(Matcher m) {
                 String tableMd = getAnchorsString(m.group(1));
+                tableMd = tableMd.replaceAll("(\\*\\*|__)(?=\\S)(.+?[*_]*)(?<=\\S)\\1", "<strong>$2</strong>");
+                tableMd = tableMd.replaceAll("\\[([^\\[\\]]*)\\]\\(([^\\(\\)]*)\\)", "<a href=\"$2\">$1</a>");
+                tableMd = tableMd.replaceAll("`([^`]*)`", "<span style=\"background-color=\"" + tableBorderColor + "\";\">$1</span>");
                 String[] lines = tableMd.split("\\n");
                 StringBuilder sb = new StringBuilder();
                 sb.append("<table class=\"table\"");
@@ -676,8 +679,8 @@ public class MarkdownProcessor {
         text = encodeBackslashEscapes(text);
 
         doImages(text);
-        doAnchors(text);
 //        doStrong(text);
+        doAnchors(text);
         doAutoLinks(text);
 
         // Fix for BUG #1357582
