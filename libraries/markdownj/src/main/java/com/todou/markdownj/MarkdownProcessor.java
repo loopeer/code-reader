@@ -422,7 +422,7 @@ public class MarkdownProcessor {
     private TextEditor doTableBlocks(TextEditor markup) {
         Pattern p = Pattern.compile(
                 "(\\|?(?:[^\\n]*\\|)+[^\\n]*\\n" +
-                        "\\|?(?:[ ]*-+[ ]*\\|)+[^\\n]*\\n" +
+                        "\\|?(?:[ ]*:?-+:?[ ]*\\|)+[^\\n]*\\n" +
                         "(?:\\|?(?:[^\\n]*\\|)+[^\n]*\\n)+)", Pattern.DOTALL);
         return markup.replaceAll(p, new Replacement() {
             @Override
