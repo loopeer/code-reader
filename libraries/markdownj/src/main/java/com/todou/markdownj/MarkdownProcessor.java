@@ -189,6 +189,7 @@ public class MarkdownProcessor {
         doHorizontalRules(text);
         doLists(text);
         doCodeBlocks(text);
+        doCodeBlocks2(text);
         doTableBlocks(text);
         doBlockQuotes(text);
 
@@ -403,6 +404,40 @@ public class MarkdownProcessor {
                 String codeBlock = m.group(1);
                 TextEditor ed = new TextEditor(codeBlock);
                 encodeCode(ed);
+                String text = ed.toString();
+                return genericCodeBlock(text);
+            }
+
+            public String genericCodeBlock(String text) {
+                if (text.startsWith("\n")) text = text.substring(1, text.length());
+                String codeBlockTemplate = "<div style=\"background-color:" +
+                        codeBlockColor +
+                        ";padding:10px;" +
+                        "display: inline-block;margin-bottom:10px;\">" +
+                        "<pre><code>%s</code></pre>" +
+                        "</div>";
+                return String.format(codeBlockTemplate, text);
+            }
+        });
+    }
+
+    private TextEditor doCodeBlocks2(TextEditor markup) {
+        Pattern p = Pattern.compile(
+                "(?:\\n\\n|\\A)" +
+                        "((?:" +
+                        "(?:[ ]{4})" +
+                        ".*\\n+" +
+                        ")+" +
+                        ")" +
+                        "((?=^[ ]{0,4}\\S)|\\Z)", Pattern.MULTILINE);
+        return markup.replaceAll(p, new Replacement() {
+
+            public String replacement(Matcher m) {
+                String codeBlock = m.group(1);
+                TextEditor ed = new TextEditor(codeBlock);
+                ed.outdent();
+                encodeCode(ed);
+                ed.detabify().deleteAll("\\A\\n+").deleteAll("\\s+\\z");
                 String text = ed.toString();
                 return genericCodeBlock(text);
             }
