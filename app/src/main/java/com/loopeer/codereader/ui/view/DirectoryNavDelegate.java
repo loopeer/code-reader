@@ -91,7 +91,7 @@ public class DirectoryNavDelegate {
         if (node.isDirectory && node.pathNodes != null) {
             boolean haveOpen = false;
             for (DirectoryNode n : node.pathNodes) {
-                if (FileTypeUtils.isMdFileType(n.name)) {
+                if (FileTypeUtils.isMdFileType(n.name) && n.name.equalsIgnoreCase("readme.md")) {
                     mFileClickListener.doOpenFile(n);
                     haveOpen = true;
                 }
