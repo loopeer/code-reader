@@ -10,8 +10,6 @@
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 
-
-
     <style name="ActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@android:color/white</item>
     </style>
