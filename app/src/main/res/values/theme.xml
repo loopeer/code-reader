@@ -25,6 +25,7 @@
         </item>
 
         <item name="toolbarStyle">@style/Widget.CodeReader.Toolbar</item>
+        <item name="searchViewStyle">@style/Widget.CodeReader.SearchView</item>
     </style>
 
     <style name="Theme.CodeReader.NoActionBar">
@@ -35,6 +36,10 @@
     <style name="Widget.CodeReader.Toolbar" parent="Widget.AppCompat.Toolbar">
         <item name="titleMargin">0dp</item>
         <item name="contentInsetStartWithNavigation">0dp</item>
+    </style>
+
+    <style name="Widget.CodeReader.SearchView" parent="Widget.AppCompat.SearchView.ActionBar">
+        <item name="layout">@layout/view_search</item>
     </style>
 
     <style name="Theme.CodeReader.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
