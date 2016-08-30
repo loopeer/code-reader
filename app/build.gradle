@@ -40,7 +40,7 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'io.reactivex:rxjava:' + rxjava
     compile 'io.reactivex:rxandroid:' + rxandroid
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.github.bumptech.glide:glide:' + glide
     apt 'com.google.auto.value:auto-value:' + auto_value
     provided 'com.google.auto.value:auto-value:' + auto_value
     provided 'com.jakewharton.auto.value:auto-value-annotations:1.2-update1'

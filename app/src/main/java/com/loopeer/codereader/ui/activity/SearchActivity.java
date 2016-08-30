@@ -20,16 +20,17 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        mRepositoryFragment = (RepositoryFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_repository);
+        mRepositoryFragment = (RepositoryFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_repository);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_file_search, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        mSearchView= (SearchView) menu.findItem(R.id.action_search).getActionView();
+        mSearchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        mSearchView.setIconified(false);
+        mSearchView.onActionViewExpanded();
         mSearchView.setMaxWidth(Integer.MAX_VALUE);
         mSearchView.setOnQueryTextListener(this);
         return true;
