@@ -47,8 +47,8 @@ public class ProgressIndicatorView extends View {
     }
 
     @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
         setAnimationStatus(AnimStatus.START);
     }
 

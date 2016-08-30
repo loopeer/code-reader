@@ -1,6 +1,5 @@
 package com.loopeer.codereader.ui.fragment;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -62,12 +61,7 @@ public class BaseFragment extends Fragment {
         if (mProgressLoading == null) {
             mProgressLoading = new ProgressLoading(getActivity(), R.style.ProgressLoadingTheme);
             mProgressLoading.setCanceledOnTouchOutside(true);
-            mProgressLoading.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    progressShow = false;
-                }
-            });
+            mProgressLoading.setOnCancelListener(dialog -> progressShow = false);
         }
         if (!TextUtils.isEmpty(message)) {
             mProgressLoading.setMessage(message);
@@ -93,7 +87,6 @@ public class BaseFragment extends Fragment {
         showUnBackProgressLoading(getString(resId));
     }
 
-    // 按返回键不可撤销的
     public void showUnBackProgressLoading(String message) {
         if (mUnBackProgressLoading == null) {
             mUnBackProgressLoading = new ProgressLoading(getActivity(), R.style.ProgressLoadingTheme) {
