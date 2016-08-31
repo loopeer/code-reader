@@ -184,12 +184,13 @@ public class MarkdownProcessor {
     }
 
     public TextEditor runBlockGamut(TextEditor text) {
+        doCodeBlocks(text);
+        doCodeBlocks2(text);
         doHeaders(text);
+        decodeCodeBlockConflictWithHeader(text);
         doTextSpan(text);
         doHorizontalRules(text);
         doLists(text);
-        doCodeBlocks(text);
-        doCodeBlocks2(text);
         doTableBlocks(text);
         doBlockQuotes(text);
 
@@ -513,6 +514,7 @@ public class MarkdownProcessor {
 
     private void encodeCode(TextEditor ed) {
         ed.replaceAll("&", "&amp;");
+        ed.replaceAll("#", "%23%");
         ed.replaceAll("<", "&lt;");
         ed.replaceAll(">", "&gt;");
         ed.replaceAll("\\*", CHAR_PROTECTOR.encode("*"));
@@ -522,6 +524,10 @@ public class MarkdownProcessor {
         ed.replaceAll("\\[", CHAR_PROTECTOR.encode("["));
         ed.replaceAll("\\]", CHAR_PROTECTOR.encode("]"));
         ed.replaceAll("\\\\", CHAR_PROTECTOR.encode("\\"));
+    }
+
+    private void decodeCodeBlockConflictWithHeader(TextEditor ed) {
+        ed.replaceAll("%23%", "#");
     }
 
     private TextEditor doLists(TextEditor text) {
