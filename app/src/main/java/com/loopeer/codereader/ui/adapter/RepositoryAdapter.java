@@ -18,20 +18,62 @@ import butterknife.ButterKnife;
 
 public class RepositoryAdapter extends RecyclerViewAdapter<Repository> {
 
+    private boolean mHasMore;
+
     public RepositoryAdapter(Context context) {
         super(context);
     }
 
+    public void setHasMore(boolean hasMore) {
+        mHasMore = hasMore;
+    }
+
     @Override
     public void bindView(Repository repository, int position, RecyclerView.ViewHolder viewHolder) {
-        RepositoryViewHolder holder = (RepositoryViewHolder) viewHolder;
-        holder.bind(repository, position);
+        if (viewHolder instanceof RepositoryViewHolder) {
+            RepositoryViewHolder holder = (RepositoryViewHolder) viewHolder;
+            holder.bind(repository, position);
+        }
+    }
+
+    @Override
+    public Repository getItem(int position) {
+        if (isFooterPositon(position))
+            return null;
+        return super.getItem(position);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.list_item_repository, parent, false);
-        return new RepositoryViewHolder(view);
+        switch (viewType) {
+            case R.layout.view_footer_loading: {
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.view_footer_loading, parent, false);
+                return new RecyclerView.ViewHolder(view) {
+                };
+            }
+            default: {
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.list_item_repository, parent, false);
+                return new RepositoryViewHolder(view);
+            }
+        }
+    }
+
+    private boolean isFooterPositon(int position) {
+        if (mHasMore && position == getItemCount() - 1)
+            return true;
+        return false;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (isFooterPositon(position))
+            return R.layout.view_footer_loading;
+        return R.layout.list_item_repository;
+    }
+
+    @Override
+    public int getItemCount() {
+        return super.getItemCount() + (mHasMore ? 1 : 0);
     }
 
     class RepositoryViewHolder extends RecyclerView.ViewHolder {

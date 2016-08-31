@@ -11,15 +11,22 @@ import android.view.ViewGroup;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.api.ServiceFactory;
 import com.loopeer.codereader.api.service.GithubService;
+import com.loopeer.codereader.model.Repository;
 import com.loopeer.codereader.ui.adapter.RepositoryAdapter;
 import com.loopeer.codereader.ui.decoration.DividerItemDecoration;
 import com.loopeer.codereader.ui.fragment.BaseFragment;
+import com.loopeer.codereader.utils.PageLinkParser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class RepositoryFragment extends BaseFragment {
+
+    private static final int PAGE_SIZE = 10;
 
     @BindView(R.id.view_recycler)
     RecyclerView mViewRecycler;
@@ -28,6 +35,12 @@ public class RepositoryFragment extends BaseFragment {
     private GithubService mGithubService;
 
     private String mSearchText;
+
+    private List<Repository> mRepositories = new ArrayList<>();
+
+    private PageLinkParser mPageLinkParser;
+
+    private boolean mIsLoading;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,27 +65,59 @@ public class RepositoryFragment extends BaseFragment {
         mViewRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mViewRecycler.setAdapter(mRepositoryAdapter);
         mViewRecycler.addItemDecoration(new DividerItemDecoration(getContext()));
+
+        mViewRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (layoutManager.findLastVisibleItemPosition() == mRepositoryAdapter.getItemCount() - 1 && isHasMore()) {
+                    if (!mIsLoading)
+                        requestData(mPageLinkParser.getNext());
+                }
+            }
+        });
     }
 
     public void setSearchText(String searchText) {
         mSearchText = searchText;
-        requestData();
+        requestData(1);
     }
 
-    private void requestData() {
-        showProgressLoading("");
-        getProgressLoading().setCanceledOnTouchOutside(false);
-        registerSubscription(mGithubService.repositories(mSearchText, null, null)
+    public boolean isHasMore() {
+        if (mPageLinkParser != null && mPageLinkParser.getNext() != 0 && mPageLinkParser.getRemain() != 0)
+            return true;
+        return false;
+    }
+
+    private void requestData(int page) {
+        mIsLoading = true;
+
+        if (page == 1) {
+            mRepositories.clear();
+            showProgressLoading("");
+        }
+
+        registerSubscription(mGithubService.repositories(mSearchText, null, null, page, PAGE_SIZE)
                 .filter(baseListResponseResponse -> baseListResponseResponse.isSuccessful())
-                .map(baseListResponseResponse -> baseListResponseResponse.body().items)
+                .map(baseListResponseResponse -> {
+                    mPageLinkParser = new PageLinkParser(baseListResponseResponse);
+                    return baseListResponseResponse.body().items;
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(repositories -> {
-                    mRepositoryAdapter.updateData(repositories);
+                    mRepositories.addAll(repositories);
+                    mRepositoryAdapter.setHasMore(isHasMore());
+                    mRepositoryAdapter.updateData(mRepositories);
                     dismissProgressLoading();
+
+                    mIsLoading = false;
                 }, throwable -> {
                     throwable.printStackTrace();
                     dismissProgressLoading();
+
+                    mIsLoading = false;
                 }));
     }
 
@@ -80,6 +125,7 @@ public class RepositoryFragment extends BaseFragment {
     public void showProgressLoading(String message) {
         mViewRecycler.setVisibility(View.INVISIBLE);
         super.showProgressLoading(message);
+        getProgressLoading().setCanceledOnTouchOutside(false);
     }
 
     @Override

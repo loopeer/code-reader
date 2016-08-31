@@ -21,7 +21,9 @@ public interface GithubService {
     Observable<Response<BaseListResponse<Repository>>> repositories(
             @Query("q") String keyword,
             @Query("sort") String sort,
-            @Query("order") String order
+            @Query("order") String order,
+            @Query("page") int page,
+            @Query("per_page") int pageSize
     );
 
 }
