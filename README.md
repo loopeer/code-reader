@@ -28,7 +28,7 @@ Screeshot
 Collaborators 
 ====
 [kKumaJ](https://github.com/kKumaJ)  
-[yanxinit](https://github.com/yanxinit)
+[yanxinit](https://github.com/yanxinit)  
 [ToDou](https://github.com/ToDou)   
 
 Contact: 
