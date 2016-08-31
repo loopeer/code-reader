@@ -25,7 +25,6 @@
         </item>
 
         <item name="toolbarStyle">@style/Widget.CodeReader.Toolbar</item>
-        <item name="searchViewStyle">@style/Widget.CodeReader.SearchView</item>
     </style>
 
     <style name="Theme.CodeReader.NoActionBar">
@@ -43,6 +42,10 @@
     </style>
 
     <style name="Theme.CodeReader.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="Theme.CodeReader.Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="searchViewStyle">@style/Widget.CodeReader.SearchView</item>
+    </style>
 
     <style name="Theme.CodeReader.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 

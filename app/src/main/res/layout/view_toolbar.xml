@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="?attr/colorPrimary"
-    android:theme="@style/Theme.CodeReader"
+    android:theme="@style/Theme.CodeReader.Toolbar"
     app:layout_scrollFlags="scroll|enterAlways|snap"
     app:popupTheme="@style/Theme.CodeReader.PopupOverlay"
     tools:showIn="@layout/fragment_code_read"/>
