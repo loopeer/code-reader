@@ -10,7 +10,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.loopeer.codereader.CodeReaderApplication;
 import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
@@ -178,8 +177,6 @@ public class MainLatestAdapter extends RecyclerViewAdapter<Repo> {
                     .doOnNext(o -> repo.isUnzip = o.isUnzip)
                     .doOnNext(o -> mProgressRelativeLayout.setUnzip(o.isUnzip))
                     .filter(o -> o.isUnzip == false)
-                    .doOnNext(o -> CoReaderDbHelper.getInstance(
-                            CodeReaderApplication.getAppContext()).resetRepoDownloadId(repo.downloadId))
                     .doOnNext(o -> repo.downloadId = 0)
                     .subscribe();
         }

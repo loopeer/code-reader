@@ -71,6 +71,7 @@ public class ForegroundProgressRelativeLayout extends ForegroundRelativeLayout {
     }
 
     public void setInitProgress(float i) {
+        mProgressPre = i;
         mProgressCurrent = i;
         mProgressShow = i;
         invalidate();

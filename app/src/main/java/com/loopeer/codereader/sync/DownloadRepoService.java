@@ -114,6 +114,8 @@ public class DownloadRepoService extends Service {
                         if (zipFile.exists()) zipFile.delete();
                         CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
                                 .updateRepoUnzipProgress(id, 1, false);
+                        CoReaderDbHelper.getInstance(
+                                CodeReaderApplication.getAppContext()).resetRepoDownloadId(mDownloadingRepos.get(id).downloadId);
                         RxBus.getInstance().send(new DownloadProgressEvent(id, false));
                         RxBus.getInstance().send(new DownloadRepoMessageEvent(
                                 getString(R.string.repo_download_complete, mDownloadingRepos.get(id).name)));
