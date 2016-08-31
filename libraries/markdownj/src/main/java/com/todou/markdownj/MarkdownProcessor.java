@@ -405,6 +405,7 @@ public class MarkdownProcessor {
                 String codeBlock = m.group(1);
                 TextEditor ed = new TextEditor(codeBlock);
                 encodeCode(ed);
+                ed.replaceAll("#", "%23%");
                 String text = ed.toString();
                 return genericCodeBlock(text);
             }
@@ -424,7 +425,7 @@ public class MarkdownProcessor {
 
     private TextEditor doCodeBlocks2(TextEditor markup) {
         Pattern p = Pattern.compile(
-                "(?:\\n\\n|\\A)" +
+                "(?:\\n?\\n|\\A)" +
                         "((?:" +
                         "(?:[ ]{4})" +
                         ".*\\n+" +
@@ -451,7 +452,7 @@ public class MarkdownProcessor {
                         "display: inline-block;margin-bottom:10px;\">" +
                         "<pre><code>%s</code></pre>" +
                         "</div>";
-                return String.format(codeBlockTemplate, text);
+                return "\n" + String.format(codeBlockTemplate, text) + "\n";
             }
         });
     }
@@ -514,7 +515,6 @@ public class MarkdownProcessor {
 
     private void encodeCode(TextEditor ed) {
         ed.replaceAll("&", "&amp;");
-        ed.replaceAll("#", "%23%");
         ed.replaceAll("<", "&lt;");
         ed.replaceAll(">", "&gt;");
         ed.replaceAll("\\*", CHAR_PROTECTOR.encode("*"));
