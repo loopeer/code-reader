@@ -185,7 +185,7 @@ public class MarkdownProcessor {
 
     public TextEditor runBlockGamut(TextEditor text) {
         doCodeBlocks(text);
-        doCodeBlocks2(text);
+//        doCodeBlocks2(text);
 
         doImages(text);
         doTextSpan(text);
