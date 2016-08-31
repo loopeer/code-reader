@@ -38,7 +38,10 @@
             android:textColor="?android:textColorTertiary"/>
     </ViewAnimator>
 
-    <include layout="@layout/layout_app_bar"/>
-
+    <include
+        layout="@layout/layout_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="com.loopeer.codereader.ui.decoration.AppbarBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

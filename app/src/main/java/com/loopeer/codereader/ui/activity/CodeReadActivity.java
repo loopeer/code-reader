@@ -1,12 +1,14 @@
 package com.loopeer.codereader.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.loopeer.codereader.Navigator;
@@ -17,6 +19,7 @@ import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.ui.fragment.CodeReadFragment;
 import com.loopeer.codereader.ui.view.DirectoryNavDelegate;
 import com.loopeer.codereader.ui.view.DrawerLayout;
+import com.loopeer.codereader.utils.DeviceUtils;
 
 import butterknife.BindView;
 
@@ -41,11 +44,21 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_code_read);
+        setupStatusBar();
 
         mDirectoryNavDelegate = new DirectoryNavDelegate(mDirectoryRecyclerView, this);
         mDirectoryNavDelegate.setLoadFileCallback(this);
         createFragment(null);
         parseIntent(savedInstanceState);
+    }
+
+    private void setupStatusBar() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+            return;
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        mDirectoryRecyclerView.setPadding(0, DeviceUtils.getStatusBarHeight(), 0, 0);
+        mDirectoryRecyclerView.setClipToPadding(true);
     }
 
     private void parseIntent(Bundle savedInstanceState) {
@@ -133,7 +146,8 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
 
     @Override
     public void onFileOpenStart() {
-        if (mFragment != null && mFragment.isVisible()) mFragment.getCodeContentLoader().showProgress();
+        if (mFragment != null && mFragment.isVisible())
+            mFragment.getCodeContentLoader().showProgress();
     }
 
     @Override

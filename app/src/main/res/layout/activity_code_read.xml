@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.loopeer.codereader.ui.view.DrawerLayout
-    android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <include
         layout="@layout/content_code_read"

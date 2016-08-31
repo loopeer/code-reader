@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +27,7 @@ import com.loopeer.codereader.ui.loader.ILoadHelper;
 import com.loopeer.codereader.ui.view.NestedScrollWebView;
 import com.loopeer.codereader.utils.BrushMap;
 import com.loopeer.codereader.utils.ColorUtils;
+import com.loopeer.codereader.utils.DeviceUtils;
 import com.loopeer.codereader.utils.FileTypeUtils;
 import com.loopeer.codereader.utils.HtmlParser;
 import com.todou.markdownj.MarkdownProcessor;
@@ -78,6 +80,9 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mCodeContentLoader = new CodeFragmentContentLoader(view);
+
+        setupToolbar();
+
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -108,13 +113,24 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
             }
         });
 
-        mWebCodeRead.setWebChromeClient(new WebChromeClient(){
+        mWebCodeRead.setWebChromeClient(new WebChromeClient() {
 
         });
         if (Build.VERSION.SDK_INT >= 11) {
             ((Runnable) () -> mWebCodeRead.getSettings().setDisplayZoomControls(false)).run();
         }
         openFile();
+    }
+
+    private void setupToolbar() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+            return;
+
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) mToolbar.getLayoutParams();
+        params.height = (int) (DeviceUtils.dpToPx(getActivity(), 56)
+                + DeviceUtils.getStatusBarHeight());
+        mToolbar.setLayoutParams(params);
+        mToolbar.setPadding(0, DeviceUtils.getStatusBarHeight(), 0, 0);
     }
 
     private void openFile() {
@@ -299,13 +315,13 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
                 return;
 
             scrollDown = false;
-            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            closeFullScreen();
         }
         if (scrollDown) {
             scrollFinishDelaySubscription = Observable
                     .timer(500, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .doOnNext(lo -> getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN))
+                    .doOnNext(lo -> openFullScreen())
                     .subscribe();
             registerSubscription(scrollFinishDelaySubscription);
         }
@@ -318,4 +334,25 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     public ILoadHelper getCodeContentLoader() {
         return mCodeContentLoader;
     }
+
+    private void openFullScreen() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        else {
+            View decorView = getActivity().getWindow().getDecorView();
+            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decorView.setSystemUiVisibility(uiOptions);
+        }
+    }
+
+    private void closeFullScreen() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        else {
+            View decorView = getActivity().getWindow().getDecorView();
+            int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+            decorView.setSystemUiVisibility(uiOptions);
+        }
+    }
+
 }
