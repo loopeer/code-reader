@@ -3,10 +3,14 @@ package com.loopeer.codereader;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.text.Html;
+import android.widget.Toast;
 
 import com.loopeer.codereader.coreader.db.CoReaderDbHelper;
 import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.sync.DownloadRepoService;
+import com.loopeer.codereader.ui.activity.AboutActivity;
 import com.loopeer.codereader.ui.activity.AddRepoActivity;
 import com.loopeer.codereader.ui.activity.CodeReadActivity;
 import com.loopeer.codereader.ui.activity.MainActivity;
@@ -41,6 +45,23 @@ public class Navigator {
         Intent intent = new Intent(context, SimpleWebActivity.class);
         intent.putExtra(EXTRA_WEB_URL, url);
         context.startActivity(intent);
+    }
+
+    public static void startAboutActivity(Context context) {
+        Intent intent = new Intent(context, AboutActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void startComposeEmail(Context context, String[] addresses, String subject, String content) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(content));
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(intent);
+        } else {
+            Toast.makeText(context, R.string.about_email_app_not_have, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static void startDownloadNewRepoService(Context context, Repo repo) {

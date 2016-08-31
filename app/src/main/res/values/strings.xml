@@ -64,4 +64,13 @@
     <string name="setting_show_line_number">Show line number</string>
     <string name="setting_use_menlo_font">Use Menlo Font</string>
     <string name="setting_theme">Theme</string>
+    <string name="setting_about">About</string>
+
+    <!-- about -->
+    <string name="about_coreader">CoReader</string>
+    <string name="about_email">yytodou123@gmail.com</string>
+    <string name="about_content">CoReader in Github\nContact: yytodou123@gmail.com\nWe will thanks for your help to send email to us or add issue in Github</string>
+    <string name="about_email_app_not_have">No email client configured, please setup and try again</string>
+    <string name="about_coreader_github_url">https://github.com/loopeer/code-reader</string>
+    <string name="about_email_content_tip">From CoReader App</string>
 </resources>

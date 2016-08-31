@@ -80,8 +80,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.MainActivity"/>
         </activity>
-        <activity android:name=".ui.activity.SettingActivity"
+        <activity
+            android:name=".ui.activity.SettingActivity"
             android:label="@string/title_activity_setting">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.MainActivity"/>
+        </activity>
+        <activity android:name=".ui.activity.AboutActivity"
+            android:label="@string/setting_about">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.MainActivity"/>

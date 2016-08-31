@@ -144,4 +144,18 @@
 
     </com.loopeer.directorychooser.ForegroundLinearLayout>
 
+    <com.loopeer.directorychooser.ForegroundLinearLayout
+        android:id="@+id/item_setting_about"
+        style="@style/ListItemSettingStyle"
+        android:layout_marginTop="@dimen/medium_padding">
+
+        <TextView
+            style="@style/ListItemSettingTitleStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/setting_about"/>
+
+    </com.loopeer.directorychooser.ForegroundLinearLayout>
+
 </LinearLayout>

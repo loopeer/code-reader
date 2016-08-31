@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.loopeer.codereader.Navigator;
 import com.loopeer.codereader.R;
 import com.loopeer.codereader.event.ThemeRecreateEvent;
 import com.loopeer.codereader.ui.view.ForegroundRelativeLayout;
@@ -88,7 +89,8 @@ public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarCh
             R.id.item_setting_use_menlo,
             R.id.item_setting_theme,
             R.id.view_setting_theme_day,
-            R.id.view_setting_theme_night
+            R.id.view_setting_theme_night,
+            R.id.item_setting_about
     })
     @SuppressWarnings("unused")
     public void onClick(View view) {
@@ -108,6 +110,9 @@ public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarCh
             case R.id.view_setting_theme_day:
             case R.id.view_setting_theme_night:
                 mThemeChooser.onItemSelect(view);
+                break;
+            case R.id.item_setting_about:
+                Navigator.startAboutActivity(this);
                 break;
         }
     }
