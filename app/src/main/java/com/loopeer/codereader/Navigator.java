@@ -111,4 +111,13 @@ public class Navigator {
         context.startActivity(intent);
     }
 
+    public static void startOutWebActivity(Context context, String url) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        Uri content_url = Uri.parse(url);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setData(content_url);
+        context.startActivity(intent);
+    }
+
 }

@@ -119,6 +119,7 @@ public class SimpleWebActivity extends BaseActivity implements SearchView.OnQuer
             }
         });
         getMenuInflater().inflate(R.menu.menu_web_save, menu);
+        getMenuInflater().inflate(R.menu.menu_web_actions, menu);
         return true;
     }
 
@@ -130,6 +131,10 @@ public class SimpleWebActivity extends BaseActivity implements SearchView.OnQuer
                     && !DownloadUrlParser.parseGithubUrlAndDownload(SimpleWebActivity.this, mUrl)) {
                 showMessage(getString(R.string.repo_download_url_parse_error));
             }
+            return true;
+        }
+        if (id == R.id.menu_action_open_by_browser) {
+            Navigator.startOutWebActivity(this, mUrl);
             return true;
         }
         return super.onOptionsItemSelected(item);
