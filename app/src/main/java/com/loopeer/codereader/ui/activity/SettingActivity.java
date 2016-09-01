@@ -136,6 +136,9 @@ public class SettingActivity extends BaseActivity implements SeekBar.OnSeekBarCh
 
     @Override
     public void onItemSelect(int id, String tag) {
+        if (PrefUtils.getPrefTheme(this).equals(tag)) {
+            return;
+        }
         AppCompatDelegate.setDefaultNightMode(tag.equals(ThemeUtils.THEME_DAY)
                 ? AppCompatDelegate.MODE_NIGHT_NO
                 : AppCompatDelegate.MODE_NIGHT_YES);
