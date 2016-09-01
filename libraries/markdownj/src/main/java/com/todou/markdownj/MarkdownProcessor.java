@@ -106,6 +106,9 @@ public class MarkdownProcessor {
     public String wrapHtml(String content) {
         String result = "<html>"
                 + createCss()
+                + "<head>\n"
+                + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0,minimum-scale=1.0\"/>\n"
+                + "</head>"
                 + "<body text=\"" + textColor + "\" style=\"margin-top: 40px; margin-bottom: 40px; vertical-align: center;background-color:"
                 + backgroundColor
                 + ";\">"
@@ -432,7 +435,7 @@ public class MarkdownProcessor {
     private TextEditor doCodeBlocks2(TextEditor markup) {
         Pattern p = Pattern.compile(
                 /*"(?:(.{200})\\n?\\n|\\A)" *///+
-                        "((?:[ ]{4}[^\\n]*\\n*)+)" //+
+                "((?:[ ]{4}[^\\n]*\\n*)+)" //+
                         /*"((?=^[ ]{0,4}\\S)|\\Z)"*/, Pattern.DOTALL);
         return markup.replaceAllNoStringPre(p, "<code>", "</code>", new Replacement() {
 
