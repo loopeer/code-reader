@@ -56,6 +56,8 @@ public class MarkdownProcessor {
     private Map<String, LinkDefinition> linkDefinitions = new TreeMap<String, LinkDefinition>();
     private static final CharacterProtector HTML_PROTECTOR = new CharacterProtector();
     private static final CharacterProtector CHAR_PROTECTOR = new CharacterProtector();
+    private static final String CODE_START_TAG = "<code>";
+    private static final String CODE_END_TAG = "</code>";
     private int listLevel;
     private int tabWidth = 4;
     private String textColor = "#333333";
@@ -437,7 +439,7 @@ public class MarkdownProcessor {
     private TextEditor doCodeBlocks2(TextEditor markup) {
         Pattern p = Pattern.compile(
                 "((?:^[ ]{4}[^\\n]*\\n*)+)", Pattern.MULTILINE);
-        return markup.replaceAllNoStringPre(p, "<code>", "</code>", new Replacement() {
+        return markup.replaceAllNoStringPre(p, CODE_START_TAG, CODE_END_TAG, new Replacement() {
 
             public String replacement(Matcher m) {
                 String codeBlock = m.group(1);
@@ -758,15 +760,20 @@ public class MarkdownProcessor {
         Pattern textSpan = Pattern.compile(
                 "([^`\\n]*)`([^`\\n]+)`([^`\\n]*)"
         );
-        markup.replaceAllNoStringPre(textSpan, "<code>", "</code>", new Replacement() {
+        markup.replaceAllNoStringPre(textSpan,  CODE_START_TAG, CODE_END_TAG, new Replacement() {
             public String replacement(Matcher m) {
-                return m.group(1)
-                        + "<span style=\"background-color:"
-                        + tableBorderColor
-                        + ";padding-right:5px;padding-left:5px;\">"
-                        + m.group(2)
-                        + "</span>"
-                        + m.group(3);
+                String stringPre = m.group(1);
+                if (stringPre.lastIndexOf(CODE_START_TAG) > stringPre.lastIndexOf(CODE_END_TAG)) {
+                    return m.group();
+                } else {
+                    return m.group(1)
+                            + "<span style=\"background-color:"
+                            + tableBorderColor
+                            + ";padding-right:5px;padding-left:5px;\">"
+                            + m.group(2)
+                            + "</span>"
+                            + m.group(3);
+                }
             }
         });
     }
@@ -1043,7 +1050,7 @@ public class MarkdownProcessor {
                 TextEditor subEditor = new TextEditor(code);
                 subEditor.deleteAll("^[ \\t]+").deleteAll("[ \\t]+$");
                 encodeCode(subEditor);
-                return "<code>" + subEditor.toString() + "</code>";
+                return CODE_START_TAG + subEditor.toString() + CODE_END_TAG;
             }
         });
     }
