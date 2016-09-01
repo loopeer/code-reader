@@ -436,7 +436,7 @@ public class MarkdownProcessor {
 
     private TextEditor doCodeBlocks2(TextEditor markup) {
         Pattern p = Pattern.compile(
-                "((?:[ ]{4}[^\\n]*\\n*)+)", Pattern.DOTALL);
+                "((?:^[ ]{4}[^\\n]*\\n*)+)", Pattern.DOTALL);
         return markup.replaceAllNoStringPre(p, "<code>", "</code>", new Replacement() {
 
             public String replacement(Matcher m) {
@@ -758,7 +758,7 @@ public class MarkdownProcessor {
         Pattern textSpan = Pattern.compile(
                 "([^`\\n]*)`([^`\\n]+)`([^`\\n]*)"
         );
-        markup.replaceAll(textSpan, new Replacement() {
+        markup.replaceAllNoStringPre(textSpan, "<code>", "</code>", new Replacement() {
             public String replacement(Matcher m) {
                 return m.group(1)
                         + "<span style=\"background-color:"
