@@ -189,9 +189,11 @@ public class MarkdownProcessor {
     public TextEditor runBlockGamut(TextEditor text) {
         doCodeBlocks(text);
         doCodeBlocks2(text);
-
+        doCheckBox(text);
+        doHeadBar(text);
         doImages(text);
         doTextSpan(text);
+        doItalicsAndBold(text);
         doAnchors(text);
         doAutoLinks(text);
 
@@ -450,12 +452,31 @@ public class MarkdownProcessor {
             public String genericCodeBlock(String text) {
                 if (text.startsWith("\n")) text = text.substring(1, text.length());
                 String codeBlockTemplate = "<div style=\"background-color:" +
-                        codeBlockColor +
+                        tableBorderColor +
                         ";padding:10px;" +
                         "display: inline-block;margin-bottom:10px;\">" +
                         "<pre><code>%s</code></pre>" +
                         "</div>";
                 return "\n" + String.format(codeBlockTemplate, text) + "\n";
+            }
+        });
+    }
+
+    private TextEditor doHeadBar(TextEditor markup) {
+        Pattern p = Pattern.compile(
+                "^>(.*)$", Pattern.MULTILINE);
+        return markup.replaceAll(p, new Replacement() {
+
+            public String replacement(Matcher m) {
+                String codeBlock = m.group(1);
+                return genericCodeBlock(codeBlock);
+            }
+
+            public String genericCodeBlock(String text) {
+                String codeBlockTemplate = "<table style=\"border-color:"
+                        + codeBlockColor
+                        + ";border-left-style:solid;border-width:4px\"><tr><td valign=\"top\">%s</td></tr></table>";
+                return String.format(codeBlockTemplate, text);
             }
         });
     }
@@ -469,8 +490,6 @@ public class MarkdownProcessor {
             @Override
             public String replacement(Matcher m) {
                 String tableMd = getAnchorsString(m.group(1));
-                tableMd = tableMd.replaceAll("(\\*\\*|__)(?=\\S)(.+?[*_]*)(?<=\\S)\\1", "<strong>$2</strong>");
-                tableMd = tableMd.replaceAll("\\[([^\\[\\]]*)\\]\\(([^\\(\\)]*)\\)", "<a href=\"$2\">$1</a>");
                 String[] lines = tableMd.split("\\n");
                 StringBuilder sb = new StringBuilder();
                 sb.append("<table class=\"table\"");
@@ -729,7 +748,6 @@ public class MarkdownProcessor {
         text = escapeSpecialCharsWithinTagAttributes(text);
 
         encodeAmpsAndAngles(text);
-        doItalicsAndBold(text);
 
         // Manual line breaks
         text.replaceAll(" {2,}\n", " <br />\n");
@@ -1002,6 +1020,11 @@ public class MarkdownProcessor {
     private TextEditor doItalicsAndBold(TextEditor markup) {
         markup.replaceAll("(\\*\\*|__)(?=\\S)(.+?[*_]*)(?<=\\S)\\1", "<strong>$2</strong>");
         markup.replaceAll("(\\*|_)(?=\\S)(.+?)(?<=\\S)\\1", "<em>$2</em>");
+        return markup;
+    }
+
+    private TextEditor doCheckBox(TextEditor markup) {
+        markup.replaceAll("^- \\[x\\] (.*)$", "<input type=\"checkbox\" name=\"\" value=\"\" checked=\"checked\" disabled=\"true\"/>$1\n");
         return markup;
     }
 
