@@ -13,6 +13,9 @@ One Android App support mutil program language.C C# C++ java swift go php xml js
 
 Screeshot
 ====
+###Support multi markdown style
+![](/screenshot/codereader_md.gif)   
+Base on [markdownj](https://github.com/myabc/markdownj).Add many github styles.
 ###Day night theme  
 ![](/screenshot/codereader_setting_day_h.gif)   ![](/screenshot/codereader_setting_night_h.gif)     
 ![](/screenshot/codereader_setting_day.gif)   ![](/screenshot/codereader_setting_night.gif)     
