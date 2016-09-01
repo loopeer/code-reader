@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,7 +72,7 @@ public class DirectoryFileChooserActivity extends AppCompatActivity implements D
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_file_search, menu);
+//        getMenuInflater().inflate(R.menu.menu_file_search, menu);
         return true;
     }
 
