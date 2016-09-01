@@ -484,7 +484,7 @@ public class MarkdownProcessor {
             public String genericCodeBlock(String text) {
                 String codeBlockTemplate = "<table style=\"border-color:"
                         + codeBlockColor
-                        + ";border-left-style:solid;border-width:4px\"><tr><td valign=\"top\">%s</td></tr></table>";
+                        + ";border-left-style:solid;border-width:4px;padding-left:10px\"><tr><td valign=\"top\">%s</td></tr></table>";
                 return String.format(codeBlockTemplate, text);
             }
         });
