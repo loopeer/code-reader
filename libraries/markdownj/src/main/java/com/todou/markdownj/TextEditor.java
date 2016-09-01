@@ -131,6 +131,24 @@ public class TextEditor {
         return this;
     }
 
+    public TextEditor replaceAllNoStringPre(Pattern pattern, String preTag, String endTag, Replacement replacement) {
+        Matcher m = pattern.matcher(text);
+        int lastIndex = 0;
+        StringBuilder sb = new StringBuilder();
+        while (m.find()) {
+            sb.append(text.subSequence(lastIndex, m.start()));
+            if (sb.toString().lastIndexOf(preTag) > sb.toString().lastIndexOf(endTag)) {
+                sb.append(m.group());
+            } else {
+                sb.append(replacement.replacement(m));
+            }
+            lastIndex = m.end();
+        }
+        sb.append(text.subSequence(lastIndex, text.length()));
+        text = sb;
+        return this;
+    }
+
     /**
      * Remove all occurrences of the given regex pattern, replacing them
      * with the empty string.

@@ -185,7 +185,7 @@ public class MarkdownProcessor {
 
     public TextEditor runBlockGamut(TextEditor text) {
         doCodeBlocks(text);
-//        doCodeBlocks2(text);
+        doCodeBlocks2(text);
 
         doImages(text);
         doTextSpan(text);
@@ -431,23 +431,24 @@ public class MarkdownProcessor {
 
     private TextEditor doCodeBlocks2(TextEditor markup) {
         Pattern p = Pattern.compile(
-                "(?:\\n?\\n|\\A)" +
-                        "((?:" +
-                        "(?:[ ]{4})" +
-                        ".*\\n+" +
-                        ")+" +
-                        ")" +
-                        "((?=^[ ]{0,4}\\S)|\\Z)", Pattern.MULTILINE);
-        return markup.replaceAll(p, new Replacement() {
+                /*"(?:(.{200})\\n?\\n|\\A)" *///+
+                        "((?:[ ]{4}[^\\n]*\\n*)+)" //+
+                        /*"((?=^[ ]{0,4}\\S)|\\Z)"*/, Pattern.DOTALL);
+        return markup.replaceAllNoStringPre(p, "<code>", "</code>", new Replacement() {
 
             public String replacement(Matcher m) {
-                String codeBlock = m.group(1);
+//                String codeBlockPre = m.group(1);
+                String codeBlock = m.group(1);/*
+                String codeBlockEnd = m.group(2);
+                if (codeBlockEnd.contains("```")) {
+                    return codeBlock + codeBlockEnd;
+                }*/
                 TextEditor ed = new TextEditor(codeBlock);
                 ed.outdent();
                 encodeCode(ed);
                 ed.detabify().deleteAll("\\A\\n+").deleteAll("\\s+\\z");
                 String text = ed.toString();
-                return genericCodeBlock(text);
+                return /*codeBlockPre +*/ genericCodeBlock(text)/* + codeBlockEnd*/;
             }
 
             public String genericCodeBlock(String text) {
