@@ -1,6 +1,7 @@
 package com.loopeer.codereader.ui.fragment;
 
 import android.annotation.TargetApi;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -58,9 +59,11 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     private DirectoryNode mNode;
     private DirectoryNode mRootNode;
     private Subscription scrollFinishDelaySubscription;
-    private boolean scrollDown = false;
+    private boolean mScrollDown = false;
     private boolean mOpenFileAfterLoadFinish = false;
     private ILoadHelper mCodeContentLoader;
+
+    private boolean mOrientationChange;
 
     public static CodeReadFragment newInstance(DirectoryNode node, DirectoryNode root) {
         CodeReadFragment codeReadFragment = new CodeReadFragment();
@@ -301,23 +304,34 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mOrientationChange = true;
+    }
+
+    @Override
     public void onScrollChanged(int l, int t, int oldl, int oldt) {
+        if (mOrientationChange) {
+            mOrientationChange = false;
+            return;
+        }
+
         if (scrollFinishDelaySubscription != null && !scrollFinishDelaySubscription.isUnsubscribed()) {
             scrollFinishDelaySubscription.unsubscribe();
         }
         if (t - oldt > 70) {
-            if (scrollDown)
+            if (mScrollDown)
                 return;
 
-            scrollDown = true;
+            mScrollDown = true;
         } else if (t - oldt < 0) {
-            if (!scrollDown)
+            if (!mScrollDown)
                 return;
 
-            scrollDown = false;
+            mScrollDown = false;
             closeFullScreen();
         }
-        if (scrollDown) {
+        if (mScrollDown) {
             scrollFinishDelaySubscription = Observable
                     .timer(500, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.loopeer.codereader"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.loopeer.codereader">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -28,6 +28,7 @@
         </activity>
         <activity
             android:name=".ui.activity.CodeReadActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_code_read"
             android:theme="@style/Theme.CodeReader.NoActionBar"/>
         <activity
@@ -87,7 +88,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.MainActivity"/>
         </activity>
-        <activity android:name=".ui.activity.AboutActivity"
+        <activity
+            android:name=".ui.activity.AboutActivity"
             android:label="@string/setting_about">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
