@@ -214,7 +214,7 @@ public class MarkdownProcessor {
     }
 
     private void doHrDiv(TextEditor markup) {
-        markup.replaceAll("^\\*\\* \\*\\*  $", "<div style=\"width:100%;height:2px;background:"
+        markup.replaceAll("^(\\*\\* \\*\\*  )|(---)$", "<div style=\"width:100%;height:2px;background:"
                 + tableBorderColor
                 + "\"></div>");
     }
