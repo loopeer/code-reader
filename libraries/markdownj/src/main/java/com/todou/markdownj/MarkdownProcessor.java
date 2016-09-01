@@ -195,6 +195,7 @@ public class MarkdownProcessor {
         doHeadBar(text);
         doImages(text);
         doTextSpan(text);
+        doHrDiv(text);
         doItalicsAndBold(text);
         doAnchors(text);
         doAutoLinks(text);
@@ -210,6 +211,12 @@ public class MarkdownProcessor {
         hashHTMLBlocks(text);
 
         return formParagraphs(text);
+    }
+
+    private void doHrDiv(TextEditor markup) {
+        markup.replaceAll("^\\*\\* \\*\\*  $", "<div style=\"width:100%;height:2px;background:"
+                + tableBorderColor
+                + "\"></div>");
     }
 
     private void doHorizontalRules(TextEditor text) {
@@ -760,7 +767,7 @@ public class MarkdownProcessor {
         Pattern textSpan = Pattern.compile(
                 "([^`\\n]*)`([^`\\n]+)`([^`\\n]*)"
         );
-        markup.replaceAllNoStringPre(textSpan,  CODE_START_TAG, CODE_END_TAG, new Replacement() {
+        markup.replaceAllNoStringPre(textSpan, CODE_START_TAG, CODE_END_TAG, new Replacement() {
             public String replacement(Matcher m) {
                 String stringPre = m.group(1);
                 if (stringPre.lastIndexOf(CODE_START_TAG) > stringPre.lastIndexOf(CODE_END_TAG)) {
