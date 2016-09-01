@@ -14,7 +14,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -48,7 +47,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class CodeReadFragment extends BaseFragment implements NestedScrollWebView.ScrollChangeListener {
+public class CodeReadFragment extends BaseFullscreenFragment implements NestedScrollWebView.ScrollChangeListener {
     private static final String TAG = "CodeReadFragment";
 
     @BindView(R.id.web_code_read)
@@ -350,23 +349,11 @@ public class CodeReadFragment extends BaseFragment implements NestedScrollWebVie
     }
 
     private void openFullScreen() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
-            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        else {
-            View decorView = getActivity().getWindow().getDecorView();
-            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-            decorView.setSystemUiVisibility(uiOptions);
-        }
+        hide();
     }
 
     private void closeFullScreen() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
-            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        else {
-            View decorView = getActivity().getWindow().getDecorView();
-            int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
-            decorView.setSystemUiVisibility(uiOptions);
-        }
+        show();
     }
 
 }

@@ -18,7 +18,7 @@ public class AppbarBehavior extends AppBarLayout.Behavior {
     @Override
     public boolean onStartNestedScroll(CoordinatorLayout parent, AppBarLayout child, View directTargetChild, View target, int nestedScrollAxes) {
         boolean result = super.onStartNestedScroll(parent, child, directTargetChild, target, nestedScrollAxes);
-        if (result && !target.canScrollVertically(1))
+        if (result && !target.canScrollVertically(1) && child.getY() >= 0)
             result = false;
         return result;
     }
