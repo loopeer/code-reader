@@ -436,7 +436,7 @@ public class MarkdownProcessor {
 
     private TextEditor doCodeBlocks2(TextEditor markup) {
         Pattern p = Pattern.compile(
-                "((?:^[ ]{4}[^\\n]*\\n*)+)", Pattern.DOTALL);
+                "((?:^[ ]{4}[^\\n]*\\n*)+)", Pattern.MULTILINE);
         return markup.replaceAllNoStringPre(p, "<code>", "</code>", new Replacement() {
 
             public String replacement(Matcher m) {
