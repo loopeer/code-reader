@@ -71,7 +71,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:' + support_version
-    compile 'com.android.support:design:' + support_version
+    compile 'com.android.support:design:' + support_design_version
     compile 'com.jakewharton:butterknife:' + butterknife_version
     apt 'com.jakewharton:butterknife-compiler:' + butterknife_version
     compile 'com.squareup.retrofit2:retrofit:' + retrofit

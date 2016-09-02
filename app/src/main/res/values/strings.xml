@@ -75,4 +75,12 @@
     <string name="about_fir_download">Fir Download</string>
     <string name="about_fir_download_url">http://fir.im/coreader</string>
     <string name="about_email_content_tip">From CoReader App</string>
+    
+    <!--login-->
+    <string name="login_label">Sign in</string>
+    <string name="login_hint_account">Username or email address</string>
+    <string name="login_hint_password">Password</string>
+    <string name="login_sign_in">Sign in</string>
+    <string name="login_auth_error">Username or password is incorrect</string>
+    <string name="login_over_auth_error">Maximum number of login attempts exceeded. Please try again later.</string>
 </resources>
