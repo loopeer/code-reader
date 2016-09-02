@@ -32,6 +32,8 @@ import rx.schedulers.Schedulers;
 
 public class LoginActivity extends BaseActivity implements Checker.CheckObserver {
 
+    private static final String TAG = "LoginActivity";
+
     @BindView(R.id.edit_login_account)
     EditText mEditLoginAccount;
     @BindView(R.id.edit_login_password)
@@ -84,24 +86,22 @@ public class LoginActivity extends BaseActivity implements Checker.CheckObserver
         token.setScopes(Arrays.asList(SCOPES));
 
         registerSubscription(
-                mGithubService.createToken(token,mBase64Str)
+                mGithubService.createToken(token,base64)
                         .subscribeOn(Schedulers.io())
                         .doOnSubscribe(() -> showProgressLoading(""))
                         .observeOn(AndroidSchedulers.mainThread())
                         .doAfterTerminate(this::dismissProgressLoading)
-                        .doOnNext(new Action1<Response<Token>>() {
-                            @Override
-                            public void call(Response<Token> tokenResponse) {
-                                if(tokenResponse.isSuccessful()){
-
-                                    SnackbarUtils.show(mBtnSignIn.getRootView(),"success");
-                                }else if(tokenResponse.code() == 401){
-                                    SnackbarUtils.show(mBtnSignIn.getRootView(),R.string.login_auth_error);
-                                }else if(tokenResponse.code() == 403){
-                                    SnackbarUtils.show(mBtnSignIn.getRootView(),R.string.login_over_auth_error);
-                                }else if(tokenResponse.code() == 422){
-                                    findCertainTokenID(mBase64Str);
-                                }
+                        .doOnNext(tokenResponse -> {
+                            if(tokenResponse.isSuccessful()){
+                                Log.d(TAG,tokenResponse.body().toString());
+                                String t = tokenResponse.body().getToken();
+                                SnackbarUtils.show(mBtnSignIn.getRootView(),t);
+                            }else if(tokenResponse.code() == 401){
+                                SnackbarUtils.show(mBtnSignIn.getRootView(),R.string.login_auth_error);
+                            }else if(tokenResponse.code() == 403){
+                                SnackbarUtils.show(mBtnSignIn.getRootView(),R.string.login_over_auth_error);
+                            }else if(tokenResponse.code() == 422){
+                                findCertainTokenID(base64);
                             }
                         })
                         .subscribe()
@@ -109,29 +109,25 @@ public class LoginActivity extends BaseActivity implements Checker.CheckObserver
     }
 
     private void findCertainTokenID(String base64){
+        registerSubscription(
         mGithubService.listToken(base64)
-                .flatMap(new Func1<Response<List<Token>>,Observable<Response<Empty>>>() {
-                    @Override
-                    public Observable<Response<Empty>> call(Response<List<Token>> listResponse) {
-                        for(Token token : listResponse.body()){
-                            if(TOKEN_NOTE.equals(token.getNote())){
-                                return mGithubService.removeToken(base64,String.valueOf(token.getId()));
-                            }
+                .flatMap(listResponse -> {
+                    for(Token token : listResponse.body()){
+                        if(TOKEN_NOTE.equals(token.getNote())){
+                            return mGithubService.removeToken(base64,String.valueOf(token.getId()));
                         }
-                        return Observable.empty();
                     }
+                    return Observable.empty();
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Action1<Response<Empty>>() {
-                    @Override
-                    public void call(Response<Empty> emptyResponse) {
-                        if(emptyResponse.code() == 204){
-                            createToken(base64);
-                        }
+                .doOnNext(emptyResponse -> {
+                    if(emptyResponse.code() == 204){
+                        createToken(base64);
                     }
                 })
-                .subscribe();
+                .subscribe()
+        );
     }
 
     @Override
