@@ -13,6 +13,7 @@ import com.loopeer.codereader.sync.DownloadRepoService;
 import com.loopeer.codereader.ui.activity.AboutActivity;
 import com.loopeer.codereader.ui.activity.AddRepoActivity;
 import com.loopeer.codereader.ui.activity.CodeReadActivity;
+import com.loopeer.codereader.ui.activity.LoginActivity;
 import com.loopeer.codereader.ui.activity.MainActivity;
 import com.loopeer.codereader.ui.activity.SearchActivity;
 import com.loopeer.codereader.ui.activity.SettingActivity;
@@ -120,4 +121,8 @@ public class Navigator {
         context.startActivity(intent);
     }
 
+    public static void startLoginActivity(Context context){
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+    }
 }

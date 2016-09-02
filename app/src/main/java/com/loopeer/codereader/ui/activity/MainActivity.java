@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_repo_add, menu);
         getMenuInflater().inflate(R.menu.menu_settings, menu);
+        getMenuInflater().inflate(R.menu.menu_github,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -89,6 +90,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.action_repo_add:
                 Navigator.startAddRepoActivity(this);
+                break;
+            case R.id.action_github:
+                Navigator.startLoginActivity(this);
                 break;
         }
         return super.onOptionsItemSelected(item);
