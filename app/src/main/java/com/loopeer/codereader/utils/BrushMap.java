@@ -1,6 +1,7 @@
 package com.loopeer.codereader.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +19,13 @@ public class BrushMap {
             mapping = new HashMap();
             init();
         }
+    }
+
+    public static final String[] FILE_BLACKLIST = new String[]{"hprof", "apk", "jar"};
+
+    public static boolean isBlackFile(String name) {
+        if (name != null) return Arrays.asList(FILE_BLACKLIST).contains(name.toLowerCase());
+        return false;
     }
 
     public static void init() {

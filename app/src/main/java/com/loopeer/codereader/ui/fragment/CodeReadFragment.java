@@ -189,7 +189,13 @@ public class CodeReadFragment extends BaseFullscreenFragment implements NestedSc
                 }
                 final InputStream finalStream = stream;
                 String[] names = mNode.name.split("\\.");
-                String jsFile = BrushMap.getJsFileForExtension(names[names.length - 1]);
+                String fileTypeName = names[names.length - 1];
+                if (BrushMap.isBlackFile(fileTypeName)) {
+                    subscriber.onError(new Throwable("Can not open this file!"));
+                    subscriber.onCompleted();
+                    return;
+                }
+                String jsFile = BrushMap.getJsFileForExtension(fileTypeName);
                 if (jsFile == null) {
                     jsFile = "Txt";
                 }
