@@ -4,6 +4,9 @@
     <string name="title_activity_add_repo">下载 Repo</string>
     <string name="title_activity_setting">设置</string>
 
+    <string name="snackbar_action">确认</string>
+
+    <!-- action -->
     <string name="action_settings">设置</string>
     <string name="action_go_out">退出</string>
     <string name="action_save">保存项目</string>

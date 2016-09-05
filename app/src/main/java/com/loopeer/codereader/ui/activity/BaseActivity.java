@@ -189,6 +189,8 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void showMessage(String message) {
         if (mCoordinatorContainer != null)
-            Snackbar.make(mCoordinatorContainer, message, Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(mCoordinatorContainer, message, Snackbar.LENGTH_SHORT)
+                    .setAction(R.string.snackbar_action, view -> {})
+                    .show();
     }
 }
