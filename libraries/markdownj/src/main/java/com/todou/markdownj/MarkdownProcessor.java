@@ -827,6 +827,7 @@ public class MarkdownProcessor {
                 String alt = m.group(1);
                 String src = m.group(2);
                 if (!src.toString().contains("http://") && !src.toString().contains("https://")) {
+                    if (!src.startsWith("/")) src = "/" + src;
                     return "<img src=\"file:///" + localHostPath + src + "\" alt=\"" + alt + "\" />";
                 }
                 return "<img src=\"" + src + "\" alt=\"" + alt + "\" />";
