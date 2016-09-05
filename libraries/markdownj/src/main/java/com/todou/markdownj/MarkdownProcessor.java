@@ -482,6 +482,7 @@ public class MarkdownProcessor {
             }
 
             public String genericCodeBlock(String text) {
+                text = text.replaceAll("^\\s*\\*(.*)", "<li>$1</li>");
                 String codeBlockTemplate = "<table style=\"border-color:"
                         + codeBlockColor
                         + ";border-left-style:solid;border-width:4px;padding-left:10px\"><tr><td valign=\"top\">%s</td></tr></table>";
