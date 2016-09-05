@@ -8,7 +8,10 @@ One Android App support mutil program language.C C# C++ java swift go php xml js
 * Open local file.
 
 ###Download
-[Fir Download](http://fir.im/coreader)  
+[Fir Download](http://fir.im/coreader)Scan the QRCode to install   
+![](/screenshot/codereader_fir_download_qr.png)   
+     
+     
 [Download from release](https://github.com/loopeer/code-reader/releases/tag/V1.0.1)
 
 Screeshot
