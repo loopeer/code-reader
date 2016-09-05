@@ -59,8 +59,10 @@
     <!-- about -->
     <string name="about_coreader">CoReader</string>
     <string name="about_email">yytodou123@gmail.com</string>
-    <string name="about_content">CoReader in Github\n联系方式: yytodou123@gmail.com\n如果您有什么好的提议或者bug,欢迎添加issue或者发送邮件给我们,我们会不断完善,方便大家阅读代码</string>
+    <string name="about_content">CoReader in Github\n联系方式: yytodou123@gmail.com\n如果您有什么好的提议或者bug,欢迎添加issue或者发送邮件给我们,我们会不断完善,方便大家阅读代码.最后,你可以通过Fir Download下载最新的版本</string>
     <string name="about_email_app_not_have">没有邮箱App,请安装后重试</string>
+    <string name="about_fir_download">Fir Download</string>
+    <string name="about_fir_download_url">http://fir.im/coreader</string>
     <string name="about_coreader_github_url">https://github.com/loopeer/code-reader</string>
     <string name="about_email_content_tip">来自CoReader客户端</string>
 </resources>

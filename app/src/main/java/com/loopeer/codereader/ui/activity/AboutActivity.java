@@ -35,8 +35,8 @@ public class AboutActivity extends BaseActivity {
     private void setUpTextSpan() {
         String aboutContent = getResources().getString(R.string.about_content);
         int[] indexSource = CustomTextUtils.calculateTextStartEnd(aboutContent, getResources().getString(R.string.about_coreader));
-        SpannableString signPolicyTipSpan = new SpannableString(aboutContent);
-        signPolicyTipSpan.setSpan(new ColorClickableSpan(this, R.color.colorPrimary) {
+        SpannableString aboutContentSpan = new SpannableString(aboutContent);
+        aboutContentSpan.setSpan(new ColorClickableSpan(this, R.color.colorPrimary) {
             @Override
             public void onClick(View widget) {
                 Navigator.startWebActivity(AboutActivity.this, getString(R.string.about_coreader_github_url));
@@ -45,7 +45,7 @@ public class AboutActivity extends BaseActivity {
 
         int[] indexEmail = CustomTextUtils.calculateTextStartEnd(aboutContent,
                 getResources().getString(R.string.about_email));
-        signPolicyTipSpan.setSpan(new ColorClickableSpan(this, R.color.colorPrimary) {
+        aboutContentSpan.setSpan(new ColorClickableSpan(this, R.color.colorPrimary) {
             @Override
             public void onClick(View widget) {
                 Navigator.startComposeEmail(AboutActivity.this,
@@ -54,7 +54,15 @@ public class AboutActivity extends BaseActivity {
                         getString(R.string.about_email_content_tip));
             }
         }, indexEmail[0], indexEmail[1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mTextAboutContent.setText(signPolicyTipSpan);
+        int[] indexFirDownload = CustomTextUtils.calculateTextStartEnd(aboutContent,
+                getResources().getString(R.string.about_fir_download));
+        aboutContentSpan.setSpan(new ColorClickableSpan(this, R.color.colorPrimary) {
+            @Override
+            public void onClick(View widget) {
+                Navigator.startOutWebActivity(AboutActivity.this, getString(R.string.about_fir_download_url));
+            }
+        }, indexFirDownload[0], indexFirDownload[1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mTextAboutContent.setText(aboutContentSpan);
         mTextAboutContent.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
