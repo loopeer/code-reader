@@ -66,7 +66,7 @@ public class AddRepoActivity extends BaseActivity implements Checker.CheckObserv
                 , true
                 , 0);
         Navigator.startDownloadNewRepoService(this, repo);
-        this.finish();
+//        this.finish();
     }
 }
 

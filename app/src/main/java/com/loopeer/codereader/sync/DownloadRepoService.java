@@ -146,6 +146,10 @@ public class DownloadRepoService extends Service {
     private void downloadFile(Repo repo) {
         RemoteRepoFetcher dataFetcher = new RemoteRepoFetcher(this, repo.netDownloadUrl, repo.name);
         long downloadId = dataFetcher.download();
+        if (downloadId <= 0) {
+            CoReaderDbHelper.getInstance(getApplicationContext()).deleteRepo(Long.parseLong(repo.id));
+            return;
+        }
         repo.downloadId = downloadId;
         mDownloadingRepos.put(downloadId, repo);
         CoReaderDbHelper.getInstance(getApplicationContext()).updateRepoDownloadId(downloadId, repo.id);
