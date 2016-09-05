@@ -21,7 +21,7 @@ public class BrushMap {
         }
     }
 
-    public static final String[] FILE_BLACKLIST = new String[]{"hprof", "apk", "jar"};
+    public static final String[] FILE_BLACKLIST = new String[]{"hprof", "apk", "jar", "so"};
 
     public static boolean isBlackFile(String name) {
         if (name != null) return Arrays.asList(FILE_BLACKLIST).contains(name.toLowerCase());
