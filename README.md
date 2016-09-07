@@ -15,7 +15,7 @@ One Android App support mutil program language.C C# C++ java swift go php xml js
      
 [Download from release](https://github.com/loopeer/code-reader/releases/tag/V1.0.1)
 
-Screeshot
+Screenshot
 ====
 ###Support multi markdown style
 ![](/screenshot/codereader_md.gif)   
