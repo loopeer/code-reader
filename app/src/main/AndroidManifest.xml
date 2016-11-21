@@ -30,7 +30,16 @@
             android:name=".ui.activity.CodeReadActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_code_read"
-            android:theme="@style/Theme.CodeReader.NoActionBar"/>
+            android:theme="@style/Theme.CodeReader.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="*/*" />
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name="com.loopeer.directorychooser.DirectoryFileChooserActivity"
             android:theme="@style/Theme.CodeReader.NoActionBar"/>

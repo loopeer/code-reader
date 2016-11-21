@@ -136,10 +136,8 @@ public class CodeReadFragment extends BaseFullscreenFragment implements NestedSc
     }
 
     private void openFile() {
+        if (mCodeContentLoader == null) return;
         mCodeContentLoader.showProgress();
-        if (mWebCodeRead == null) {
-            return;
-        }
         mWebCodeRead.clearHistory();
         if (mNode == null) {
             if (mOpenFileAfterLoadFinish)
@@ -169,7 +167,6 @@ public class CodeReadFragment extends BaseFullscreenFragment implements NestedSc
     public void openFile(DirectoryNode node) {
         mOpenFileAfterLoadFinish = true;
         mNode = node;
-        if (!isVisible()) return;
         openFile();
     }
 

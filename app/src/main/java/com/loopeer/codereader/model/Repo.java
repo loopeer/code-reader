@@ -38,6 +38,12 @@ public class Repo extends BaseModel{
         return result;
     }
 
+    public Repo(String name, String absolutePath, boolean isFolder) {
+        this.name = name;
+        this.absolutePath = absolutePath;
+        this.isFolder = isFolder;
+    }
+
     public DirectoryNode toDirectoryNode() {
         DirectoryNode node = new DirectoryNode();
         node.name = name;

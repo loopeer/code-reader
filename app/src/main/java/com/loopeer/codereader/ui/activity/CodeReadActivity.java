@@ -73,6 +73,13 @@ public class CodeReadActivity extends BaseActivity implements DirectoryNavDelega
         }
         Intent intent = getIntent();
         Repo repo = (Repo) intent.getSerializableExtra(Navigator.EXTRA_REPO);
+        if (repo == null) {
+            String openFilePath = intent.getData().getPath();
+            String[] mids = openFilePath.split("/");
+            String name = mids[mids.length - 1];
+            repo = new Repo(name, openFilePath, false);
+            repo.id = String.valueOf(CoReaderDbHelper.getInstance(this).insertRepo(repo));
+        }
         CoReaderDbHelper.getInstance(this).updateRepoLastModify(Long.valueOf(repo.id)
                 , System.currentTimeMillis());
         mDirectoryNode = repo.toDirectoryNode();
