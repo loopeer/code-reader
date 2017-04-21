@@ -73,7 +73,7 @@ FileCache {
             directoryNode.isDirectory = true;
             directoryNode.pathNodes = new ArrayList<>();
             for (File childFile : file.listFiles()) {
-                if (childFile.getName().startsWith(".") || childFile.getName().startsWith("_")) continue;
+                if (childFile.getName().startsWith(".")) continue;
                 DirectoryNode childNode = getFileDirectory(childFile);
                 directoryNode.pathNodes.add(childNode);
             }
