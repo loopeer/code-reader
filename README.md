@@ -1,13 +1,13 @@
 ![](/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)   
 # CoReader  
 One Android App support mutil program language.C C# C++ java swift go php xml json...It's useful for developer to read on the phone.  
-###Add repo:
+### Add repo:
 * Can download repo from github trending
 * Search repo in the github
 * Add repo by name and download url
 * Open local file.
 
-###Download
+### Download
 [Fir Download](http://fir.im/coreader)Scan the QRCode to install   
      
 ![](/screenshot/codereader_fir_download_qr.png)   
@@ -17,19 +17,19 @@ One Android App support mutil program language.C C# C++ java swift go php xml js
 
 Screenshot
 ====
-###Support multi markdown style
+### Support multi markdown style
 ![](/screenshot/codereader_md.gif)   
 Base on [markdownj](https://github.com/myabc/markdownj).Add many github styles.
-###Day night theme  
+### Day night theme  
 ![](/screenshot/codereader_setting_day_h.gif)   ![](/screenshot/codereader_setting_night_h.gif)     
 ![](/screenshot/codereader_setting_day.gif)   ![](/screenshot/codereader_setting_night.gif)     
-###Repo item swipe action(Sea [itemtouchhelper-extension](https://github.com/loopeer/itemtouchhelper-extension))
+### Repo item swipe action(Sea [itemtouchhelper-extension](https://github.com/loopeer/itemtouchhelper-extension))
 ![](/screenshot/codereader_itemtouch.gif)  
-###Download repo from github trending
+### Download repo from github trending
 ![](/screenshot/codereader_trending.gif)   
-###Search repo in github
+### Search repo in github
 ![](/screenshot/codereader_search.gif)   
-###Add repo to download
+### Add repo to download
 ![](/screenshot/codereader_add.gif)
 
 Collaborators 
