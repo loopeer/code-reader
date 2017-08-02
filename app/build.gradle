@@ -19,7 +19,7 @@ android {
 
     signingConfigs {
         release {
-            Properties properties = new Properties()
+           /* Properties properties = new Properties()
 
             FileInputStream fis = new FileInputStream("$project.rootDir/keystore.properties")
             properties.load(fis)
@@ -29,7 +29,7 @@ android {
             storeFile = file(properties.store_file)
 
             storePassword = properties.store_password
-            keyPassword = properties.key_password
+            keyPassword = properties.key_password*/
         }
     }
 

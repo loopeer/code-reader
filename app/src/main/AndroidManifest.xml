@@ -34,7 +34,15 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="*/*" />
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/html" />
+                <data android:mimeType="application/x-javascript" />
+                <data android:mimeType="application/octet-stream" />
+                <data android:mimeType="application/msword" />
+                <data android:mimeType="text/xml" />
+                <data android:mimeType="application/x-asap" />
+                <data android:mimeType="text/x-hdml" />
+                <data android:mimeType="java/*" />
                 <data android:scheme="content" />
                 <data android:scheme="file" />
             </intent-filter>
