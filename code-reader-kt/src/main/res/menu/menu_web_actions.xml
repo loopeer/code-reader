@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- menu group -->
+    <group android:id="@+id/group_web_action">
+        <item android:id="@+id/menu_action_open_by_browser"
+              android:title="@string/action_open_by_browser" />
+    </group>
+</menu>
