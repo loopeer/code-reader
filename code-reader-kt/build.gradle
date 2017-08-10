@@ -43,6 +43,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile project(':libraries:directoryandfilechooser')
     kapt 'com.android.databinding:compiler:2.2.0'
+    compile 'io.reactivex:rxjava:' + rxjava
 }
 repositories {
     mavenCentral()

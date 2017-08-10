@@ -89,5 +89,6 @@ class MainActivity : AppCompatActivity() {
 
     fun doSelectFile() {
         NavigatorChooser.startDirectoryFileChooserActivity(this)
+        //点击fab打开文件列表activity
     }
 }
