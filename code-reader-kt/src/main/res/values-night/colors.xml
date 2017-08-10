@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="window_background_grey">#2B2B2B</color>
+    <color name="item_background">#303030</color>
+    <color name="code_read_background_color">#2B2B2B</color>
+
+    <color name="colorPrimary">#41555E</color>
+    <color name="colorPrimaryDark">#2A383E</color>
+    <color name="colorPrimaryDarkLight">#CFD8DC</color>
+    <color name="colorControlNormal">#FFFFFF</color>
+    <color name="colorAccent">#017382</color>
+
+    <color name="text_color_primary">#F4F4F4</color>
+    <color name="text_color_secondary">#757575</color>
+    <color name="text_color_tertiary">#999999</color>
+    <color name="text_color_directory">#5580A3</color>
+    <color name="text_color_hint">#D8D8D8</color>
+
+    <color name="color_icons">#FFFFFF</color>
+    <color name="color_divider">#2B2B2B</color>
+
+    <color name="repo_color">#48332B</color>
+    <color name="document_color">#046895</color>
+    <color name="repo_download_remainder_color">#4B4B4B</color>
+    <color name="repo_refresh_color">#5B812F</color>
+    <color name="repo_delete_color">#BE3333</color>
+    <color name="code_block_color">#4B4B4B</color>
+    <color name="table_block_border_color">#565656</color>
+
+
+</resources>
