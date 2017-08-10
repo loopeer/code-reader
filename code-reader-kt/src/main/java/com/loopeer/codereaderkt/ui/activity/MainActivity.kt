@@ -13,10 +13,9 @@ import android.view.View
 import android.widget.Toast
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.databinding.ActivityMainBinding
+import com.loopeer.directorychooser.NavigatorChooser
 
-/**
- * Created by loopeer on 2017/8/10.
- */
+
 class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
@@ -26,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(false)//？？
+        supportActionBar!!.setDisplayHomeAsUpEnabled(false)
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -71,10 +70,6 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
     }
 
-    fun onFabClick(view: View) {
-        Toast.makeText(this, "Fab Clicked !", Toast.LENGTH_SHORT).show()
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
@@ -85,5 +80,14 @@ class MainActivity : AppCompatActivity() {
                 return
             }
         }
+    }
+
+    fun onFabClick(view: View) {
+//        Toast.makeText(this, "Fab Clicked !", Toast.LENGTH_SHORT).show()
+        doSelectFile();
+    }
+
+    fun doSelectFile() {
+        NavigatorChooser.startDirectoryFileChooserActivity(this)
     }
 }
