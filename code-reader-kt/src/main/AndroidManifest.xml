@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.loopeer.codereaderkt">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--读取内存卡内容-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--网络权限-->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,6 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.loopeer.directorychooser.DirectoryFileChooserActivity"
+            android:theme="@style/Theme.CodeReader.NoActionBar" />
+        <!--注意注册引入的activity-->
     </application>
 
 </manifest>
