@@ -12,7 +12,8 @@ import com.loopeer.codereaderkt.databinding.ActivityMainBinding
  */
 class MainActivity : AppCompatActivity() {
 
-
+    private val TAG = "MainActivity"
+    val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
