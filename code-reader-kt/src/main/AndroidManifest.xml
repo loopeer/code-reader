@@ -30,6 +30,14 @@
         </activity>
 
         <activity
+            android:name=".ui.activity.SettingActivity"
+            android:label="@string/title_activity_setting">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.MainActivity" />
+        </activity>
+
+        <activity
             android:name="com.loopeer.directorychooser.DirectoryFileChooserActivity"
             android:theme="@style/Theme.CodeReader.NoActionBar" />
         <!--注意注册引入的activity-->

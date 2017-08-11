@@ -14,6 +14,7 @@ import android.widget.Toast
 import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.databinding.ActivityMainBinding
+import com.loopeer.codereaderkt.ui.adapter.MainLatestAdapter
 import com.loopeer.directorychooser.NavigatorChooser
 
 
@@ -22,7 +23,7 @@ class MainActivity : BaseActivity() {
     private val TAG = "MainActivity"
     val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000
     private lateinit var binding: ActivityMainBinding
-//    private var mMainLatestAdapter: MainLatestAdapter? = null
+    private var mMainLatestAdapter: MainLatestAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +50,8 @@ class MainActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-//            R.id.action_settings -> Navigator.startSettingActivity(this)
-            R.id.action_settings -> Toast.makeText(this, "action_settings", Toast.LENGTH_SHORT).show()
+            R.id.action_settings -> Navigator().startSettingActivity(this)
+//            R.id.action_settings -> Toast.makeText(this, "action_settings", Toast.LENGTH_SHORT).show()
             R.id.action_repo_add -> Navigator().startAddRepoActivity(this)
 //            R.id.action_repo_add -> Toast.makeText(this, "action_repo_add", Toast.LENGTH_SHORT).show()
 //            R.id.action_github -> Navigator.startLoginActivity(this)
