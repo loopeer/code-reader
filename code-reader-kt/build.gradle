@@ -54,5 +54,5 @@ repositories {
     mavenCentral()
 }
 kapt {
-    generateStubs = true
+    generateStubs = true //这句很重要，kotlin中使用databinding
 }
