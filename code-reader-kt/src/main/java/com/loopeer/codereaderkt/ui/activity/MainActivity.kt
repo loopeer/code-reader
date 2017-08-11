@@ -54,8 +54,8 @@ class MainActivity : BaseActivity() {
 //            R.id.action_settings -> Toast.makeText(this, "action_settings", Toast.LENGTH_SHORT).show()
             R.id.action_repo_add -> Navigator().startAddRepoActivity(this)
 //            R.id.action_repo_add -> Toast.makeText(this, "action_repo_add", Toast.LENGTH_SHORT).show()
-//            R.id.action_github -> Navigator.startLoginActivity(this)
-            R.id.action_github -> Toast.makeText(this, "action_github", Toast.LENGTH_SHORT).show()
+            R.id.action_github -> Navigator().startLoginActivity(this)
+//            R.id.action_github -> Toast.makeText(this, "action_github", Toast.LENGTH_SHORT).show()
         }
         return super.onOptionsItemSelected(item)
     }
