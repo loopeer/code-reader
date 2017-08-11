@@ -1,3 +1,4 @@
+/*
 package com.loopeer.codereaderkt.db
 
 import android.content.Context
@@ -146,4 +147,4 @@ class CoReaderDbHelper private constructor(context: Context) : SQLiteOpenHelper(
             return inst
         }
     }
-}
+}*/

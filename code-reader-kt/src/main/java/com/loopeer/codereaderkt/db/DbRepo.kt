@@ -1,5 +1,7 @@
+/*
 package com.loopeer.codereaderkt.db
 
+import com.squareup.sqldelight.RowMapper
 
 
 abstract class DbRepo : DbRepoModel {
@@ -10,3 +12,4 @@ abstract class DbRepo : DbRepoModel {
         val FOR_TEAM_MAPPER: RowMapper<DbRepo> = FACTORY.select_allMapper()
     }
 }
+*/
