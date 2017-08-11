@@ -16,7 +16,7 @@ import com.loopeer.codereaderkt.databinding.ActivityMainBinding
 import com.loopeer.directorychooser.NavigatorChooser
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private val TAG = "MainActivity"
     val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000
@@ -45,8 +45,8 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
 //            R.id.action_settings -> Navigator.startSettingActivity(this)
             R.id.action_settings -> Toast.makeText(this, "action_settings", Toast.LENGTH_SHORT).show()
 //            R.id.action_repo_add -> Navigator.startAddRepoActivity(this)
