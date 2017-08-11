@@ -15,7 +15,7 @@ import android.widget.ViewAnimator
 import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.databinding.ActivityMainBinding
-import com.loopeer.codereaderkt.db.CoReaderDbHelper
+
 import com.loopeer.codereaderkt.model.Repo
 import com.loopeer.codereaderkt.ui.adapter.ItemTouchHelperCallback
 import com.loopeer.codereaderkt.ui.adapter.MainLatestAdapter
@@ -40,14 +40,14 @@ class MainActivity : BaseActivity() {
     lateinit var mCallback: ItemTouchHelperExtension.Callback
 
     internal var mRecyclerView: RecyclerView? = null
-    internal var mAnimatorRecyclerContent: ViewAnimator? = null
+//    internal var mAnimatorRecyclerContent: ViewAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        mRecyclerView = findViewById(R.id.view_recycler) as RecyclerView
-        mAnimatorRecyclerContent = findViewById(R.id.view_coordinator_container) as ViewAnimator
+//        mRecyclerView = findViewById(R.id.view_recycler) as RecyclerView
+//        mAnimatorRecyclerContent = findViewById(R.id.view_coordinator_container) as ViewAnimator
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(false)
         if (ContextCompat.checkSelfPermission(this,
@@ -88,7 +88,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setUpView() {
-        mRecyclerLoader = RecyclerLoader(mAnimatorRecyclerContent!!)
+//        mRecyclerLoader = RecyclerLoader(mAnimatorRecyclerContent!!)
         mRecyclerView!!.layoutManager = LinearLayoutManager(this)
         mMainLatestAdapter = MainLatestAdapter(this)
         mRecyclerView!!.adapter = mMainLatestAdapter
@@ -108,8 +108,8 @@ class MainActivity : BaseActivity() {
     }
 
     private fun loadLocalData() {
-        val repos = CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext()).readRepos()
-        setUpContent(repos)
+//        val repos = CoReaderDbHelper.getInstance(CodeReaderApplication.appContext!!).readRepos()
+//        setUpContent(repos)
     }
 
 

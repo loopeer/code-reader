@@ -1,14 +1,18 @@
 package com.loopeer.codereaderkt.ui.activity
 
+import android.annotation.TargetApi
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+
 import android.text.TextUtils
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
@@ -28,6 +32,7 @@ open class BaseActivity : AppCompatActivity() {
 
     private val mAllSubscription = CompositeSubscription()
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mToolbar = findViewById(R.id.toolbar) as Toolbar?
@@ -40,6 +45,7 @@ open class BaseActivity : AppCompatActivity() {
         //打开app恢复下载
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onContentChanged() {
         super.onContentChanged()
 
