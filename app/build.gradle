@@ -65,6 +65,8 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
+    buildToolsVersion '25.0.0'
+
 }
 
 dependencies {

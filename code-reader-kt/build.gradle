@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.squareup.sqldelight'
 
 android {
     compileSdkVersion 26
@@ -36,6 +37,7 @@ android {
 
 
 
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -47,8 +49,11 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile project(':libraries:directoryandfilechooser')
+    compile project(':libraries:itemtouchhelperextension')
+
     kapt 'com.android.databinding:compiler:2.2.0'
     compile 'io.reactivex:rxjava:1.1.8'
+    compile 'com.facebook.stetho:stetho:1.1.0'
 }
 repositories {
     mavenCentral()
