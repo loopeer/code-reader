@@ -28,11 +28,12 @@ import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension
 
 class MainActivity : BaseActivity() {
 
+    //MainActivity总是报一些奇怪的错，稍改一点（无论有关与否）即可重新运行，很奇怪
     private val TAG = "MainActivity"
     val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000
     private lateinit var binding: ActivityMainBinding
 
-    private var mRecyclerLoader: ILoadHelper? = null
+//    private var mRecyclerLoader: ILoadHelper? = null
 //    private var mMainLatestAdapter: MainLatestAdapter? = null
 
 //    lateinit var mItemTouchHelper: ItemTouchHelperExtension

@@ -52,6 +52,10 @@ dependencies {
     kapt 'com.android.databinding:compiler:2.3.3'
     compile 'io.reactivex:rxjava:1.1.8'
     compile 'com.facebook.stetho:stetho:1.1.0'
+    compile 'com.squareup.retrofit2:retrofit:' + retrofit
+    compile 'com.squareup.retrofit2:converter-gson:' + retrofit
+    compile 'com.squareup.retrofit2:adapter-rxjava:' + retrofit
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 }
 repositories {
     mavenCentral()
