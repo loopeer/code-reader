@@ -67,22 +67,19 @@ class SettingActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener, ThemeCh
 
     fun onSettingLineNumberClick(view: View) {
         binding.checkboxShowLineNumber.isChecked = !binding.checkboxShowLineNumber.isChecked
-//        Toast.makeText(this, "onSettingLineNumberClick", Toast.LENGTH_SHORT).show()
     }
 
     fun onSettingUseMenloClick(view: View) {
         binding.checkboxMenloFont.isChecked = !binding.checkboxMenloFont.isChecked
-//        Toast.makeText(this, "onSettingUseMenloClick", Toast.LENGTH_SHORT).show()
     }
 
     fun onThemeSelectClick(view: View) {
         mThemeChooser!!.onItemSelect(view)
-//        Toast.makeText(this, "onThemeClick", Toast.LENGTH_SHORT).show()
     }
 
     fun onAboutClick(view: View) {
-//        Navigator.startAboutActivity(this)
-        Toast.makeText(this, "onAboutClick", Toast.LENGTH_SHORT).show()
+        Navigator().startAboutActivity(this)//不能写成Navigator.startAboutActivity(~)   要加上括号
+//        Toast.makeText(this, "onAboutClick", Toast.LENGTH_SHORT).show()
     }
 
     override fun onItemSelect(id: Int, tag: String) {
@@ -96,5 +93,6 @@ class SettingActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener, ThemeCh
 
         RxBus.getInstance().send(ThemeRecreateEvent())
         PrefUtils.setPrefTheme(this, tag)
+        //怎么能立即刷新主题？
     }
 }

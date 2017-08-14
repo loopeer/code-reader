@@ -32,7 +32,7 @@ class MainActivity : BaseActivity() {
     val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000
     private lateinit var binding: ActivityMainBinding
 
-//    private var mRecyclerLoader: ILoadHelper? = null
+    private var mRecyclerLoader: ILoadHelper? = null
 //    private var mMainLatestAdapter: MainLatestAdapter? = null
 
 //    lateinit var mItemTouchHelper: ItemTouchHelperExtension

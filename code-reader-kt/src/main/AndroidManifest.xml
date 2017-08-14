@@ -45,6 +45,32 @@
                 android:value=".ui.activity.MainActivity" />
         </activity>
 
+        <activity
+            android:name=".ui.activity.AboutActivity"
+            android:label="@string/setting_about">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".ui.activity.SimpleWebActivity"
+            android:theme="@style/Theme.CodeReader.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.MainActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+            </intent-filter>
+        </activity>
+
 
         <activity
             android:name="com.loopeer.directorychooser.DirectoryFileChooserActivity"
