@@ -15,7 +15,6 @@ import android.widget.ViewAnimator
 import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.databinding.ActivityMainBinding
-
 import com.loopeer.codereaderkt.model.Repo
 import com.loopeer.codereaderkt.ui.adapter.ItemTouchHelperCallback
 import com.loopeer.codereaderkt.ui.adapter.MainLatestAdapter
@@ -33,13 +32,13 @@ class MainActivity : BaseActivity() {
     val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000
     private lateinit var binding: ActivityMainBinding
 
-    private var mRecyclerLoader: ILoadHelper? = null
-    private var mMainLatestAdapter: MainLatestAdapter? = null
+//    private var mRecyclerLoader: ILoadHelper? = null
+//    private var mMainLatestAdapter: MainLatestAdapter? = null
 
     lateinit var mItemTouchHelper: ItemTouchHelperExtension
     lateinit var mCallback: ItemTouchHelperExtension.Callback
 
-    internal var mRecyclerView: RecyclerView? = null
+//    internal var mRecyclerView: RecyclerView? = null
 //    internal var mAnimatorRecyclerContent: ViewAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,30 +71,32 @@ class MainActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_settings -> Navigator().startSettingActivity(this)
-//            R.id.action_settings -> Toast.makeText(this, "action_settings", Toast.LENGTH_SHORT).show()
             R.id.action_repo_add -> Navigator().startAddRepoActivity(this)
-//            R.id.action_repo_add -> Toast.makeText(this, "action_repo_add", Toast.LENGTH_SHORT).show()
             R.id.action_github -> Navigator().startLoginActivity(this)
-//            R.id.action_github -> Toast.makeText(this, "action_github", Toast.LENGTH_SHORT).show()
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        setUpView()
+//        setUpView()
+    }
 
+    override fun onResume() {
+        super.onResume()
+//        mRecyclerLoader?.showProgress()
+        loadLocalData()
     }
 
     private fun setUpView() {
 //        mRecyclerLoader = RecyclerLoader(mAnimatorRecyclerContent!!)
-        mRecyclerView!!.layoutManager = LinearLayoutManager(this)
-        mMainLatestAdapter = MainLatestAdapter(this)
-        mRecyclerView!!.adapter = mMainLatestAdapter
-        mRecyclerView!!.addItemDecoration(DividerItemDecorationMainList(this,
-                DividerItemDecoration.VERTICAL_LIST, resources.getDimensionPixelSize(R.dimen.repo_list_divider_start), -1, -1))
-        mItemTouchHelper = createItemTouchHelper()
-        mItemTouchHelper.attachToRecyclerView(mRecyclerView)
+//        mRecyclerView!!.layoutManager = LinearLayoutManager(this)
+//        mMainLatestAdapter = MainLatestAdapter(this)
+//        mRecyclerView!!.adapter = mMainLatestAdapter
+//        mRecyclerView!!.addItemDecoration(DividerItemDecorationMainList(this,
+//                DividerItemDecoration.VERTICAL_LIST, resources.getDimensionPixelSize(R.dimen.repo_list_divider_start), -1, -1))
+//        mItemTouchHelper = createItemTouchHelper()
+//        mItemTouchHelper.attachToRecyclerView(mRecyclerView)
     }
 
     fun createItemTouchHelper(): ItemTouchHelperExtension {
@@ -114,14 +115,12 @@ class MainActivity : BaseActivity() {
 
 
     private fun setUpContent(repos: List<Repo>) {
-        mRecyclerLoader!!.showContent()
-        mMainLatestAdapter!!.updateData(repos)
+//        mRecyclerLoader!!.showContent()
+//        mMainLatestAdapter!!.updateData(repos)
     }
 
 
-    override fun onResume() {
-        super.onResume()
-    }
+
 
     override fun onPause() {
         super.onPause()
@@ -141,7 +140,7 @@ class MainActivity : BaseActivity() {
 
     fun onFabClick(view: View) {
 //        Toast.makeText(this, "Fab Clicked !", Toast.LENGTH_SHORT).show()
-        doSelectFile();
+        doSelectFile()
     }
 
     fun doSelectFile() {
