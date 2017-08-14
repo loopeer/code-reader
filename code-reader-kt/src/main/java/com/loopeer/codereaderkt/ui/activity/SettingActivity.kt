@@ -3,7 +3,10 @@ package com.loopeer.codereaderkt.ui.activity
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatDelegate
+import android.view.View
 import android.widget.SeekBar
+import android.widget.Toast
+import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.databinding.ActivitySettingBinding
 import com.loopeer.codereaderkt.event.ThemeRecreateEvent
@@ -13,7 +16,7 @@ import com.loopeer.codereaderkt.utils.RxBus
 import com.loopeer.codereaderkt.utils.ThemeUtils
 
 
-class SettingActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener , ThemeChooser.OnItemSelectListener{
+class SettingActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener, ThemeChooser.OnItemSelectListener {
 
 
     lateinit var binding: ActivitySettingBinding
@@ -54,13 +57,32 @@ class SettingActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener , ThemeC
     }
 
 
-
     override fun onStartTrackingTouch(p0: SeekBar?) {
 
     }
 
     override fun onStopTrackingTouch(p0: SeekBar?) {
 
+    }
+
+    fun onSettingLineNumberClick(view: View) {
+        binding.checkboxShowLineNumber.isChecked = !binding.checkboxShowLineNumber.isChecked
+//        Toast.makeText(this, "onSettingLineNumberClick", Toast.LENGTH_SHORT).show()
+    }
+
+    fun onSettingUseMenloClick(view: View) {
+        binding.checkboxMenloFont.isChecked = !binding.checkboxMenloFont.isChecked
+//        Toast.makeText(this, "onSettingUseMenloClick", Toast.LENGTH_SHORT).show()
+    }
+
+    fun onThemeSelectClick(view: View) {
+        mThemeChooser!!.onItemSelect(view)
+//        Toast.makeText(this, "onThemeClick", Toast.LENGTH_SHORT).show()
+    }
+
+    fun onAboutClick(view: View) {
+//        Navigator.startAboutActivity(this)
+        Toast.makeText(this, "onAboutClick", Toast.LENGTH_SHORT).show()
     }
 
     override fun onItemSelect(id: Int, tag: String) {

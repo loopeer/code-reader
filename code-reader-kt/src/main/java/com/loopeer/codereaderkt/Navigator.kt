@@ -39,4 +39,8 @@ class Navigator {
         context.startActivity(intent)
     }
 
+    public fun startAboutActivity(context: Context){
+//        val intent = Intent(context,)
+    }
+
 }

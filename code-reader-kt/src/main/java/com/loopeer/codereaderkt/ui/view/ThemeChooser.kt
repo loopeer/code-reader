@@ -3,6 +3,7 @@ package com.loopeer.codereaderkt.ui.view
 import android.app.Activity
 import android.content.Context
 import android.view.View
+import android.widget.ImageView
 import java.util.HashMap
 
 
@@ -26,12 +27,12 @@ class ThemeChooser(private val mContext: Context, private val mOnItemSelectListe
         mOnItemSelectListener.onItemSelect(view.id, mViewThemeTags[view.id] as String)
         mViewThemeTags.keys
                 .filter { view.id != it }
-//                .forEach { (mContext as Activity).findViewById(it).setSelected(false) }
+                .forEach { (mContext as Activity).findViewById<ImageView>(it).isSelected = false }
     }
 
     fun onItemSelectByTag(tag: String) {
         for ((id, value) in mViewThemeTags) {
-//            (mContext as Activity).findViewById(id).setSelected(value == tag)
+            (mContext as Activity).findViewById<ImageView>(id).isSelected = value == tag
         }
     }
 
