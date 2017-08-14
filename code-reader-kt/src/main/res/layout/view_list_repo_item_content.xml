@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.loopeer.codereaderkt.ui.view.ForegroundProgressRelativeLayout
+        android:id="@+id/view_progress_list_repo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/item_background"
+        android:foreground="?selectableItemBackground"
+        android:padding="@dimen/medium_padding"
+        tools:showIn="@layout/list_item_repo">
+
+        <ImageView
+            android:id="@+id/img_repo_type"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_circle_folder"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_document_white" />
+
+        <TextView
+            android:id="@+id/text_repo_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_padding"
+            android:layout_toLeftOf="@+id/view_list_repo_phone_cloud_container"
+            android:layout_toRightOf="@+id/img_repo_type"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/text_size_medium"
+            tools:text="RecyclerRepRecyclerRepoRecyclerRepoRecyclerRepoRecyclerRepoRecyclerRepoRecyclerRepoRecyclerRepoo" />
+
+        <LinearLayout
+            android:id="@+id/view_list_repo_phone_cloud_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/img_list_repo_cloud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/inline_padding"
+                android:src="@drawable/ic_cloud"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/img_list_repo_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:src="@drawable/ic_phone"
+                android:visibility="visible" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/text_repo_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/text_repo_name"
+            android:layout_below="@+id/text_repo_name"
+            android:layout_marginTop="@dimen/inline_padding"
+            android:textColor="?android:textColorTertiary"
+            android:textSize="@dimen/text_size_small"
+            tools:text="2014-02-11 12:00:32" />
+
+    </com.loopeer.codereaderkt.ui.view.ForegroundProgressRelativeLayout>
+
+</layout>

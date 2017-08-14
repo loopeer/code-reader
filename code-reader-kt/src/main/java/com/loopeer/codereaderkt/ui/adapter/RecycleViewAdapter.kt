@@ -8,20 +8,22 @@ import java.util.ArrayList
 
 abstract class RecyclerViewAdapter<T>() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    lateinit var layoutInflater: LayoutInflater
-    protected var mData: MutableList<T>? = null
+    private var mContext: Context = null!!
+    var mInflater: LayoutInflater
+    protected var mData: ArrayList<T>? = null
 
     constructor(context: Context) : this() {
-        this.layoutInflater = LayoutInflater.from(context)
+        this.mContext = context
+        this.mInflater = LayoutInflater.from(context)
         this.mData = ArrayList<T>()
     }
 
-    fun updateData(data: List<T>) {
+    open fun updateData(data: List<T>) {
         this.setData(data)
         this.notifyDataSetChanged()
     }
 
-    fun setData(data: List<T>?) {
+    open fun setData(data: List<T>?) {
         this.mData!!.clear()
         if (data != null) {
             this.mData!!.addAll(data)
@@ -29,18 +31,26 @@ abstract class RecyclerViewAdapter<T>() : RecyclerView.Adapter<RecyclerView.View
 
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    open fun getLayoutInflater(): LayoutInflater {
+        return this.mInflater
+    }
+
+    open fun getContext(): Context {
+        return this.mContext
+    }
+
+    override open fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = this.getItem(position)
         this.bindView(data, position, holder)
     }
 
-    abstract fun bindView(var1: T, var2: Int, var3: RecyclerView.ViewHolder)
+    abstract open fun bindView(var1: T, var2: Int, var3: RecyclerView.ViewHolder)
 
-    fun getItem(position: Int): T {
+    open fun getItem(position: Int): T {
         return this.mData!![position]
     }
 
-    override fun getItemCount(): Int {
+    override open fun getItemCount(): Int {
         return if (this.mData == null) 0 else this.mData!!.size
     }
 }
