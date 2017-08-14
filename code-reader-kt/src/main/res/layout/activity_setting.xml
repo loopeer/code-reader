@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -80,10 +80,12 @@
             android:paddingTop="@dimen/default_padding">
 
             <TextView
+                android:id="@+id/textView"
                 style="@style/ListItemSettingTitleStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="onSettingLineNumberClick"
                 android:text="@string/setting_show_line_number" />
 
             <android.support.v7.widget.AppCompatCheckBox
@@ -105,6 +107,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="onSettingUseMenloClick"
                 android:text="@string/setting_use_menlo_font" />
 
             <android.support.v7.widget.AppCompatCheckBox
@@ -133,6 +136,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/default_padding"
                 android:clickable="true"
+                android:onClick="onThemeSelectClick"
                 android:src="@drawable/theme_shape_day" />
 
             <ImageView
@@ -141,6 +145,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
+                android:onClick="onThemeSelectClick"
                 android:src="@drawable/theme_shape_night" />
 
         </com.loopeer.directorychooser.ForegroundLinearLayout>
@@ -155,6 +160,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="onAboutClick"
                 android:text="@string/setting_about" />
 
         </com.loopeer.directorychooser.ForegroundLinearLayout>

@@ -35,8 +35,8 @@ class MainActivity : BaseActivity() {
 //    private var mRecyclerLoader: ILoadHelper? = null
 //    private var mMainLatestAdapter: MainLatestAdapter? = null
 
-    lateinit var mItemTouchHelper: ItemTouchHelperExtension
-    lateinit var mCallback: ItemTouchHelperExtension.Callback
+//    lateinit var mItemTouchHelper: ItemTouchHelperExtension
+//    lateinit var mCallback: ItemTouchHelperExtension.Callback
 
 //    internal var mRecyclerView: RecyclerView? = null
 //    internal var mAnimatorRecyclerContent: ViewAnimator? = null
@@ -99,14 +99,16 @@ class MainActivity : BaseActivity() {
 //        mItemTouchHelper.attachToRecyclerView(mRecyclerView)
     }
 
-    fun createItemTouchHelper(): ItemTouchHelperExtension {
-        mCallback = createCallback()
-        return ItemTouchHelperExtension(mCallback)
-    }
+    /*fun createItemTouchHelper(): ItemTouchHelperExtension {
+//        mCallback = createCallback()
+//        return ItemTouchHelperExtension(mCallback)
+    }*/
 
+/*
     fun createCallback(): ItemTouchHelperExtension.Callback {
         return ItemTouchHelperCallback()
     }
+*/
 
     private fun loadLocalData() {
 //        val repos = CoReaderDbHelper.getInstance(CodeReaderApplication.appContext!!).readRepos()

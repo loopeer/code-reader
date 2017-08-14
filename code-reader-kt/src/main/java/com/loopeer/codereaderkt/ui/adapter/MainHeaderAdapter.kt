@@ -50,10 +50,10 @@ class MainHeaderAdapter(private val mContext: Context) : BaseAdapter() {
 
     private fun bindView(item: MainHeaderItem, view: View) {
 
-//        val textView = view.findViewById(R.id.text_grid_item) as TextView
-//        val imageView = view.findViewById(R.id.img_grid_item) as ImageView
-//
-//        textView.setText(item.name)
+        val textView = view.findViewById<TextView>(R.id.text_grid_item) as TextView
+        val imageView = view.findViewById<ImageView>(R.id.img_grid_item) as ImageView
+
+        textView.setText(item.name)
 //        imageView.setImageResource(item.icon)
     }
 
