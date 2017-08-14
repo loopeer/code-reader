@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.SearchView
-import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.Menu
@@ -23,7 +22,6 @@ import android.widget.ProgressBar
 import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.databinding.ActivitySimpleWebBinding
-import com.loopeer.codereaderkt.ui.view.NestedScrollWebView
 
 
 class SimpleWebActivity : BaseActivity(), SearchView.OnQueryTextListener {
@@ -31,7 +29,7 @@ class SimpleWebActivity : BaseActivity(), SearchView.OnQueryTextListener {
 
     lateinit var binding: ActivitySimpleWebBinding
 
-    internal var mWebContent: NestedScrollWebView? = null
+
     //    internal var mToolbar: Toolbar? = null
     internal var mProgressBar: ProgressBar? = null
     private var mSearchView: SearchView? = null
@@ -47,15 +45,15 @@ class SimpleWebActivity : BaseActivity(), SearchView.OnQueryTextListener {
     }
 
     private fun initWeb() {
-        mWebContent = findViewById(R.id.web_content) as NestedScrollWebView
-        mWebContent!!.getSettings().setJavaScriptEnabled(true)
-        mWebContent!!.getSettings().setDomStorageEnabled(true)
-        mWebContent!!.getSettings().setGeolocationEnabled(true)
+
+        binding.webContent!!.settings.javaScriptEnabled = true
+        binding.webContent!!.settings.domStorageEnabled = true
+        binding.webContent!!.settings.setGeolocationEnabled(true)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mWebContent!!.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW)
+            binding.webContent!!.settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         }
 
-        mWebContent!!.setWebViewClient(object : WebViewClient() {
+        binding.webContent!!.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 mSearchView!!.setQuery(url, true)
                 return true
@@ -66,8 +64,8 @@ class SimpleWebActivity : BaseActivity(), SearchView.OnQueryTextListener {
                 mSearchView!!.setQuery(request.url.toString(), true)
                 return true
             }
-        })
-        mWebContent!!.setWebChromeClient(WebChromeClient())
+        }
+        binding.webContent!!.setWebChromeClient(WebChromeClient())
     }
 
     private fun parseIntent() {
@@ -79,11 +77,11 @@ class SimpleWebActivity : BaseActivity(), SearchView.OnQueryTextListener {
     }
 
     private fun loadData(htmlString: String) {
-        mWebContent!!.loadData(htmlString, "text/html", "utf-8")
+        binding.webContent!!.loadData(htmlString, "text/html", "utf-8")
     }
 
     private fun loadUrl(webUrl: String) {
-        mWebContent!!.loadUrl(webUrl)
+        binding.webContent!!.loadUrl(webUrl)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -132,8 +130,8 @@ class SimpleWebActivity : BaseActivity(), SearchView.OnQueryTextListener {
         if (event.action == KeyEvent.ACTION_DOWN) {
             when (keyCode) {
                 KeyEvent.KEYCODE_BACK -> {
-                    if (mWebContent!!.canGoBack()) {
-                        mWebContent!!.goBack()
+                    if (binding.webContent!!.canGoBack()) {
+                        binding.webContent!!.goBack()
                     } else {
                         finish()
                     }
@@ -173,7 +171,7 @@ class SimpleWebActivity : BaseActivity(), SearchView.OnQueryTextListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        mWebContent!!.destroy()
+        binding.webContent!!.destroy()
     }
 
     companion object {
