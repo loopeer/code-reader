@@ -1,10 +1,12 @@
 package com.loopeer.codereaderkt
 
+import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.text.Html
 import android.widget.Toast
+import com.loopeer.codereaderkt.model.Repo
 import com.loopeer.codereaderkt.ui.activity.*
 
 
@@ -66,5 +68,43 @@ open class Navigator {
         }
     }
 
+/*
+    fun startDownloadRepoService(context: Context, repo: Repo) {
+        val intent = Intent(context, DownloadRepoService::class.java)
+        intent.putExtra(EXTRA_REPO, repo)
+        intent.putExtra(EXTRA_DOWNLOAD_SERVICE_TYPE, DownloadRepoService.DOWNLOAD_REPO)
+        context.startService(intent)
+    }
+*/
+
+/*
+    fun startDownloadRepoService(context: Context, type: Int) {
+        val intent = Intent(context, DownloadRepoService::class.java)
+        intent.putExtra(EXTRA_DOWNLOAD_SERVICE_TYPE, type)
+        context.startService(intent)
+    }
+*/
+
+/*
+    fun startDownloadRepoServiceRemove(context: Context, downloadId: Long) {
+        val intent = Intent(context, DownloadRepoService::class.java)
+        intent.putExtra(EXTRA_DOWNLOAD_SERVICE_TYPE, DownloadRepoService.DOWNLOAD_REMOVE_DOWNLOAD)
+        intent.putExtra(DownloadManager.EXTRA_DOWNLOAD_ID, downloadId)
+        context.startService(intent)
+    }
+*/
+
+    /*fun startDownloadNewRepoService(context: Context, repo: Repo) {
+        val sameRepo = CoReaderDbHelper.getInstance(context).readSameRepo(repo)
+        val repoId: Long
+        if (sameRepo != null) {
+            repoId = java.lang.Long.parseLong(sameRepo!!.id)
+        } else {
+            repoId = CoReaderDbHelper.getInstance(context).insertRepo(repo)
+        }
+        repo.id = repoId.toString()
+        Navigator.startDownloadRepoService(context, repo)
+    }
+*/
 
 }

@@ -16,24 +16,24 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ApiServicej {
+public class ApiService {
 
     public static final String API_URL = "https://api.github.com/";
 
-    private static ApiServicej sInstance;
+    private static ApiService sInstance;
 
     private Retrofit mRetrofit;
 
-    public static synchronized ApiServicej getInstance() {
+    public static synchronized ApiService getInstance() {
         if (sInstance == null) {
-            sInstance = new ApiServicej();
+            sInstance = new ApiService();
         }
         return sInstance;
     }
 
 
     private OkHttpClient getClient() {
-        return createOkHttpClient(CodeReaderApplication.Companion.getInstance());
+        return createOkHttpClient(CodeReaderApplication.getInstance());
     }
 
     static final int DISK_CACHE_SIZE = 50 * 1024 * 1024; // 50MB

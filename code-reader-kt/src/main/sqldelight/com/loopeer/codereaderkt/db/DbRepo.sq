@@ -1,0 +1,55 @@
+CREATE TABLE db_repo (
+   _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  name TEXT,
+  last_modify INTEGER,
+  absolute_path TEXT,
+  net_url TEXT,
+  is_folder INTEGER AS Boolean DEFAULT 0,
+  download_id INTEGER DEFAULT 0,
+  factor REAL AS Float,
+  is_unzip INTEGER AS Boolean DEFAULT 0
+);
+
+select_all:
+SELECT *
+FROM db_repo
+ORDER BY last_modify DESC;
+
+clean_all:
+DELETE
+FROM db_repo;
+
+delete_repo:
+DELETE FROM db_repo
+WHERE _id = ?;
+
+update_last_modify:
+UPDATE db_repo
+SET last_modify = ?
+WHERE _id = ?;
+
+check_same_repo:
+SELECT *
+FROM db_repo
+WHERE name = ?
+AND absolute_path = ?;
+
+update_download_id:
+UPDATE db_repo
+SET download_id = ?
+WHERE _id = ?;
+
+reset_download_id:
+UPDATE db_repo
+SET download_id = 0
+WHERE download_id = ?;
+
+update_download_progress:
+UPDATE db_repo
+SET factor = ?
+WHERE download_id = ?;
+
+update_unzip_progress:
+UPDATE db_repo
+SET factor = ?, is_unzip = ?
+WHERE download_id = ?;

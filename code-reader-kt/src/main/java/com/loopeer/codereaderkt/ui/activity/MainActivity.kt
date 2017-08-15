@@ -16,13 +16,8 @@ import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.databinding.ActivityMainBinding
 import com.loopeer.codereaderkt.model.Repo
-import com.loopeer.codereaderkt.ui.adapter.ItemTouchHelperCallback
-import com.loopeer.codereaderkt.ui.adapter.MainLatestAdapter
 import com.loopeer.codereaderkt.ui.adapter.MainLatestAdapters
-import com.loopeer.codereaderkt.ui.decoration.DividerItemDecoration
-import com.loopeer.codereaderkt.ui.decoration.DividerItemDecorationMainList
 import com.loopeer.codereaderkt.ui.loader.ILoadHelper
-import com.loopeer.codereaderkt.ui.loader.RecyclerLoader
 import com.loopeer.directorychooser.NavigatorChooser
 import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension
 
@@ -34,20 +29,22 @@ class MainActivity : BaseActivity() {
     val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000
     private lateinit var binding: ActivityMainBinding
 
-//    private var mRecyclerLoader: ILoadHelper? = null
-//    private var mMainLatestAdapter: MainLatestAdapters? = null
+    private var mRecyclerLoader: ILoadHelper? = null
+    private var mMainLatestAdapter: MainLatestAdapters? = null
 
-//    lateinit var mItemTouchHelper: ItemTouchHelperExtension
-//    lateinit var mCallback: ItemTouchHelperExtension.Callback
+    lateinit var mItemTouchHelper: ItemTouchHelperExtension
+    lateinit var mCallback: ItemTouchHelperExtension.Callback
 
     internal var mRecyclerView: RecyclerView? = null
-//    internal var mAnimatorRecyclerContent: ViewAnimator? = null
+    internal var mAnimatorRecyclerContent: ViewAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-//        mRecyclerView = findViewById(R.id.view_recycler) as RecyclerView
+//        Navigator.startDownloadRepoService(this, DownloadRepoService.DOWNLOAD_PROGRESS)
+
+        mRecyclerView = findViewById(R.id.view_recycler) as RecyclerView
 //        mAnimatorRecyclerContent = findViewById(R.id.view_coordinator_container) as ViewAnimator
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(false)
@@ -61,6 +58,7 @@ class MainActivity : BaseActivity() {
                         MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE)
             }
         }
+        setUpView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -92,9 +90,9 @@ class MainActivity : BaseActivity() {
 
     private fun setUpView() {
 //        mRecyclerLoader = RecyclerLoader(mAnimatorRecyclerContent!!)
-//        mRecyclerView!!.layoutManager = LinearLayoutManager(this)
-//        mMainLatestAdapter = MainLatestAdapters(this)
-//        mRecyclerView!!.adapter = mMainLatestAdapter
+        mRecyclerView!!.layoutManager = LinearLayoutManager(this)
+        mMainLatestAdapter = MainLatestAdapters(this)
+        mRecyclerView!!.adapter = mMainLatestAdapter
 //        mRecyclerView!!.addItemDecoration(DividerItemDecorationMainList(this,
 //                DividerItemDecoration.VERTICAL_LIST, resources.getDimensionPixelSize(R.dimen.repo_list_divider_start), -1, -1))
 //        mItemTouchHelper = createItemTouchHelper()

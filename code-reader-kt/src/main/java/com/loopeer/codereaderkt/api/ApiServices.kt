@@ -13,13 +13,13 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-open class ApiService {
+open class ApiServices {
 
     private var mRetrofit: Retrofit? = null
 
 
     private val client: OkHttpClient
-        get() = createOkHttpClient(CodeReaderApplication.instance!!)
+        get() = createOkHttpClient(CodeReaderApplication.getInstance())
 
     protected fun newRestAdapterBuilder(): Retrofit.Builder {
         return Retrofit.Builder()
@@ -40,6 +40,13 @@ open class ApiService {
                     throw MissingResourceException("Define your endpoint in api_url string resource.", javaClass.name, "api_url")
                 }
 
+                /*Log.d("ApiServicelog", API_URL+client)
+                mRetrofit = newRestAdapterBuilder()
+                        .client(client)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                        .baseUrl(API_URL)
+                        .build()*/
             }
 
             return mRetrofit!!
@@ -49,12 +56,12 @@ open class ApiService {
 
         val API_URL = "https://api.github.com/"
 
-        private var sInstance: ApiService? = null
+        private var sInstance: ApiServices? = null
 
-        val instance: ApiService
+        val instance: ApiServices
             @Synchronized get() {
                 if (sInstance == null) {
-                    sInstance = ApiService()
+                    sInstance = ApiServices()
                 }
                 return sInstance!!
             }
