@@ -13,7 +13,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class ApiService {
+open class ApiService {
 
     private var mRetrofit: Retrofit? = null
 
@@ -29,6 +29,7 @@ class ApiService {
         get() {
             if (mRetrofit == null) {
                 try {
+//                    Log.d("ApiServicelog", API_URL+client)
                     mRetrofit = newRestAdapterBuilder()
                             .client(client)
                             .addConverterFactory(GsonConverterFactory.create())
@@ -65,7 +66,7 @@ class ApiService {
 
             if (BuildConfig.DEBUG) {
                 val loggingInterceptor = HttpJsonLoggingInterceptor()
-                loggingInterceptor.setLevel(HttpJsonLoggingInterceptor.Level.BODY)
+                loggingInterceptor.level = HttpJsonLoggingInterceptor.Level.BODY
                 httpClient.addInterceptor(loggingInterceptor)
             }
 

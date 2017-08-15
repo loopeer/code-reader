@@ -1,8 +1,6 @@
 package com.loopeer.codereaderkt.ui.adapter
 
 import android.content.Context
-import android.os.Parcel
-import android.os.Parcelable
 import android.support.v7.widget.RecyclerView
 import android.text.format.DateUtils
 import android.view.View
@@ -10,12 +8,10 @@ import android.view.ViewGroup
 import android.widget.GridView
 import android.widget.ImageView
 import android.widget.TextView
-import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.model.MainHeaderItem
 import com.loopeer.codereaderkt.model.Repo
 import com.loopeer.codereaderkt.ui.view.ForegroundProgressRelativeLayout
-import com.loopeer.codereaderkt.utils.RxBus
 import com.loopeer.itemtouchhelperextension.Extension
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
@@ -23,9 +19,9 @@ import java.util.ArrayList
 
 
 class MainLatestAdapter : RecyclerViewAdapter<Repo> {
-    private val TAG = "MainLatestAdapter"
+    private val TAG = "MainLatestAdapters"
 
-    constructor(context: Context) : super(context = context) {
+    constructor(context: Context) : super(context) {
 
     }
 

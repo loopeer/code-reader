@@ -45,6 +45,7 @@
 
 
         <Button
+            android:onClick="onSignInClick"
             android:id="@+id/btn_sign_in"
             android:layout_width="match_parent"
             android:layout_height="?attr/listPreferredItemHeightSmall"

@@ -56,6 +56,8 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:' + retrofit
     compile 'com.squareup.retrofit2:adapter-rxjava:' + retrofit
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    compile 'io.reactivex:rxjava:' + rxjava
+    compile 'io.reactivex:rxandroid:' + rxandroid
 }
 repositories {
     mavenCentral()
