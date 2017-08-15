@@ -39,9 +39,9 @@ class AddRepoActivity : BaseActivity(), Checker.CheckObserver {
         })
     }
 
-    fun onDownClick(){
+    fun onDownClick() {
         hideSoftInputMethod()
-/*
+/*开始下载并退回主界面
         val repo = Repo(
 //                mAddRepoChecker!!.repoName.trim { it <= ' ' }, FileCache.getInstance().getRepoAbsolutePath(mAddRepoChecker.repoName), mAddRepoChecker.repoDownloadUrl.trim { it <= ' ' }, true, 0)
 //        Navigator.startDownloadNewRepoService(this, repo)
