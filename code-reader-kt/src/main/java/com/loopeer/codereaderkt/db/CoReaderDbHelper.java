@@ -1,4 +1,3 @@
-/*
 package com.loopeer.codereaderkt.db;
 
 import android.content.Context;
@@ -158,4 +157,4 @@ public class CoReaderDbHelper extends SQLiteOpenHelper {
         db.execSQL(DbRepoModel.DELETE_REPO
                 , new String[]{String.valueOf(id)});
     }
-}*/
+}
