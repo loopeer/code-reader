@@ -21,7 +21,7 @@ class ItemTouchHelperCallback : ItemTouchHelperExtension.Callback() {
     }
 
     override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
-//        if (viewHolder is MainLatestAdapter.RepoViewHolder)
-//            (viewHolder as MainLatestAdapter.RepoViewHolder).mProgressRelativeLayout.setTranslationX(dX)
+//        if (viewHolder is MainLatestAdapters.RepoViewHolder)
+//            (viewHolder as MainLatestAdapters.RepoViewHolder).mProgressRelativeLayout.setTranslationX(dX)
     }
 }

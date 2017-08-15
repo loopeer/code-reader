@@ -1,10 +1,10 @@
-package com.loopeer.codereader.api;
+package com.loopeer.codereaderkt.api;
 
 import android.app.Application;
-import android.util.Log;
 
-import com.loopeer.codereader.BuildConfig;
-import com.loopeer.codereader.CodeReaderApplication;
+
+import com.loopeer.codereaderkt.BuildConfig;
+import com.loopeer.codereaderkt.CodeReaderApplication;
 
 import java.io.File;
 import java.util.MissingResourceException;
@@ -16,24 +16,24 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ApiService {
+public class ApiServicej {
 
     public static final String API_URL = "https://api.github.com/";
 
-    private static ApiService sInstance;
+    private static ApiServicej sInstance;
 
     private Retrofit mRetrofit;
 
-    public static synchronized ApiService getInstance() {
+    public static synchronized ApiServicej getInstance() {
         if (sInstance == null) {
-            sInstance = new ApiService();
+            sInstance = new ApiServicej();
         }
         return sInstance;
     }
 
 
     private OkHttpClient getClient() {
-        return createOkHttpClient(CodeReaderApplication.getInstance());
+        return createOkHttpClient(CodeReaderApplication.Companion.getInstance());
     }
 
     static final int DISK_CACHE_SIZE = 50 * 1024 * 1024; // 50MB
@@ -62,7 +62,6 @@ public class ApiService {
     protected Retrofit getRetrofit() {
         if (mRetrofit == null) {
             try {
-                Log.d("ApiServicej",API_URL);
                 mRetrofit = newRestAdapterBuilder()
                         .client(getClient())
                         .addConverterFactory(GsonConverterFactory.create())

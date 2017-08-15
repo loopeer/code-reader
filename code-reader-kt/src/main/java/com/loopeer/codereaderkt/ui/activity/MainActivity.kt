@@ -18,6 +18,7 @@ import com.loopeer.codereaderkt.databinding.ActivityMainBinding
 import com.loopeer.codereaderkt.model.Repo
 import com.loopeer.codereaderkt.ui.adapter.ItemTouchHelperCallback
 import com.loopeer.codereaderkt.ui.adapter.MainLatestAdapter
+import com.loopeer.codereaderkt.ui.adapter.MainLatestAdapters
 import com.loopeer.codereaderkt.ui.decoration.DividerItemDecoration
 import com.loopeer.codereaderkt.ui.decoration.DividerItemDecorationMainList
 import com.loopeer.codereaderkt.ui.loader.ILoadHelper
@@ -34,12 +35,12 @@ class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
 
 //    private var mRecyclerLoader: ILoadHelper? = null
-//    private var mMainLatestAdapter: MainLatestAdapter? = null
+//    private var mMainLatestAdapter: MainLatestAdapters? = null
 
 //    lateinit var mItemTouchHelper: ItemTouchHelperExtension
 //    lateinit var mCallback: ItemTouchHelperExtension.Callback
 
-//    internal var mRecyclerView: RecyclerView? = null
+    internal var mRecyclerView: RecyclerView? = null
 //    internal var mAnimatorRecyclerContent: ViewAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,7 +93,7 @@ class MainActivity : BaseActivity() {
     private fun setUpView() {
 //        mRecyclerLoader = RecyclerLoader(mAnimatorRecyclerContent!!)
 //        mRecyclerView!!.layoutManager = LinearLayoutManager(this)
-//        mMainLatestAdapter = MainLatestAdapter(this)
+//        mMainLatestAdapter = MainLatestAdapters(this)
 //        mRecyclerView!!.adapter = mMainLatestAdapter
 //        mRecyclerView!!.addItemDecoration(DividerItemDecorationMainList(this,
 //                DividerItemDecoration.VERTICAL_LIST, resources.getDimensionPixelSize(R.dimen.repo_list_divider_start), -1, -1))
