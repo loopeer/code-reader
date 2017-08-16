@@ -13,15 +13,15 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ViewAnimator
+import com.loopeer.codereaderkt.CodeReaderApplications
 import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.databinding.ActivityMainBinding
+import com.loopeer.codereaderkt.db.CoReaderDbHelper
 import com.loopeer.codereaderkt.model.Repo
 import com.loopeer.codereaderkt.ui.adapter.MainLatestAdapter
-import com.loopeer.codereaderkt.ui.adapter.MainLatestAdapters
 import com.loopeer.codereaderkt.ui.decoration.DividerItemDecoration
 import com.loopeer.codereaderkt.ui.decoration.DividerItemDecorationMainList
-import com.loopeer.codereaderkt.ui.loader.ILoadHelper
 import com.loopeer.directorychooser.NavigatorChooser
 import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension
 
@@ -89,17 +89,18 @@ class MainActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
 //        mRecyclerLoader?.showProgress()
-        loadLocalData()
+//        loadLocalData()
     }
 
     private fun setUpView() {
 //        mRecyclerLoader = RecyclerLoader(mAnimatorRecyclerContent!!)
         mRecyclerView!!.layoutManager = LinearLayoutManager(this)
         mMainLatestAdapter = MainLatestAdapter(this)
-        Log.d("MainActivityLog","setUpView")
+        Log.d("MainActivityLog","setUpView"+mMainLatestAdapter)
         mRecyclerView!!.adapter = mMainLatestAdapter
         mRecyclerView!!.addItemDecoration(DividerItemDecorationMainList(this,
                 DividerItemDecoration.VERTICAL_LIST, resources.getDimensionPixelSize(R.dimen.repo_list_divider_start), -1, -1))
+        mMainLatestAdapter!!.notifyDataSetChanged()
 //        mItemTouchHelper = createItemTouchHelper()
 //        mItemTouchHelper.attachToRecyclerView(mRecyclerView)
     }
@@ -116,14 +117,14 @@ class MainActivity : BaseActivity() {
 */
 
     private fun loadLocalData() {
-//        val repos = CoReaderDbHelper.getInstance(CodeReaderApplication.appContext!!).readRepos()
+        val repos = CoReaderDbHelper.getInstance(CodeReaderApplications().getAppContext()).readRepos()
 //        setUpContent(repos)
     }
 
 
     private fun setUpContent(repos: List<Repo>) {
 //        mRecyclerLoader!!.showContent()
-        mMainLatestAdapter!!.updateData(repos)
+//        mMainLatestAdapter!!.updateData(repos)
     }
 
 

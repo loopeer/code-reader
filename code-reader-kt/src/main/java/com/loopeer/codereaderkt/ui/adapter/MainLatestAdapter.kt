@@ -21,6 +21,9 @@ import rx.subscriptions.CompositeSubscription
 class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
 
     private val TAG = "MainLatestAdapter"
+    init {
+        Log.d("MainLatestAdapterLog"," init")
+    }
 
     private val mAllSubscription: CompositeSubscription? = null
 
@@ -33,7 +36,7 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
 
 
     override fun bindView(var1: Repo?, var2: Int, var3: RecyclerView.ViewHolder?) {
-        Log.d("MainLatestAdapterLog","bindView")
+        Log.d("MainLatestAdapterLog","bindView"+var3)
         if (var3 is RepoViewHolder) {
             Log.d("MainLatestAdapterLog","bindView : RepoView")
             val viewHolder: RepoViewHolder = var3
@@ -80,16 +83,16 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
     class RepoViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView), Extension {
 
 
-        internal var mImgRepoType: ImageView? = null
-        internal var mTextRepoName: TextView? = null
-        internal var mTextRepoTime: TextView? = null
-        internal var mProgressRelativeLayout: ForegroundProgressRelativeLayout? = null
-        internal var mActionDeleteView: View? = null
-        internal var mActionSyncView: View? = null
-        internal var mActionContainer: View? = null
-        internal var mCloud: View? = null
-        internal var mLocalPhone: View? = null
-        internal var mSubscription: Subscription? = null
+        var mImgRepoType: ImageView? = null
+        var mTextRepoName: TextView? = null
+        var mTextRepoTime: TextView? = null
+        var mProgressRelativeLayout: ForegroundProgressRelativeLayout? = null
+        var mActionDeleteView: View? = null
+        var mActionSyncView: View? = null
+        var mActionContainer: View? = null
+        var mCloud: View? = null
+        var mLocalPhone: View? = null
+        var mSubscription: Subscription? = null
 
         init {
             mImgRepoType = itemView!!.findViewById(R.id.img_repo_type)
