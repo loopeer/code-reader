@@ -18,7 +18,6 @@ import com.loopeer.codereaderkt.utils.SnackbarUtils
 import retrofit2.Response
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
-import rx.functions.Action0
 import rx.schedulers.Schedulers
 import java.util.*
 
@@ -43,7 +42,7 @@ class LoginActivity : BaseActivity(), Checker.CheckObserver {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
 
-        mGithubService = ServiceFactory.getGithubService()
+        mGithubService = ServiceFactory().getGithubService()
         mLoginChecker = LoginChecker(this)
 
         binding.editLoginAccount.addTextChangedListener(object : TextWatcherImpl() {
@@ -73,7 +72,7 @@ class LoginActivity : BaseActivity(), Checker.CheckObserver {
                         .subscribeOn(Schedulers.io())
                         .doOnSubscribe { showProgressLoading("") }
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doAfterTerminate(Action0 { this.dismissProgressLoading() })
+                        .doAfterTerminate({ this.dismissProgressLoading() })
                         .doOnNext { tokenResponse ->
                             if (tokenResponse.isSuccessful) {
                                 Log.d(TAG, tokenResponse.body().toString())
@@ -95,11 +94,9 @@ class LoginActivity : BaseActivity(), Checker.CheckObserver {
         registerSubscription(
                 mGithubService.listToken(base64)
                         .flatMap<Response<Empty>> { listResponse ->
-                            for (token in listResponse.body()) {
-                                if (TOKEN_NOTE == token.note) {
-                                    return@flatMap mGithubService.removeToken(base64, token.id.toString())
-                                }
-                            }
+                            listResponse.body()
+                                    .filter { TOKEN_NOTE == it.note }
+                                    .forEach { return@flatMap mGithubService.removeToken(base64, it.id.toString()) }
 
                             Observable.empty<Response<Empty>>()
                         }
@@ -115,8 +112,9 @@ class LoginActivity : BaseActivity(), Checker.CheckObserver {
     }
 
     fun onSignInClick(){
-        val username = binding.editLoginAccount.getText().toString()
-        val password = binding.editLoginPassword.getText().toString()
+        Log.d("LoginActivityLog","click")
+        val username = binding.editLoginAccount.text.toString()
+        val password = binding.editLoginPassword.text.toString()
         mBase64Str = "Basic " + Base64.encode(username + ':' + password)
         createToken(mBase64Str!!)
     }

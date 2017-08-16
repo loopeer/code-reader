@@ -13,7 +13,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-open class ApiServices {
+open class ApiService {
 
     private var mRetrofit: Retrofit? = null
 
@@ -21,16 +21,11 @@ open class ApiServices {
     private val client: OkHttpClient
         get() = createOkHttpClient(CodeReaderApplication.getInstance())
 
-    protected fun newRestAdapterBuilder(): Retrofit.Builder {
-        return Retrofit.Builder()
-    }
-
     val retrofit: Retrofit
         get() {
             if (mRetrofit == null) {
                 try {
-//                    Log.d("ApiServicelog", API_URL+client)
-                    mRetrofit = newRestAdapterBuilder()
+                    mRetrofit = Retrofit.Builder()
                             .client(client)
                             .addConverterFactory(GsonConverterFactory.create())
                             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -40,13 +35,6 @@ open class ApiServices {
                     throw MissingResourceException("Define your endpoint in api_url string resource.", javaClass.name, "api_url")
                 }
 
-                /*Log.d("ApiServicelog", API_URL+client)
-                mRetrofit = newRestAdapterBuilder()
-                        .client(client)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                        .baseUrl(API_URL)
-                        .build()*/
             }
 
             return mRetrofit!!
@@ -56,12 +44,12 @@ open class ApiServices {
 
         val API_URL = "https://api.github.com/"
 
-        private var sInstance: ApiServices? = null
+        private var sInstance: ApiService? = null
 
-        val instance: ApiServices
+        val instance: ApiService
             @Synchronized get() {
                 if (sInstance == null) {
-                    sInstance = ApiServices()
+                    sInstance = ApiService()
                 }
                 return sInstance!!
             }

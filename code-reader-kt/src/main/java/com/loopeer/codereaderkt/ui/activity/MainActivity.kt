@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,7 +17,10 @@ import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.databinding.ActivityMainBinding
 import com.loopeer.codereaderkt.model.Repo
+import com.loopeer.codereaderkt.ui.adapter.MainLatestAdapter
 import com.loopeer.codereaderkt.ui.adapter.MainLatestAdapters
+import com.loopeer.codereaderkt.ui.decoration.DividerItemDecoration
+import com.loopeer.codereaderkt.ui.decoration.DividerItemDecorationMainList
 import com.loopeer.codereaderkt.ui.loader.ILoadHelper
 import com.loopeer.directorychooser.NavigatorChooser
 import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension
@@ -24,13 +28,13 @@ import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension
 
 class MainActivity : BaseActivity() {
 
-    //MainActivity总是报一些奇怪的错，稍改一点（无论有关与否）即可重新运行，很奇怪
+    //clean后MainActivity总是报一些奇怪的错，稍改一点（无论有关与否）即可重新运行，很奇怪
     private val TAG = "MainActivity"
     val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000
     private lateinit var binding: ActivityMainBinding
 
-    private var mRecyclerLoader: ILoadHelper? = null
-    private var mMainLatestAdapter: MainLatestAdapters? = null
+//    private var mRecyclerLoader: ILoadHelper? = null
+    private var mMainLatestAdapter: MainLatestAdapter? = null
 
     lateinit var mItemTouchHelper: ItemTouchHelperExtension
     lateinit var mCallback: ItemTouchHelperExtension.Callback
@@ -91,10 +95,11 @@ class MainActivity : BaseActivity() {
     private fun setUpView() {
 //        mRecyclerLoader = RecyclerLoader(mAnimatorRecyclerContent!!)
         mRecyclerView!!.layoutManager = LinearLayoutManager(this)
-        mMainLatestAdapter = MainLatestAdapters(this)
+        mMainLatestAdapter = MainLatestAdapter(this)
+        Log.d("MainActivityLog","setUpView")
         mRecyclerView!!.adapter = mMainLatestAdapter
-//        mRecyclerView!!.addItemDecoration(DividerItemDecorationMainList(this,
-//                DividerItemDecoration.VERTICAL_LIST, resources.getDimensionPixelSize(R.dimen.repo_list_divider_start), -1, -1))
+        mRecyclerView!!.addItemDecoration(DividerItemDecorationMainList(this,
+                DividerItemDecoration.VERTICAL_LIST, resources.getDimensionPixelSize(R.dimen.repo_list_divider_start), -1, -1))
 //        mItemTouchHelper = createItemTouchHelper()
 //        mItemTouchHelper.attachToRecyclerView(mRecyclerView)
     }
@@ -118,14 +123,14 @@ class MainActivity : BaseActivity() {
 
     private fun setUpContent(repos: List<Repo>) {
 //        mRecyclerLoader!!.showContent()
-//        mMainLatestAdapter!!.updateData(repos)
+        mMainLatestAdapter!!.updateData(repos)
     }
-
 
 
 
     override fun onPause() {
         super.onPause()
+        mMainLatestAdapter!!.clearSubscription()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
@@ -141,7 +146,6 @@ class MainActivity : BaseActivity() {
     }
 
     fun onFabClick(view: View) {
-//        Toast.makeText(this, "Fab Clicked !", Toast.LENGTH_SHORT).show()
         doSelectFile()
     }
 
