@@ -2,14 +2,13 @@ package com.loopeer.codereaderkt.api
 
 import android.app.Application
 import com.loopeer.codereaderkt.BuildConfig
-import com.loopeer.codereaderkt.CodeReaderApplications
+import com.loopeer.codereaderkt.CodeReaderApplication
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -18,15 +17,16 @@ open class ApiService {
     private var mRetrofit: Retrofit? = null
 
 
-    private val client: OkHttpClient
-        get() = CodeReaderApplications().getInstance()?.let { createOkHttpClient(it) }!!
+    private fun getClient(): OkHttpClient {
+        return createOkHttpClient(CodeReaderApplication().getInstance()!!)
+    }
 
     val retrofit: Retrofit
         get() {
             if (mRetrofit == null) {
 //                try {
                     mRetrofit = Retrofit.Builder()
-                            .client(client)
+                            .client(getClient())
                             .addConverterFactory(GsonConverterFactory.create())
                             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                             .baseUrl(API_URL)

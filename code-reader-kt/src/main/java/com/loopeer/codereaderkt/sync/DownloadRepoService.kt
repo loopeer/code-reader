@@ -2,27 +2,20 @@ package com.loopeer.codereaderkt.sync
 
 import android.app.DownloadManager
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.database.ContentObserver
-import android.database.Cursor
 import android.net.Uri
 import android.os.Handler
 import android.os.IBinder
-import com.loopeer.codereaderkt.CodeReaderApplications
+import com.loopeer.codereaderkt.CodeReaderApplication
 import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.db.CoReaderDbHelper
 import com.loopeer.codereaderkt.event.DownloadProgressEvent
 import com.loopeer.codereaderkt.event.DownloadRepoMessageEvent
 import com.loopeer.codereaderkt.model.Repo
-import com.loopeer.codereaderkt.utils.FileCache
 import com.loopeer.codereaderkt.utils.RxBus
-import com.loopeer.codereaderkt.utils.Unzip
-import rx.Observable
 import rx.Subscription
-import rx.schedulers.Schedulers
-import java.io.File
 
 
 class DownloadRepoService : Service() {
@@ -80,7 +73,7 @@ class DownloadRepoService : Service() {
     }
 
     private fun doRepoDownloadComplete(id: Long) {
-        CoReaderDbHelper.getInstance(CodeReaderApplications().getAppContext())
+        CoReaderDbHelper.getInstance(CodeReaderApplication().getAppContext())
                 .updateRepoUnzipProgress(id, 1F, true)
         RxBus.getInstance().send(DownloadProgressEvent(id, true))
 //                Observable.create((Observable.OnSubscribe<Void>))
@@ -105,10 +98,10 @@ class DownloadRepoService : Service() {
                         val decomp = Unzip(zipFile.path, fileCache.getCacheDir()!!.getPath() + File.separator + name, applicationContext)
                         decomp.DecompressZip()
                         if (zipFile.exists()) zipFile.delete()
-                        CoReaderDbHelper.getInstance(CodeReaderApplications().getAppContext())
+                        CoReaderDbHelper.getInstance(CodeReaderApplication().getAppContext())
                                 .updateRepoUnzipProgress(id, 1f, false)
                         CoReaderDbHelper.getInstance(
-                                CodeReaderApplications().getAppContext()).resetRepoDownloadId(mDownloadingRepos!![id]!!.downloadId)
+                                CodeReaderApplication().getAppContext()).resetRepoDownloadId(mDownloadingRepos!![id]!!.downloadId)
                         RxBus.getInstance().send(DownloadProgressEvent(id, false))
                         RxBus.getInstance().send(DownloadRepoMessageEvent(
                                 getString(R.string.repo_download_complete, mDownloadingRepos!![id]!!.name)))

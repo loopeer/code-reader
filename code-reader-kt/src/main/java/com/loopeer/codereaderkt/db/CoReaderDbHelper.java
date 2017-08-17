@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.loopeer.codereaderkt.CodeReaderApplication;
 import com.loopeer.codereaderkt.model.Repo;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class CoReaderDbHelper extends SQLiteOpenHelper {
     private static volatile CoReaderDbHelper sInstance = null;
 
     private CoReaderDbHelper(Context context) {
-        super(context.getApplicationContext(), DATABASE_NAME, null, DATABASE_VERSION);
+        super(new CodeReaderApplication().getAppContext(), DATABASE_NAME, null, DATABASE_VERSION);//这个位置总是出现空指针
     }
 
     public static CoReaderDbHelper getInstance(Context context) {
@@ -149,7 +150,7 @@ public class CoReaderDbHelper extends SQLiteOpenHelper {
     public void updateRepoUnzipProgress(long downloadId, float factor, boolean isUnzip) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(DbRepoModel.UPDATE_UNZIP_PROGRESS
-                , new String[]{String.valueOf(factor),  String.valueOf(isUnzip ? 1 : 0), String.valueOf(downloadId)});
+                , new String[]{String.valueOf(factor), String.valueOf(isUnzip ? 1 : 0), String.valueOf(downloadId)});
     }
 
     public void deleteRepo(long id) {

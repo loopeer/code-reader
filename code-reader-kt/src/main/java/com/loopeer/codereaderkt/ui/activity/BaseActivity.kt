@@ -61,7 +61,7 @@ open class BaseActivity : AppCompatActivity() {
 
     }
 
-    protected fun reCreateRefresh() {
+    protected open fun reCreateRefresh() {
 
     }
 
