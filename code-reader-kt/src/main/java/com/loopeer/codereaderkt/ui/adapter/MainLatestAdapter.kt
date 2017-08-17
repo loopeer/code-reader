@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.widget.GridView
 import android.widget.ImageView
 import android.widget.TextView
+import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
+import com.loopeer.codereaderkt.db.CoReaderDbHelper
 import com.loopeer.codereaderkt.model.MainHeaderItem
 import com.loopeer.codereaderkt.model.Repo
 import com.loopeer.codereaderkt.ui.view.ForegroundProgressRelativeLayout
@@ -58,6 +60,25 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
         }
 
 
+    }
+
+    private fun doRepoDelete(var3: RecyclerView.ViewHolder) {
+        val position = var3.adapterPosition
+        val repo = mData[position]
+        CoReaderDbHelper.getInstance(context).deleteRepo(java.lang.Long.parseLong(repo.id))
+        if (repo.downloadId > 0) Navigator().startDownloadRepoServiceRemove(context, repo.downloadId)
+        deleteItem(position)
+    }
+
+    fun deleteRepo(repo: Repo) {
+        val index = mData.indexOf(repo)
+        if (index == -1) return
+        deleteItem(index)
+    }
+
+    private fun deleteItem(position: Int) {
+        mData.removeAt(position)
+        notifyItemRemoved(position)
     }
 
     fun clearSubscription() {

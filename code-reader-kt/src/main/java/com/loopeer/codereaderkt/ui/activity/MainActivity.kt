@@ -13,19 +13,24 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ViewAnimator
-import com.loopeer.codereaderkt.CodeReaderApplications
+import com.loopeer.codereaderkt.CodeReaderApplication
 import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.databinding.ActivityMainBinding
 import com.loopeer.codereaderkt.db.CoReaderDbHelper
+import com.loopeer.codereaderkt.event.DownloadFailDeleteEvent
 import com.loopeer.codereaderkt.model.Repo
 import com.loopeer.codereaderkt.sync.DownloadRepoService
+import com.loopeer.codereaderkt.ui.adapter.ItemTouchHelperCallback
 import com.loopeer.codereaderkt.ui.adapter.MainLatestAdapter
 import com.loopeer.codereaderkt.ui.decoration.DividerItemDecoration
 import com.loopeer.codereaderkt.ui.decoration.DividerItemDecorationMainList
 import com.loopeer.codereaderkt.ui.loader.ILoadHelper
+import com.loopeer.codereaderkt.ui.loader.RecyclerLoader
+import com.loopeer.codereaderkt.utils.RxBus
 import com.loopeer.directorychooser.NavigatorChooser
 import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension
+import rx.android.schedulers.AndroidSchedulers
 
 
 class MainActivity : BaseActivity() {
@@ -43,7 +48,7 @@ class MainActivity : BaseActivity() {
     lateinit var mCallback: ItemTouchHelperExtension.Callback
 
     private var mRecyclerView: RecyclerView? = null
-//    internal var mAnimatorRecyclerContent: ViewAnimator? = null
+    private var mAnimatorRecyclerContent: ViewAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +57,7 @@ class MainActivity : BaseActivity() {
         Navigator().startDownloadRepoService(this, DownloadRepoService.DOWNLOAD_PROGRESS)
 
         mRecyclerView = findViewById(R.id.view_recycler) as RecyclerView
-//        mAnimatorRecyclerContent = findViewById(R.id.view_coordinator_container) as ViewAnimator
+        mAnimatorRecyclerContent = findViewById(R.id.animator_recycler_content) as ViewAnimator
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(false)
         if (ContextCompat.checkSelfPermission(this,
@@ -65,7 +70,6 @@ class MainActivity : BaseActivity() {
                         MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE)
             }
         }
-        setUpView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -86,48 +90,56 @@ class MainActivity : BaseActivity() {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-//        setUpView()
+        registerSubscription(
+                RxBus.getInstance().toObservable()
+                        .filter({ o -> o is DownloadFailDeleteEvent })
+                        .map({ o -> (o as DownloadFailDeleteEvent).deleteRepo })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnNext({ mMainLatestAdapter!!.deleteRepo(it) })
+                        .subscribe()
+        )
+        setUpView()
     }
 
     override fun onResume() {
         super.onResume()
-//        mRecyclerLoader?.showProgress()
+        mRecyclerLoader?.showProgress()
 //        loadLocalData()
     }
 
     private fun setUpView() {
-//        mRecyclerLoader = RecyclerLoader(mAnimatorRecyclerContent!!)
+        mRecyclerLoader = RecyclerLoader(mAnimatorRecyclerContent!!)
         mRecyclerView!!.layoutManager = LinearLayoutManager(this)
         mMainLatestAdapter = MainLatestAdapter(this)
         Log.d("MainActivityLog","setUpView"+mMainLatestAdapter)
         mRecyclerView!!.adapter = mMainLatestAdapter
         mRecyclerView!!.addItemDecoration(DividerItemDecorationMainList(this,
                 DividerItemDecoration.VERTICAL_LIST, resources.getDimensionPixelSize(R.dimen.repo_list_divider_start), -1, -1))
-        mMainLatestAdapter!!.notifyDataSetChanged()
-//        mItemTouchHelper = createItemTouchHelper()
-//        mItemTouchHelper.attachToRecyclerView(mRecyclerView)
+        mItemTouchHelper = createItemTouchHelper()
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView)
     }
 
-    /*fun createItemTouchHelper(): ItemTouchHelperExtension {
-//        mCallback = createCallback()
-//        return ItemTouchHelperExtension(mCallback)
-    }*/
-
-/*
-    fun createCallback(): ItemTouchHelperExtension.Callback {
-        return ItemTouchHelperCallback()
+    fun createItemTouchHelper(): ItemTouchHelperExtension {
+        mCallback = createCallback()
+        return ItemTouchHelperExtension(mCallback)
     }
-*/
+
+    fun createCallback(): ItemTouchHelperExtension.Callback = ItemTouchHelperCallback()
 
     private fun loadLocalData() {
-        val repos = CoReaderDbHelper.getInstance(CodeReaderApplications().getAppContext()).readRepos()
-//        setUpContent(repos)
+        val repos = CoReaderDbHelper.getInstance(CodeReaderApplication().getAppContext()).readRepos()
+        setUpContent(repos)
     }
 
+    override fun reCreateRefresh() {
+        super.reCreateRefresh()
+        mRecyclerView!!.recycledViewPool.clear()
+        mMainLatestAdapter!!.notifyDataSetChanged()
+    }
 
     private fun setUpContent(repos: List<Repo>) {
-//        mRecyclerLoader!!.showContent()
-//        mMainLatestAdapter!!.updateData(repos)
+        mRecyclerLoader!!.showContent()
+        mMainLatestAdapter!!.updateData(repos)
     }
 
 
