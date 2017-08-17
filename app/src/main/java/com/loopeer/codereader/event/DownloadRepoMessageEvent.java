@@ -3,7 +3,7 @@ package com.loopeer.codereader.event;
 public class DownloadRepoMessageEvent {
     public String message;
 
-    public DownloadRepoMessageEvent(String message) {
+    public  DownloadRepoMessageEvent(String message) {
         this.message = message;
     }
 

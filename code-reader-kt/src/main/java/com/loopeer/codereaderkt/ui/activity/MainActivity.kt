@@ -19,9 +19,11 @@ import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.databinding.ActivityMainBinding
 import com.loopeer.codereaderkt.db.CoReaderDbHelper
 import com.loopeer.codereaderkt.model.Repo
+import com.loopeer.codereaderkt.sync.DownloadRepoService
 import com.loopeer.codereaderkt.ui.adapter.MainLatestAdapter
 import com.loopeer.codereaderkt.ui.decoration.DividerItemDecoration
 import com.loopeer.codereaderkt.ui.decoration.DividerItemDecorationMainList
+import com.loopeer.codereaderkt.ui.loader.ILoadHelper
 import com.loopeer.directorychooser.NavigatorChooser
 import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension
 
@@ -29,24 +31,25 @@ import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension
 class MainActivity : BaseActivity() {
 
     //clean后MainActivity总是报一些奇怪的错，稍改一点（无论有关与否）即可重新运行，很奇怪
+    //一改style也会带来一些问题
     private val TAG = "MainActivity"
-    val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000
+    private val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000
     private lateinit var binding: ActivityMainBinding
 
-//    private var mRecyclerLoader: ILoadHelper? = null
+    private var mRecyclerLoader: ILoadHelper? = null
     private var mMainLatestAdapter: MainLatestAdapter? = null
 
     lateinit var mItemTouchHelper: ItemTouchHelperExtension
     lateinit var mCallback: ItemTouchHelperExtension.Callback
 
-    internal var mRecyclerView: RecyclerView? = null
-    internal var mAnimatorRecyclerContent: ViewAnimator? = null
+    private var mRecyclerView: RecyclerView? = null
+//    internal var mAnimatorRecyclerContent: ViewAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-//        Navigator.startDownloadRepoService(this, DownloadRepoService.DOWNLOAD_PROGRESS)
+        Navigator().startDownloadRepoService(this, DownloadRepoService.DOWNLOAD_PROGRESS)
 
         mRecyclerView = findViewById(R.id.view_recycler) as RecyclerView
 //        mAnimatorRecyclerContent = findViewById(R.id.view_coordinator_container) as ViewAnimator

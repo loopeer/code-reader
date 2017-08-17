@@ -19,21 +19,21 @@ open class ApiService {
 
 
     private val client: OkHttpClient
-        get() = createOkHttpClient(CodeReaderApplications().getInstance()!!)
+        get() = CodeReaderApplications().getInstance()?.let { createOkHttpClient(it) }!!
 
     val retrofit: Retrofit
         get() {
             if (mRetrofit == null) {
-                try {
+//                try {
                     mRetrofit = Retrofit.Builder()
                             .client(client)
                             .addConverterFactory(GsonConverterFactory.create())
                             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                             .baseUrl(API_URL)
                             .build()
-                } catch (e: NullPointerException) {
+                /*} catch (e: NullPointerException) {
                     throw MissingResourceException("Define your endpoint in api_url string resource.", javaClass.name, "api_url")
-                }
+                }*/
 
             }
 
