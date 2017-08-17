@@ -23,11 +23,7 @@ class CodeReaderApplications : Application() {
         AppCompatDelegate.setDefaultNightMode(ThemeUtils.getCurrentNightMode(this))
     }
 
-    fun getAppContext(): Context? {
-        return sAppContext
-    }
+    fun getAppContext(): Context? = sAppContext
 
-    fun  getInstance(): CodeReaderApplications? {
-        return mInstance
-    }
+    fun  getInstance(): CodeReaderApplications? = mInstance
 }
