@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.SearchView
+import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.Menu
@@ -36,6 +37,7 @@ class SimpleWebActivity : BaseActivity(), SearchView.OnQueryTextListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_simple_web)
+        mToolbar = findViewById(R.id.toolbar) as Toolbar
         initWeb()
         parseIntent()
     }
@@ -78,11 +80,11 @@ class SimpleWebActivity : BaseActivity(), SearchView.OnQueryTextListener {
         binding.webContent.loadUrl(webUrl)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_web_input, menu)
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val inputView = menu.findItem(R.id.action_web_input)
-        mSearchView = inputView.actionView as SearchView
+        val inputView = menu?.findItem(R.id.action_web_input)
+        mSearchView = inputView?.actionView as SearchView
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         mSearchView.isIconified = false
         mSearchView.setOnQueryTextListener(this)
