@@ -14,29 +14,26 @@ import com.loopeer.codereaderkt.model.MainHeaderItem
 import java.util.ArrayList
 
 
-class MainHeaderAdapter(private val mContext: Context) : BaseAdapter() {
-    private val mDatas: MutableList<MainHeaderItem>
+class MainHeaderAdapter() : BaseAdapter() {
+    private var mContext: Context? = null
+    private var mDatas: MutableList<MainHeaderItem>? = null
 
-    init {
+    constructor(context: Context) : this() {
+        this.mContext = context
         mDatas = ArrayList<MainHeaderItem>()
+        Log.d("MainHeaderAdapterLog", "con")
     }
 
-    override fun getCount(): Int {
-        return mDatas.size
-    }
+    override fun getCount(): Int = mDatas!!.size
 
-    override fun getItem(i: Int): Any {
-        return mDatas[i]
-    }
+    override fun getItem(i: Int): Any = mDatas!![i]
 
-    override fun getItemId(i: Int): Long {
-        return i.toLong()
-    }
+    override fun getItemId(i: Int): Long = i.toLong()
 
     override fun getView(i: Int, convertView: View, viewGroup: ViewGroup): View {
         val view = LayoutInflater.from(mContext).inflate(R.layout.grid_item_main_header, viewGroup, false)
-        bindView(mDatas[i], view)
-        bindClick(view, mDatas[i], i)
+        bindView(mDatas!![i], view)
+        bindClick(view, mDatas!![i], i)
         return view
     }
 
@@ -50,7 +47,7 @@ class MainHeaderAdapter(private val mContext: Context) : BaseAdapter() {
     }
 
     private fun bindView(item: MainHeaderItem, view: View) {
-        Log.d("MainHeaderAdapterLog","bindView")
+        Log.d("MainHeaderAdapterLog", "bindView")
         val textView = view.findViewById<TextView>(R.id.text_grid_item) as TextView
         val imageView = view.findViewById<ImageView>(R.id.img_grid_item) as ImageView
 
@@ -63,8 +60,8 @@ class MainHeaderAdapter(private val mContext: Context) : BaseAdapter() {
         notifyDataSetChanged()
     }
 
-    fun setData(items: List<MainHeaderItem>) {
-        mDatas.clear()
-        mDatas.addAll(items)
+    private fun setData(items: List<MainHeaderItem>) {
+        mDatas!!.clear()
+        mDatas!!.addAll(items)
     }
 }

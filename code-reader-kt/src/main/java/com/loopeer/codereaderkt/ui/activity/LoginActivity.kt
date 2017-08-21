@@ -74,16 +74,15 @@ class LoginActivity : BaseActivity(), Checker.CheckObserver {
                         .observeOn(AndroidSchedulers.mainThread())
                         .doAfterTerminate({ this.dismissProgressLoading() })
                         .doOnNext { tokenResponse ->
-                            if (tokenResponse.isSuccessful) {
-                                Log.d(TAG, tokenResponse.body().toString())
-                                val t = tokenResponse.body().token
-                                SnackbarUtils.show(binding.layoutContainer, t.toString())
-                            } else if (tokenResponse.code() == 401) {
-                                SnackbarUtils.show(binding.layoutContainer, R.string.login_auth_error)
-                            } else if (tokenResponse.code() == 403) {
-                                SnackbarUtils.show(binding.layoutContainer, R.string.login_over_auth_error)
-                            } else if (tokenResponse.code() == 422) {
-                                findCertainTokenID(base64)
+                            when {
+                                tokenResponse.isSuccessful -> {
+                                    Log.d(TAG, tokenResponse.body().toString())
+                                    val t = tokenResponse.body().token
+                                    SnackbarUtils.show(binding.layoutContainer, t.toString())
+                                }
+                                tokenResponse.code() == 401 -> SnackbarUtils.show(binding.layoutContainer, R.string.login_auth_error)
+                                tokenResponse.code() == 403 -> SnackbarUtils.show(binding.layoutContainer, R.string.login_over_auth_error)
+                                tokenResponse.code() == 422 -> findCertainTokenID(base64)
                             }
                         }
                         .subscribe()

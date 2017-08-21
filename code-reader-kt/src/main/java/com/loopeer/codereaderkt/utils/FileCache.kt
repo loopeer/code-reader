@@ -21,10 +21,10 @@ class FileCache {
 
 
     init {
-        cacheDir = if (hasSDCard() && hasExternalStoragePermission(CodeReaderApplication().applicationContext)) {
+        cacheDir = if (hasSDCard() && hasExternalStoragePermission(CodeReaderApplication.getAppContext())) {
             createFilePath(cachePath)
         } else {
-            createFilePath("${CodeReaderApplication().getAppContext()!!.cacheDir}$cacheDirPath")//字符串拼接
+            createFilePath("${CodeReaderApplication.getAppContext()!!.cacheDir}$cacheDirPath")//字符串拼接
         }
     }
 
@@ -63,6 +63,7 @@ class FileCache {
 
     fun getRepoAbsolutePath(repoName: String): String =
             getCacheDir()!!.path + File.separator + repoName
+
 
     fun getFileDirectory(file: File): DirectoryNode? {
         if (file == null)

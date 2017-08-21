@@ -21,10 +21,10 @@ import rx.Subscription
 class DownloadRepoService : Service() {
 
     companion object {
-        open val DOWNLOAD_COMPLETE = 0
-        open val DOWNLOAD_REPO = 1
-        open val DOWNLOAD_PROGRESS = 2
-        open val DOWNLOAD_REMOVE_DOWNLOAD = 3
+        val DOWNLOAD_COMPLETE = 0
+        val DOWNLOAD_REPO = 1
+        val DOWNLOAD_PROGRESS = 2
+        val DOWNLOAD_REMOVE_DOWNLOAD = 3
     }
 
 
@@ -45,10 +45,8 @@ class DownloadRepoService : Service() {
                 mDownloadChangeObserver)
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        parseIntent(intent!!)
-        return super.onStartCommand(intent, flags, startId)
-    }
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = //        parseIntent(intent!!)
+            super.onStartCommand(intent, flags, startId)
 
     private fun parseIntent(intent: Intent) {
         var inn = intent //因为kotlin中in关键字的缘故，不能用‘in’做变量
@@ -73,7 +71,7 @@ class DownloadRepoService : Service() {
     }
 
     private fun doRepoDownloadComplete(id: Long) {
-        CoReaderDbHelper.getInstance(CodeReaderApplication().getAppContext())
+        CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
                 .updateRepoUnzipProgress(id, 1F, true)
         RxBus.getInstance().send(DownloadProgressEvent(id, true))
 //                Observable.create((Observable.OnSubscribe<Void>))

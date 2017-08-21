@@ -49,7 +49,7 @@ class MainActivity : BaseActivity() {
 
     private var mRecyclerView: RecyclerView? = null
     private var mAnimatorRecyclerContent: ViewAnimator? = null
-
+    @SuppressWarnings("unused")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -104,7 +104,7 @@ class MainActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         mRecyclerLoader?.showProgress()
-//        loadLocalData()
+        loadLocalData()
     }
 
     private fun setUpView() {
@@ -127,7 +127,7 @@ class MainActivity : BaseActivity() {
     fun createCallback(): ItemTouchHelperExtension.Callback = ItemTouchHelperCallback()
 
     private fun loadLocalData() {
-        val repos = CoReaderDbHelper.getInstance(CodeReaderApplication().getAppContext()).readRepos()
+        val repos = CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext()).readRepos()
         setUpContent(repos)
     }
 
@@ -165,7 +165,7 @@ class MainActivity : BaseActivity() {
         doSelectFile()
     }
 
-    fun doSelectFile() {
+    private fun doSelectFile() {
         NavigatorChooser.startDirectoryFileChooserActivity(this)
         //点击fab打开文件列表activity
     }

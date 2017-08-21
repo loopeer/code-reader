@@ -49,6 +49,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile project(':libraries:directoryandfilechooser')
     compile project(':libraries:itemtouchhelperextension')
+    compile project(':libraries:markdownj')
     kapt 'com.android.databinding:compiler:2.3.3'
     compile 'io.reactivex:rxjava:1.1.8'
     compile 'com.facebook.stetho:stetho:1.1.0'

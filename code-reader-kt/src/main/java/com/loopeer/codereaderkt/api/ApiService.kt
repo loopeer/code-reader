@@ -18,7 +18,7 @@ open class ApiService {
 
 
     private fun getClient(): OkHttpClient {
-        return createOkHttpClient(CodeReaderApplication().getInstance()!!)
+        return createOkHttpClient(CodeReaderApplication.getInstance()!!)
     }
 
     val retrofit: Retrofit

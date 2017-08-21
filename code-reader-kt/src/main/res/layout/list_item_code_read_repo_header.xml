@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="276dp"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/medium_padding"
+    android:paddingBottom="@dimen/medium_padding">
+
+    <ImageView
+        android:id="@+id/img_code_read_repo_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_repo_white"
+        android:paddingTop="3dp"
+        android:tint="?android:textColorPrimary"/>
+
+    <TextView
+        android:id="@+id/text_code_read_repo_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/img_code_read_repo_type"
+        android:layout_alignTop="@id/img_code_read_repo_type"
+        android:textColor="?android:textColorPrimary"
+        android:layout_marginLeft="@dimen/default_padding"
+        tools:text="CardStackViewCardStackViewCardStackViewCardStackViewCardStackViewCardStackViewCardStackViewCardStackView"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_divider"
+        android:layout_alignLeft="@id/img_code_read_repo_type"
+        android:layout_marginTop="@dimen/large_padding"
+        android:layout_below="@+id/text_code_read_repo_name"/>
+
+</RelativeLayout>
