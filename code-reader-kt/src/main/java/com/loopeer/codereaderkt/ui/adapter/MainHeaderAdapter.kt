@@ -8,32 +8,29 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.model.MainHeaderItem
-import java.util.ArrayList
 
 
 class MainHeaderAdapter() : BaseAdapter() {
-    private var mContext: Context? = null
-    private var mDatas: MutableList<MainHeaderItem>? = null
+    private var mDatas: ArrayList<MainHeaderItem> = ArrayList<MainHeaderItem>()
+    private lateinit var mContext: Context
 
     constructor(context: Context) : this() {
-        this.mContext = context
-        mDatas = ArrayList<MainHeaderItem>()
         Log.d("MainHeaderAdapterLog", "con")
+        mContext = context
     }
 
-    override fun getCount(): Int = mDatas!!.size
+    override fun getCount(): Int = mDatas.size
 
-    override fun getItem(i: Int): Any = mDatas!![i]
+    override fun getItem(i: Int): Any = mDatas[i]
 
     override fun getItemId(i: Int): Long = i.toLong()
 
-    override fun getView(i: Int, convertView: View, viewGroup: ViewGroup): View {
+    override fun getView(i: Int, convertView: View?, viewGroup: ViewGroup): View {
         val view = LayoutInflater.from(mContext).inflate(R.layout.grid_item_main_header, viewGroup, false)
-        bindView(mDatas!![i], view)
-        bindClick(view, mDatas!![i], i)
+        bindView(mDatas[i], view)
+        bindClick(view, mDatas[i], i)
         return view
     }
 
@@ -61,7 +58,8 @@ class MainHeaderAdapter() : BaseAdapter() {
     }
 
     private fun setData(items: List<MainHeaderItem>) {
-        mDatas!!.clear()
-        mDatas!!.addAll(items)
+        mDatas.clear()
+        mDatas.addAll(items)
+        Log.d("MainHeaderAdapterLog", "setData" + mDatas.size)
     }
 }
