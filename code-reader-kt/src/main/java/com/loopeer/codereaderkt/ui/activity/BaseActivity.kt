@@ -26,7 +26,7 @@ import rx.subscriptions.CompositeSubscription
 
 open class BaseActivity : AppCompatActivity() {
 
-    private var mToolbar: Toolbar? = null
+    internal var mToolbar: Toolbar? = null
     private var mCoordinatorContainer: CoordinatorLayout? = null
 
 
@@ -62,7 +62,7 @@ open class BaseActivity : AppCompatActivity() {
 
         if (mToolbar != null) {
             setSupportActionBar(mToolbar)
-            onSetupActionBar(supportActionBar!!)
+            onSetupActionBar(this.supportActionBar!!)
         }
 
         val title = intent.getStringExtra(Intent.EXTRA_TITLE)
@@ -140,11 +140,6 @@ open class BaseActivity : AppCompatActivity() {
 
     // 按返回键不可撤销的
     private fun showUnBackProgressLoading(message: String) {
-        if (mUnBackProgressLoading == null) {
-            mUnBackProgressLoading = object : ProgressLoading(this, R.style.ProgressLoadingTheme) {
-                override fun onBackPressed() {}
-            }
-        }
         if (!TextUtils.isEmpty(message)) {
             mUnBackProgressLoading.setMessage(message)
         } else {
@@ -154,7 +149,7 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun dismissUnBackProgressLoading() {
-        if (mUnBackProgressLoading != null && !isFinishing) {
+        if (!isFinishing) {
             mUnBackProgressLoading.dismiss()
         }
     }
