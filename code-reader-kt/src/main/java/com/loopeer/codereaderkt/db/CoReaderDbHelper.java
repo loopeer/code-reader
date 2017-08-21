@@ -112,7 +112,7 @@ public class CoReaderDbHelper extends SQLiteOpenHelper {
     }
 
     public List<Repo> readRepos() {
-        SQLiteDatabase db = getReadableDatabase();//没有创建database
+        SQLiteDatabase db = getReadableDatabase();//打开database引起的异常
         List<Repo> repos = new ArrayList<>();
         Cursor cursor = db.rawQuery(DbRepo.SELECT_ALL, null);
         if (cursor != null && cursor.getCount() > 0) {

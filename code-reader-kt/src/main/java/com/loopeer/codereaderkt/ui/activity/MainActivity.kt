@@ -41,14 +41,14 @@ class MainActivity : BaseActivity() {
     private val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000
     private lateinit var binding: ActivityMainBinding
 
-    private var mRecyclerLoader: ILoadHelper? = null
-    private var mMainLatestAdapter: MainLatestAdapter? = null
+    private lateinit var mRecyclerLoader: ILoadHelper
+    private lateinit var mMainLatestAdapter: MainLatestAdapter
 
     lateinit var mItemTouchHelper: ItemTouchHelperExtension
     lateinit var mCallback: ItemTouchHelperExtension.Callback
 
-    private var mRecyclerView: RecyclerView? = null
-    private var mAnimatorRecyclerContent: ViewAnimator? = null
+    private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mAnimatorRecyclerContent: ViewAnimator
     @SuppressWarnings("unused")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,9 +59,10 @@ class MainActivity : BaseActivity() {
         mRecyclerView = findViewById(R.id.view_recycler) as RecyclerView
         mAnimatorRecyclerContent = findViewById(R.id.animator_recycler_content) as ViewAnimator
 
-        supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            //获取权限
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             } else {
@@ -95,7 +96,7 @@ class MainActivity : BaseActivity() {
                         .filter({ o -> o is DownloadFailDeleteEvent })
                         .map({ o -> (o as DownloadFailDeleteEvent).deleteRepo })
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnNext({ mMainLatestAdapter!!.deleteRepo(it) })
+                        .doOnNext({ mMainLatestAdapter.deleteRepo(it) })
                         .subscribe()
         )
         setUpView()
@@ -103,28 +104,28 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        mRecyclerLoader?.showProgress()
+        mRecyclerLoader.showProgress()
         loadLocalData()
     }
 
     private fun setUpView() {
-        mRecyclerLoader = RecyclerLoader(mAnimatorRecyclerContent!!)
-        mRecyclerView!!.layoutManager = LinearLayoutManager(this)
+        mRecyclerLoader = RecyclerLoader(mAnimatorRecyclerContent)
+        mRecyclerView.layoutManager = LinearLayoutManager(this)
         mMainLatestAdapter = MainLatestAdapter(this)
         Log.d("MainActivityLog","setUpView"+mMainLatestAdapter)
-        mRecyclerView!!.adapter = mMainLatestAdapter
-        mRecyclerView!!.addItemDecoration(DividerItemDecorationMainList(this,
+        mRecyclerView.adapter = mMainLatestAdapter
+        mRecyclerView.addItemDecoration(DividerItemDecorationMainList(this,
                 DividerItemDecoration.VERTICAL_LIST, resources.getDimensionPixelSize(R.dimen.repo_list_divider_start), -1, -1))
         mItemTouchHelper = createItemTouchHelper()
         mItemTouchHelper.attachToRecyclerView(mRecyclerView)
     }
 
-    fun createItemTouchHelper(): ItemTouchHelperExtension {
+    private fun createItemTouchHelper(): ItemTouchHelperExtension {
         mCallback = createCallback()
         return ItemTouchHelperExtension(mCallback)
     }
 
-    fun createCallback(): ItemTouchHelperExtension.Callback = ItemTouchHelperCallback()
+    private fun createCallback(): ItemTouchHelperExtension.Callback = ItemTouchHelperCallback()
 
     private fun loadLocalData() {
         val repos = CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext()).readRepos()
@@ -133,20 +134,20 @@ class MainActivity : BaseActivity() {
 
     override fun reCreateRefresh() {
         super.reCreateRefresh()
-        mRecyclerView!!.recycledViewPool.clear()
-        mMainLatestAdapter!!.notifyDataSetChanged()
+        mRecyclerView.recycledViewPool.clear()
+        mMainLatestAdapter.notifyDataSetChanged()
     }
 
     private fun setUpContent(repos: List<Repo>) {
-        mRecyclerLoader!!.showContent()
-        mMainLatestAdapter!!.updateData(repos)
+        mRecyclerLoader.showContent()
+        mMainLatestAdapter.updateData(repos)
     }
 
 
 
     override fun onPause() {
         super.onPause()
-        mMainLatestAdapter!!.clearSubscription()
+        mMainLatestAdapter.clearSubscription()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
@@ -161,7 +162,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun onFabClick(view: View) {
+    fun onFabClick(view:View) {
         doSelectFile()
     }
 
