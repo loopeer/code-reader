@@ -14,7 +14,7 @@ open class BaseFragment : Fragment() {
 
     val mAllSubscribe: CompositeSubscription = CompositeSubscription()
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -50,7 +50,7 @@ open class BaseFragment : Fragment() {
         showProgressLoading(getString(resId))
     }
 
-    fun showProgressLoading(message: String) {
+    open fun showProgressLoading(message: String) {
         if (mProgressLoading == null) {
             mProgressLoading = ProgressLoading(activity, R.style.ProgressLoadingTheme)
             mProgressLoading!!.setCanceledOnTouchOutside(true)
@@ -67,7 +67,7 @@ open class BaseFragment : Fragment() {
 
     fun isProgressShow(): Boolean = progressShow
 
-    fun dismissProgressLoading() {
+    open fun dismissProgressLoading() {
         if (mProgressLoading != null && isVisible) {
             progressShow = false
             mProgressLoading!!.dismiss()

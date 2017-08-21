@@ -36,7 +36,7 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
     override fun setData(data: List<Repo>) {
         Log.d("MainLatestAdapterLog", " setData")
         val list = ArrayList<Repo>()
-        list.add(Repo())//这一句的作用是什么
+        list.add(Repo())//这一句的作用是什么:数据库中取出文件数据要多一条来显示顶部菜单
         list.addAll(data)
         super.setData(list)
     }

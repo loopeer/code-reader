@@ -102,4 +102,18 @@ open class Navigator {
         Navigator().startDownloadRepoService(context, repo)
     }
 
+    fun startSearchActivity(context: Context) {
+        val intent = Intent(context, SearchActivity::class.java)
+        context.startActivity(intent)
+    }
+
+    fun startOutWebActivity(context: Context, url: String) {
+        var intent = Intent()
+        intent.action = Intent.ACTION_VIEW
+        var content_uri = Uri.parse(url)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.data = content_uri
+        context.startActivity(intent)
+    }
+
 }

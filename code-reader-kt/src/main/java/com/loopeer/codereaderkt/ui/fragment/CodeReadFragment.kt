@@ -65,9 +65,9 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mCodeContentLoader = CodeFragmentContentLoader(view!!)
+        mCodeContentLoader = CodeFragmentContentLoader(view)
 
         setupToolbar()
 
