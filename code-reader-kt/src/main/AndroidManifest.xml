@@ -83,6 +83,9 @@
             android:name="com.loopeer.directorychooser.DirectoryFileChooserActivity"
             android:theme="@style/Theme.CodeReader.NoActionBar" />
         <!--注意注册引入的activity-->
+
+        <service android:name=".sync.DownloadRepoService"/>
+
     </application>
 
 </manifest>

@@ -12,35 +12,40 @@ import android.widget.TextView
 import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.db.CoReaderDbHelper
+import com.loopeer.codereaderkt.event.DownloadProgressEvent
 import com.loopeer.codereaderkt.model.MainHeaderItem
 import com.loopeer.codereaderkt.model.Repo
 import com.loopeer.codereaderkt.ui.view.ForegroundProgressRelativeLayout
+import com.loopeer.codereaderkt.utils.RxBus
 import com.loopeer.itemtouchhelperextension.Extension
 import rx.Subscription
+import rx.android.schedulers.AndroidSchedulers
 import rx.subscriptions.CompositeSubscription
 
 
 class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
 
     private val TAG = "MainLatestAdapter"
+
     init {
-        Log.d("MainLatestAdapterLog"," init")
+        Log.d("MainLatestAdapterLog", " init")
     }
 
     private val mAllSubscription: CompositeSubscription? = null
 
     override fun setData(data: List<Repo>) {
-        var list = ArrayList<Repo>()
-        list.add(null!!)
+        Log.d("MainLatestAdapterLog", " setData")
+        val list = ArrayList<Repo>()
+//        list.add(null!!)//这一句的作用是什么
         list.addAll(data)
         super.setData(data)
     }
 
 
     override fun bindView(var1: Repo?, var2: Int, var3: RecyclerView.ViewHolder?) {
-        Log.d("MainLatestAdapterLog","bindView"+var3)
+        Log.d("MainLatestAdapterLog", "bindView" + var3)
         if (var3 is RepoViewHolder) {
-            Log.d("MainLatestAdapterLog","bindView : RepoView")
+            Log.d("MainLatestAdapterLog", "bindView : RepoView")
             val viewHolder: RepoViewHolder = var3
             val subscription = viewHolder.bind(var1!!)
             if (subscription != null) {
@@ -54,9 +59,10 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
             viewHolder.mActionDeleteView!!.setOnClickListener { /*view -> doRepoDelete(var3)*/ }
             viewHolder.mActionSyncView!!.setOnClickListener { /*view -> Navigator.startDownloadRepoService(context, var1)*/ }
         }
-        if (var3 is MainHeaderHolder){
-            Log.d("MainLatestAdapterLog","bindView : HeaderView")
-            var3.bind()
+        if (var3 is MainHeaderHolder) {
+            Log.d("MainLatestAdapterLog", "bindView : HeaderView")
+            val viewHolder = var3
+            viewHolder.bind()
         }
 
 
@@ -86,20 +92,23 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
-     var inflater = layoutInflater
+        Log.d("MainLatestAdapterLog", " onCreateViewHolder")
+        val inflater = layoutInflater
         val view: View
-        when (viewType) {
+        return when (viewType) {
             R.layout.list_item_main_top_header -> {
                 view = inflater.inflate(R.layout.list_item_main_top_header, parent, false)
-                return MainHeaderHolder(view)
+                MainHeaderHolder(view)
             }
             else -> {
                 view = inflater.inflate(R.layout.list_item_repo, parent, false)
-                return RepoViewHolder(view)
+                RepoViewHolder(view)
             }
         }
     }
 
+    override fun getItemViewType(position: Int): Int =
+            if (position == 0) R.layout.list_item_main_top_header else R.layout.list_item_repo
 
     class RepoViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView), Extension {
 
@@ -147,29 +156,27 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
             return mSubscription
         }
 
-        fun resetSubscription(repo: Repo) {
+        private fun resetSubscription(repo: Repo) {
             if (mSubscription != null && !mSubscription!!.isUnsubscribed) {
                 mSubscription!!.unsubscribe()
             }
-            /*mSubscription = RxBus.getInstance()
+            mSubscription = RxBus.getInstance()
                     .toObservable()
                     .filter({ o -> o is DownloadProgressEvent })
                     .map({ o -> o as DownloadProgressEvent })
                     .filter({ o -> o.downloadId == repo.downloadId || repo.id == o.repoId })
                     .observeOn(AndroidSchedulers.mainThread())
-                    .doOnNext({ o -> if (repo.downloadId == 0) repo.downloadId = o.downloadId })
-                    .doOnNext({ o -> mProgressRelativeLayout.setProgressCurrent(o.factor) })
+                    .doOnNext({ o -> if (repo.downloadId.equals(0)) repo.downloadId = o.downloadId })
+                    .doOnNext({ o -> mProgressRelativeLayout!!.setProgressCurrent(o.factor) })
                     .filter({ o -> o.factor == 1f })
                     .doOnNext({ o -> repo.isUnzip = o.isUnzip })
-                    .doOnNext({ o -> mProgressRelativeLayout.setUnzip(o.isUnzip) })
+                    .doOnNext({ o -> mProgressRelativeLayout!!.setUnzip(o.isUnzip) })
                     .filter({ o -> o.isUnzip == false })
-                    .doOnNext({ o -> repo.downloadId = 0 })
-                    .subscribe()*/
+                    .doOnNext({ repo.downloadId = 0 })
+                    .subscribe()
         }
 
-        override fun getActionWidth(): Float {
-            return mActionContainer!!.width.toFloat()
-        }
+        override fun getActionWidth(): Float = mActionContainer!!.width.toFloat()
     }
 
 
@@ -188,7 +195,7 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
 
         fun bind() {
             var items = ArrayList<MainHeaderItem>()
-            Log.d("MainHeaderViewHolderLog","bind")
+            Log.d("MainHeaderViewHolderLog", "bind")
             items.add(MainHeaderItem(R.drawable.ic_github, R.string.header_item_github_search,
                     itemView.context.getString(R.string.header_item_github_search_link)))
             items.add(MainHeaderItem(R.drawable.ic_trending, R.string.header_item_trending

@@ -21,6 +21,7 @@ object PrefUtils {
         sp.edit().putFloat(PREF_FONT_SIZE, size).apply()
     }
 
+    @JvmStatic
     fun getPrefTheme(context: Context): String {
         val sp = PreferenceManager.getDefaultSharedPreferences(context)
         return sp.getString(PREF_THEME, "Default")

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.loopeer.codereader.ui.view.ForegroundRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground"
+    android:padding="12dp">
+
+    <ImageView
+        android:id="@+id/img_avatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/color_divider"/>
+
+    <TextView
+        android:id="@+id/txt_full_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/img_avatar"
+        android:textColor="?android:attr/textColorPrimary"
+        tools:text="sfasdfad"/>
+
+    <TextView
+        android:id="@+id/txt_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_full_name"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@id/img_avatar"
+        android:textColor="@android:color/darker_gray"
+        tools:text="fadfasdfasdf"/>
+
+</com.loopeer.codereader.ui.view.ForegroundRelativeLayout>

@@ -1,47 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ViewAnimator
-        android:id="@+id/content_animator"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:orientation="vertical">
 
-        <com.loopeer.codereaderkt.ui.view.NestedScrollWebView
-            android:id="@+id/web_code_read"
+        <ViewAnimator
+            android:id="@+id/content_animator"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.loopeer.codereaderkt.ui.view.ProgressIndicatorView
-            android:id="@+id/progress_code_fragment"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="?actionBarSize"/>
+            <com.loopeer.codereaderkt.ui.view.NestedScrollWebView
+                android:id="@+id/web_code_read"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-        <TextView
-            android:id="@android:id/empty"
-            android:layout_width="wrap_content"
+            <com.loopeer.codereaderkt.ui.view.ProgressIndicatorView
+                android:id="@+id/progress_code_fragment"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="?actionBarSize" />
+
+            <TextView
+                android:id="@android:id/empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="?actionBarSize"
+                android:drawablePadding="@dimen/medium_padding"
+                android:drawableTop="@drawable/ic_empty"
+                android:gravity="center"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="@string/code_read_no_file_open"
+                android:textColor="?android:textColorTertiary" />
+        </ViewAnimator>
+
+        <include
+            layout="@layout/layout_app_bar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="?actionBarSize"
-            android:drawablePadding="@dimen/medium_padding"
-            android:drawableTop="@drawable/ic_empty"
-            android:gravity="center"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:text="@string/code_read_no_file_open"
-            android:textColor="?android:textColorTertiary"/>
-    </ViewAnimator>
+            app:layout_behavior="com.loopeer.codereader.ui.decoration.AppbarBehavior" />
 
-    <include
-        layout="@layout/layout_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="com.loopeer.codereader.ui.decoration.AppbarBehavior"/>
-
-</android.support.design.widget.CoordinatorLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

@@ -52,11 +52,11 @@ init {
         return !TextUtils.isEmpty(absolutePath)
     }
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
 
-        val repo = o as Repo?
+        val repo = other as Repo?
 
         if (if (id != null) id != repo!!.id else repo!!.id != null) return false
         if (if (name != null) name != repo.name else repo.name != null) return false

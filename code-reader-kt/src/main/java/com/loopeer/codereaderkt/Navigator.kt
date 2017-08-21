@@ -94,7 +94,7 @@ open class Navigator {
         val sameRepo = CoReaderDbHelper.getInstance(context).readSameRepo(repo)
         val repoId: Long
         if (sameRepo != null) {
-            repoId = java.lang.Long.parseLong(sameRepo!!.id)
+            repoId = java.lang.Long.parseLong(sameRepo.id)
         } else {
             repoId = CoReaderDbHelper.getInstance(context).insertRepo(repo)
         }

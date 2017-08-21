@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/inline_padding">
+
+    <ImageView
+        android:id="@+id/img_directory_open_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/selector_directory_open_close"
+        android:layout_marginRight="@dimen/default_padding"
+        />
+
+    <TextView
+        android:id="@+id/text_directory_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_directory_path"
+        android:drawablePadding="@dimen/default_padding"
+        android:maxLines="1"
+        android:gravity="center_vertical"
+        android:textColor="@color/text_color_directory"
+        android:textSize="@dimen/text_size_small"
+        tools:text="main"
+        />
+
+</LinearLayout>
