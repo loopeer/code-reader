@@ -9,12 +9,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.loopeer.codereaderkt.ui.view.NestedScrollWebView
-            android:id="@+id/web_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
         <android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/app_bar"
@@ -34,6 +28,12 @@
                 android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
                 android:progressDrawable="@drawable/progress_horizontal_web_view" />
         </android.support.design.widget.AppBarLayout>
+
+        <com.loopeer.codereaderkt.ui.view.NestedScrollWebView
+            android:id="@+id/web_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

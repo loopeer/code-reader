@@ -8,9 +8,9 @@
     <!--网络权限-->
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.READ_PROFILE"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:name=".CodeReaderApplication"
@@ -84,7 +84,7 @@
             android:theme="@style/Theme.CodeReader.NoActionBar" />
         <!--注意注册引入的activity-->
 
-        <service android:name=".sync.DownloadRepoService"/>
+        <service android:name=".sync.DownloadRepoService" />
 
     </application>
 

@@ -2,7 +2,6 @@ package com.loopeer.codereaderkt.ui.activity
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -12,23 +11,24 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-
 import android.text.TextUtils
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import com.loopeer.codereaderkt.R
+import com.loopeer.codereaderkt.event.DownloadRepoMessageEvent
+import com.loopeer.codereaderkt.event.ThemeRecreateEvent
 import com.loopeer.codereaderkt.ui.view.ProgressLoading
+import com.loopeer.codereaderkt.utils.RxBus
 import rx.Subscription
+import rx.android.schedulers.AndroidSchedulers
 import rx.subscriptions.CompositeSubscription
 
 
 open class BaseActivity : AppCompatActivity() {
 
-    protected var mToolbar: Toolbar? = null
-    internal var mCoordinatorContainer: CoordinatorLayout? = null
-    private var mProgressLoading: ProgressLoading? = null
-    private var mUnBackProgressLoading: ProgressLoading? = null
-    private var progressShow: Boolean = false
+    private var mToolbar: Toolbar? = null
+    private var mCoordinatorContainer: CoordinatorLayout? = null
+
 
     private val mAllSubscription = CompositeSubscription()
 
@@ -37,11 +37,22 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mToolbar = findViewById(R.id.toolbar) as Toolbar?
         mCoordinatorContainer = findViewById(R.id.view_coordinator_container) as CoordinatorLayout?
-//        registerSubscription(
-//         RxBus.getInstance()
-//                 .toObservable()
-//                 .filter({ o -> o is DownloadRepoMessageEvent })
-//        )
+        registerSubscription(
+                RxBus.getInstance()
+                        .toObservable()
+                        .filter({ o -> o is DownloadRepoMessageEvent })
+                        .map({ o -> o as DownloadRepoMessageEvent })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnNext({ o -> showMessage(o.message) })
+                        .subscribe())
+
+        registerSubscription(
+                RxBus.getInstance()
+                        .toObservable()
+                        .filter({ o -> o is ThemeRecreateEvent })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnNext({ o -> recreate() })
+                        .subscribe())
         //打开app恢复下载
     }
 
@@ -61,6 +72,23 @@ open class BaseActivity : AppCompatActivity() {
 
     }
 
+    private fun onSetupActionBar(actionBar: ActionBar) {
+        actionBar.setDisplayHomeAsUpEnabled(true)
+    }
+
+    protected fun registerSubscription(subscription: Subscription) {
+        mAllSubscription.add(subscription)
+
+    }
+
+    protected fun unregisterSubscription(subscription: Subscription) {
+        mAllSubscription.remove(subscription)
+    }
+
+    private fun clearSubscription() {
+        mAllSubscription.clear()
+    }
+
     protected open fun reCreateRefresh() {
 
     }
@@ -74,6 +102,10 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
+    private var mProgressLoading: ProgressLoading? = null
+    private lateinit var mUnBackProgressLoading: ProgressLoading
+    private var progressShow: Boolean = false
+
     fun showProgressLoading(resId: Int) {
         showProgressLoading(getString(resId))
     }
@@ -82,7 +114,7 @@ open class BaseActivity : AppCompatActivity() {
         if (mProgressLoading == null) {
             mProgressLoading = ProgressLoading(this, R.style.ProgressLoadingTheme)
             mProgressLoading!!.setCanceledOnTouchOutside(true)
-            mProgressLoading!!.setOnCancelListener(DialogInterface.OnCancelListener { progressShow = false })
+            mProgressLoading!!.setOnCancelListener({ progressShow = false })
         }
         if (!TextUtils.isEmpty(message)) {
             mProgressLoading!!.setMessage(message)
@@ -93,26 +125,7 @@ open class BaseActivity : AppCompatActivity() {
         mProgressLoading!!.show()
     }
 
-    protected fun registerSubscription(subscription: Subscription) {
-        mAllSubscription.add(subscription)
-
-    }
-
-    protected fun unregisterSubscription(subscription: Subscription) {
-        mAllSubscription.remove(subscription)
-    }
-
-    protected fun clearSubscription() {
-        mAllSubscription.clear()
-    }
-
-    protected fun onSetupActionBar(actionBar: ActionBar) {
-        actionBar.setDisplayHomeAsUpEnabled(true)
-    }
-
-    fun isProgressShow(): Boolean {
-        return progressShow
-    }
+    private fun isProgressShow(): Boolean = progressShow
 
     fun dismissProgressLoading() {
         if (mProgressLoading != null && !isFinishing) {
@@ -126,23 +139,23 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     // 按返回键不可撤销的
-    fun showUnBackProgressLoading(message: String) {
+    private fun showUnBackProgressLoading(message: String) {
         if (mUnBackProgressLoading == null) {
             mUnBackProgressLoading = object : ProgressLoading(this, R.style.ProgressLoadingTheme) {
                 override fun onBackPressed() {}
             }
         }
         if (!TextUtils.isEmpty(message)) {
-            mUnBackProgressLoading!!.setMessage(message)
+            mUnBackProgressLoading.setMessage(message)
         } else {
-            mUnBackProgressLoading!!.setMessage(null)
+            mUnBackProgressLoading.setMessage(null)
         }
-        mUnBackProgressLoading!!.show()
+        mUnBackProgressLoading.show()
     }
 
     fun dismissUnBackProgressLoading() {
         if (mUnBackProgressLoading != null && !isFinishing) {
-            mUnBackProgressLoading!!.dismiss()
+            mUnBackProgressLoading.dismiss()
         }
     }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.model.MainHeaderItem
 
@@ -37,8 +38,8 @@ class MainHeaderAdapter() : BaseAdapter() {
     private fun bindClick(view: View, item: MainHeaderItem, i: Int) {
         view.setOnClickListener { view1 ->
             when (i) {
-//                0 -> Navigator.startSearchActivity(mContext)
-//                1 -> Navigator.startWebActivity(mContext, item.link)
+                0 -> Navigator().startSearchActivity(mContext)
+                1 -> Navigator().startWebActivity(mContext, item.link)
             }
         }
     }

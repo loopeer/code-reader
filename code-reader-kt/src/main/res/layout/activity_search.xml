@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.CodeReader.AppBarOverlay"
-        app:layout_behavior="com.loopeer.codereader.ui.decoration.AppbarBehavior">
+        app:layout_behavior="com.loopeer.codereaderkt.ui.decoration.AppbarBehavior">
 
         <include layout="@layout/view_toolbar"/>
 
