@@ -40,7 +40,7 @@ class CodeReadActivity : BaseActivity(), DirectoryNavDelegate.FileClickListener,
 
         mDirectoryNavDelegate = DirectoryNavDelegate(binding.directoryView, this)
         mDirectoryNavDelegate.setLoadFileCallback(this)
-        createFragment(null)
+        createFragment(DirectoryNode())
         parseIntent(savedInstanceState)
     }
 
@@ -127,8 +127,8 @@ class CodeReadActivity : BaseActivity(), DirectoryNavDelegate.FileClickListener,
         }
     }
 
-    private fun createFragment(node: DirectoryNode?) {
-        mFragment = CodeReadFragment().newInstance(node!!, mDirectoryNode)
+    private fun createFragment(node: DirectoryNode) {
+        mFragment = CodeReadFragment().newInstance(node, mDirectoryNode)
         mFragment.arguments = intent.extras
         supportFragmentManager.beginTransaction()
                 .add(R.id.container_code_read, mFragment).commit()

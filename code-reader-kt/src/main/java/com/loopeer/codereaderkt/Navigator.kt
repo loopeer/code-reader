@@ -70,7 +70,7 @@ open class Navigator {
         }
     }
 
-    private fun startDownloadRepoService(context: Context, repo: Repo) {
+    fun startDownloadRepoService(context: Context, repo: Repo) {
         val intent = Intent(context, DownloadRepoService::class.java)
         intent.putExtra(EXTRA_REPO, repo)
         intent.putExtra(EXTRA_DOWNLOAD_SERVICE_TYPE, DownloadRepoService.DOWNLOAD_REPO)
@@ -117,9 +117,9 @@ open class Navigator {
     }
 
     fun startCodeReadActivity(context: Context, repo: Repo) {
-//        val intent = Intent(context, CodeReadActivity::class.java)
-//        intent.putExtra(EXTRA_REPO, repo)
-//        context.startActivity(intent)
+        val intent = Intent(context, CodeReadActivity::class.java)
+        intent.putExtra(EXTRA_REPO, repo)
+        context.startActivity(intent)
     }
 
 
