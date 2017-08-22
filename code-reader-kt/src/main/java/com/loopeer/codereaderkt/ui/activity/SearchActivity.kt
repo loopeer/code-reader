@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.SearchView
 import android.text.TextUtils
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.loopeer.codereaderkt.R
@@ -44,11 +45,12 @@ class SearchActivity : BaseActivity(), SearchView.OnQueryTextListener {
 
     override fun onQueryTextSubmit(query: String): Boolean {
         if (!TextUtils.isEmpty(query) && mRepositoryFragment != null) {
+            Log.d("SearchActivityLog", " searchText is " + query)
             mRepositoryFragment.setSearchText(query)
             mSearchView.clearFocus()
         }
         return true
     }
 
-    override fun onQueryTextChange(newText: String?): Boolean = false
+    override fun onQueryTextChange(newText: String): Boolean = false
 }

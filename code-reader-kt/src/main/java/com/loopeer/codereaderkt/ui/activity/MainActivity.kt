@@ -8,7 +8,6 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -113,7 +112,6 @@ class MainActivity : BaseActivity() {
         mRecyclerLoader = RecyclerLoader(mAnimatorRecyclerContent)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
         mMainLatestAdapter = MainLatestAdapter(this)
-        Log.d("MainActivityLog","setUpView"+mMainLatestAdapter)
         mRecyclerView.adapter = mMainLatestAdapter
         mRecyclerView.addItemDecoration(DividerItemDecorationMainList(this,
                 DividerItemDecoration.VERTICAL_LIST, resources.getDimensionPixelSize(R.dimen.repo_list_divider_start), -1, -1))

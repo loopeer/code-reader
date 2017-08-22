@@ -1,7 +1,6 @@
 package com.loopeer.codereaderkt.ui.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ class MainHeaderAdapter() : BaseAdapter() {
     private lateinit var mContext: Context
 
     constructor(context: Context) : this() {
-        Log.d("MainHeaderAdapterLog", "con")
         mContext = context
     }
 
@@ -45,7 +43,6 @@ class MainHeaderAdapter() : BaseAdapter() {
     }
 
     private fun bindView(item: MainHeaderItem, view: View) {
-        Log.d("MainHeaderAdapterLog", "bindView")
         val textView = view.findViewById<TextView>(R.id.text_grid_item) as TextView
         val imageView = view.findViewById<ImageView>(R.id.img_grid_item) as ImageView
 
@@ -61,6 +58,5 @@ class MainHeaderAdapter() : BaseAdapter() {
     private fun setData(items: List<MainHeaderItem>) {
         mDatas.clear()
         mDatas.addAll(items)
-        Log.d("MainHeaderAdapterLog", "setData" + mDatas.size)
     }
 }
