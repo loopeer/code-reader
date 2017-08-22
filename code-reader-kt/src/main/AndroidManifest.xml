@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CodeReader">
-        <activity android:name=".ui.activity.MainActivity"
+        <activity
+            android:name=".ui.activity.MainActivity"
             android:theme="@style/Theme.CodeReader.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -77,6 +78,20 @@
                 <data android:scheme="http" />
                 <data android:scheme="https" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.activity.SearchActivity"
+            android:label=""
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.CodeReader.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
 
 
