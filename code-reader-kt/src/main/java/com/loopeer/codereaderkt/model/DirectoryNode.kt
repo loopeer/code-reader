@@ -1,7 +1,7 @@
 package com.loopeer.codereaderkt.model
 
 
-class DirectoryNode{
+class DirectoryNode: BaseModel {
 
     lateinit var name: String
     lateinit var pathNodes: List<DirectoryNode>
