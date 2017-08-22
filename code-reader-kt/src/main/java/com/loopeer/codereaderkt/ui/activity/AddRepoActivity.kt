@@ -28,13 +28,13 @@ class AddRepoActivity : BaseActivity(), Checker.CheckObserver {
         binding.editAddRepoName.addTextChangedListener(object : TextWatcherImpl() {
             override fun afterTextChanged(editable: Editable) {
                 super.afterTextChanged(editable)
-                mAddRepoChecker!!.setRepoName(editable.toString())
+                mAddRepoChecker!!.repoName=editable.toString()
             }
         })
         binding.editAddRepoUrl.addTextChangedListener(object : TextWatcherImpl() {
             override fun afterTextChanged(editable: Editable) {
                 super.afterTextChanged(editable)
-                mAddRepoChecker!!.setRepoDownloadUrl(editable.toString())
+                mAddRepoChecker!!.repoDownloadUrl=editable.toString()
             }
         })
     }

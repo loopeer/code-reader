@@ -15,7 +15,7 @@
     <string name="menu_web_input">Input url</string>
 
     <!-- main -->
-    <string name="scroll_aware_fab_behavior">com.loopeer.codereaderkt.ui.view.ScrollAwareFABBehavior</string>
+    <string name="scroll_aware_fab_behavior"></string>
     <string name="header_item_github_search">Search</string>
     <string name="header_item_github_search_link">https://github.com/search</string>
     <string name="header_item_trending">Trending</string>
