@@ -25,6 +25,7 @@ import java.util.*
 class LoginActivity : BaseActivity(), Checker.CheckObserver {
 
 
+    //登陆本身就有问题
     private val TAG = "LoginActivity"
 
     lateinit var binding: ActivityLoginBinding

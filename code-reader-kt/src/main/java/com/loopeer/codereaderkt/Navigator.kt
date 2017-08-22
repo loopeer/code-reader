@@ -70,7 +70,7 @@ open class Navigator {
         }
     }
 
-    fun startDownloadRepoService(context: Context, repo: Repo) {
+    private fun startDownloadRepoService(context: Context, repo: Repo) {
         val intent = Intent(context, DownloadRepoService::class.java)
         intent.putExtra(EXTRA_REPO, repo)
         intent.putExtra(EXTRA_DOWNLOAD_SERVICE_TYPE, DownloadRepoService.DOWNLOAD_REPO)
@@ -108,12 +108,19 @@ open class Navigator {
     }
 
     fun startOutWebActivity(context: Context, url: String) {
-        var intent = Intent()
+        val intent = Intent()
         intent.action = Intent.ACTION_VIEW
-        var content_uri = Uri.parse(url)
+        val content_uri = Uri.parse(url)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         intent.data = content_uri
         context.startActivity(intent)
     }
+
+    fun startCodeReadActivity(context: Context, repo: Repo) {
+//        val intent = Intent(context, CodeReadActivity::class.java)
+//        intent.putExtra(EXTRA_REPO, repo)
+//        context.startActivity(intent)
+    }
+
 
 }

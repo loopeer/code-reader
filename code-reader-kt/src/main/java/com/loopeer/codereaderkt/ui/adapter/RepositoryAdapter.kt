@@ -25,9 +25,8 @@ class RepositoryAdapter(context: Context) : RecyclerViewAdapter<Repository>(cont
         (viewHolder as? RepositoryViewHolder)?.bind(repository, position)
     }
 
-    override fun getItem(position: Int): Repository? {
-        return if (isFooterPositon(position)) null else super.getItem(position)
-    }
+    override fun getItem(position: Int): Repository? =
+            if (isFooterPositon(position)) null else super.getItem(position)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
@@ -45,7 +44,7 @@ class RepositoryAdapter(context: Context) : RecyclerViewAdapter<Repository>(cont
     }
 
     private fun isFooterPositon(position: Int): Boolean =
-            if (mHasMore && position == itemCount - 1) true else false
+            mHasMore && position == itemCount - 1
 
     override fun getItemViewType(position: Int): Int =
             if (isFooterPositon(position)) R.layout.view_footer_loading else R.layout.list_item_repository
@@ -64,7 +63,7 @@ class RepositoryAdapter(context: Context) : RecyclerViewAdapter<Repository>(cont
         }
 
         fun bind(repository: Repository, position: Int) {
-            Glide.with(context).load(repository.owner?.avatarUrl).into(mImgAvatar!!)
+            Glide.with(context).load(repository.owner?.avatarUrl).into(mImgAvatar)
             mTxtFullName.text = repository.fullName
             mTxtDescription.text = repository.description
 

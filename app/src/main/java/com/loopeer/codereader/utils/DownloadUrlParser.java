@@ -22,7 +22,7 @@ public class DownloadUrlParser {
         return true;
     }
 
-    public static String parseGithubDownloadUrl(String url) {
+    private static String parseGithubDownloadUrl(String url) {
         if (TextUtils.isEmpty(url)) return null;
         StringBuilder sb = new StringBuilder();
         String[] strings = url.split("/");
@@ -58,11 +58,11 @@ public class DownloadUrlParser {
         return new File(FileCache.getInstance().getCacheDir(), getRepoNameZip(repoName));
     }
 
-    public static String getRepoNameZip(String name) {
+    private static String getRepoNameZip(String name) {
         return name + ZIP_SUFFIX;
     }
 
-    public static String getRepoName(String url) {
+    private static String getRepoName(String url) {
         String[] strings = url.split("/");
         return strings[4].split("//.")[0];
     }

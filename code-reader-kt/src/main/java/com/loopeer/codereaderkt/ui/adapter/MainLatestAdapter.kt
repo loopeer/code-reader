@@ -127,6 +127,7 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
             mActionContainer = itemView.findViewById(R.id.view_list_repo_action_container)
             mCloud = itemView.findViewById(R.id.img_list_repo_cloud)
             mLocalPhone = itemView.findViewById(R.id.img_list_repo_phone)
+//            mSubscription = Subscription()
         }
 
         fun bind(repo: Repo): Subscription? {
@@ -150,7 +151,7 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
         }
 
         private fun resetSubscription(repo: Repo) {
-            if (mSubscription != null && !mSubscription.isUnsubscribed) {
+            if (!mSubscription.isUnsubscribed) {
                 mSubscription.unsubscribe()
             }
             mSubscription = RxBus.getInstance()
