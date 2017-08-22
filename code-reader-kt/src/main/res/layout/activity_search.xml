@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/view_coordinator_container"
@@ -8,13 +7,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!--<fragment
+    <fragment
         android:id="@+id/fragment_repository"
-        android:name="com.loopeer.codereaderkt.ui.activity.RepositoryFragment"
+        class="com.loopeer.codereaderkt.ui.activity.RepositoryFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:layout="@layout/activity_search_result" />-->
+        tools:layout="@layout/activity_search_result" />
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -23,7 +22,7 @@
         android:theme="@style/Theme.CodeReader.AppBarOverlay"
         app:layout_behavior="com.loopeer.codereaderkt.ui.decoration.AppbarBehavior">
 
-        <include layout="@layout/view_toolbar"/>
+        <include layout="@layout/view_toolbar" />
 
     </android.support.design.widget.AppBarLayout>
 

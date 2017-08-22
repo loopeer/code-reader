@@ -18,8 +18,8 @@ class SearchActivity : BaseActivity(), SearchView.OnQueryTextListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        /*mRepositoryFragment = supportFragmentManager
-                .findFragmentById(R.id.fragment_repository) as RepositoryFragment*/
+        mRepositoryFragment = supportFragmentManager
+                .findFragmentById(R.id.fragment_repository) as RepositoryFragment
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
