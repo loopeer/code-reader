@@ -94,6 +94,12 @@
                 android:resource="@xml/searchable" />
         </activity>
 
+        <activity
+            android:name=".ui.activity.CodeReadActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_code_read"
+            android:theme="@style/Theme.CodeReader.NoActionBar"/>
+
 
         <activity
             android:name="com.loopeer.directorychooser.DirectoryFileChooserActivity"

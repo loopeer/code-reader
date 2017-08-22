@@ -115,7 +115,7 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
         var mActionContainer: View
         var mCloud: View
         var mLocalPhone: View
-        lateinit var mSubscription: Subscription
+        var mSubscription: Subscription? = null
 
         init {
             mImgRepoType = itemView.findViewById(R.id.img_repo_type)
@@ -151,8 +151,8 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
         }
 
         private fun resetSubscription(repo: Repo) {
-            if (!mSubscription.isUnsubscribed) {
-                mSubscription.unsubscribe()
+            if (mSubscription != null &&!mSubscription!!.isUnsubscribed) {
+                mSubscription?.unsubscribe()
             }
             mSubscription = RxBus.getInstance()
                     .toObservable()
