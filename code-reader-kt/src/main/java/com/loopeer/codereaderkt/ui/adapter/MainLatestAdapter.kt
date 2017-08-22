@@ -47,12 +47,12 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
                 mAllSubscription.add(subscription)
             }
             viewHolder.mProgressRelativeLayout.setOnClickListener {
-                /*view ->
-                               if (!var1.isDownloading() && !var1.isUnzip)
-                                   Navigator.startCodeReadActivity(context, var1)*/
+                //可以监听到这里
+                if (!var1.isDownloading() && !var1.isUnzip)
+                                   Navigator().startCodeReadActivity(context, var1)
             }
-            viewHolder.mActionDeleteView.setOnClickListener { doRepoDelete(var3) }
-            viewHolder.mActionSyncView.setOnClickListener { /*view -> Navigator.startDownloadRepoService(context, var1)*/ }
+            viewHolder.mActionDeleteView.setOnClickListener { doRepoDelete(var3) }//怎么让它们滑动显现出来
+            viewHolder.mActionSyncView.setOnClickListener { Navigator().startDownloadRepoService(context, var1) }
         }
         if (var3 is MainHeaderHolder) {
             val viewHolder = var3
@@ -106,29 +106,16 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
     class RepoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), Extension {
 
 
-        var mImgRepoType: ImageView
-        var mTextRepoName: TextView
-        var mTextRepoTime: TextView
-        var mProgressRelativeLayout: ForegroundProgressRelativeLayout
-        var mActionDeleteView: View
-        var mActionSyncView: View
-        var mActionContainer: View
-        var mCloud: View
-        var mLocalPhone: View
-        var mSubscription: Subscription? = null
-
-        init {
-            mImgRepoType = itemView.findViewById(R.id.img_repo_type)
-            mTextRepoName = itemView.findViewById(R.id.text_repo_name)
-            mTextRepoTime = itemView.findViewById(R.id.text_repo_time)
-            mProgressRelativeLayout = itemView.findViewById(R.id.view_progress_list_repo)
-            mActionDeleteView = itemView.findViewById(R.id.view_list_repo_action_delete)
-            mActionSyncView = itemView.findViewById(R.id.view_list_repo_action_update)
-            mActionContainer = itemView.findViewById(R.id.view_list_repo_action_container)
-            mCloud = itemView.findViewById(R.id.img_list_repo_cloud)
-            mLocalPhone = itemView.findViewById(R.id.img_list_repo_phone)
-//            mSubscription = Subscription()
-        }
+        var mImgRepoType: ImageView = itemView.findViewById(R.id.img_repo_type)
+        var mTextRepoName: TextView = itemView.findViewById(R.id.text_repo_name)
+        var mTextRepoTime: TextView = itemView.findViewById(R.id.text_repo_time)
+        var mProgressRelativeLayout: ForegroundProgressRelativeLayout = itemView.findViewById(R.id.view_progress_list_repo)
+        var mActionDeleteView: View = itemView.findViewById(R.id.view_list_repo_action_delete)
+        var mActionSyncView: View = itemView.findViewById(R.id.view_list_repo_action_update)
+        var mActionContainer: View = itemView.findViewById(R.id.view_list_repo_action_container)
+        var mCloud: View = itemView.findViewById(R.id.img_list_repo_cloud)
+        var mLocalPhone: View = itemView.findViewById(R.id.img_list_repo_phone)
+        private var mSubscription: Subscription? = null
 
         fun bind(repo: Repo): Subscription? {
             mImgRepoType.setBackgroundResource(if (repo.isFolder) R.drawable.shape_circle_folder else R.drawable.shape_circle_document)
@@ -151,7 +138,7 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
         }
 
         private fun resetSubscription(repo: Repo) {
-            if (mSubscription != null &&!mSubscription!!.isUnsubscribed) {
+            if (mSubscription != null && !mSubscription!!.isUnsubscribed) {
                 mSubscription?.unsubscribe()
             }
             mSubscription = RxBus.getInstance()
@@ -176,14 +163,10 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
 
     class MainHeaderHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private var mMainHeaderAdapter: MainHeaderAdapter
-        private lateinit var mGridView: GridView
+        private var mMainHeaderAdapter: MainHeaderAdapter = MainHeaderAdapter(itemView.context)
+        private var mGridView: GridView = itemView.findViewById(R.id.grid_main)
 
         init {
-            if (itemView != null) {
-                mGridView = itemView.findViewById(R.id.grid_main)
-            }
-            mMainHeaderAdapter = MainHeaderAdapter(itemView.context)
             mGridView.adapter = mMainHeaderAdapter
         }
 

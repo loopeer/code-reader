@@ -2,6 +2,7 @@ package com.loopeer.codereaderkt.ui.fragment
 
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.view.View
 
@@ -11,20 +12,20 @@ open class BaseFullscreenFragment : BaseFragment() {
     private val AUTO_HIDE_DELAY_MILLIS = 3000
     private val UI_ANIMATION_DELAY = 300
 
-    private var mDecorView: View? = null
+    private lateinit var mDecorView: View
 
-    private var mHideHandler = android.os.Handler()
+    private var mHideHandler = Handler()
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-    private final var mHideRunnable = Runnable() {
+    private val mHideRunnable = Runnable {
         ->
         run {
-            mDecorView!!.systemUiVisibility = View.SYSTEM_UI_FLAG_LOW_PROFILE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            mDecorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LOW_PROFILE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         }
 
     }
 
-    private var mVisible: Boolean = false
+    private var mVisible = false
 
     protected val mDelayHideTouchListener = { ->
         if (AUTO_HIDE) {
@@ -53,7 +54,7 @@ open class BaseFullscreenFragment : BaseFragment() {
     }
 
     protected fun show() {
-        mDecorView!!.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        mDecorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         mVisible = true
 
         mHideHandler.removeCallbacks(mHideRunnable)
