@@ -1,11 +1,8 @@
 package com.loopeer.codereaderkt.ui.activity
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
 import android.support.v7.app.ActionBar
@@ -32,11 +29,9 @@ open class BaseActivity : AppCompatActivity() {
 
     private val mAllSubscription = CompositeSubscription()
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mToolbar = findViewById(R.id.toolbar) as Toolbar?
-        mCoordinatorContainer = findViewById(R.id.view_coordinator_container) as CoordinatorLayout?
+
         registerSubscription(
                 RxBus.getInstance()
                         .toObservable()
@@ -56,10 +51,10 @@ open class BaseActivity : AppCompatActivity() {
         //打开app恢复下载
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onContentChanged() {
         super.onContentChanged()
-
+        mToolbar = findViewById(R.id.toolbar) as Toolbar?
+        mCoordinatorContainer = findViewById(R.id.view_coordinator_container) as CoordinatorLayout?
         if (mToolbar != null) {
             setSupportActionBar(mToolbar)
             onSetupActionBar(this.supportActionBar!!)

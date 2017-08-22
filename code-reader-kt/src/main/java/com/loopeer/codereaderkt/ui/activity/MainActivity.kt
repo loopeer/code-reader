@@ -54,6 +54,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+
         Navigator().startDownloadRepoService(this, DownloadRepoService.DOWNLOAD_PROGRESS)
 
         mRecyclerView = findViewById(R.id.view_recycler) as RecyclerView
