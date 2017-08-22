@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,8 +21,8 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
 
-class RepositoryFragment: BaseFragment() {
-    //TODO打开时会崩溃，未找到原因
+class RepositoryFragment : BaseFragment() {
+    //TODO打开时会崩溃，未找到原因； 原因是BaseFragment继承的Fragment应该引入v4.Fragment而不是app.Fragment
 
     private val PAGE_SIZE = 10
     private lateinit var mViewRecycler: RecyclerView
@@ -74,6 +75,7 @@ class RepositoryFragment: BaseFragment() {
     }
 
     fun setSearchText(searchText: String) {
+        Log.d("RepositoryFragmentLog", " searchText is " + searchText)
         mSearchText = searchText
         requestData(1)
     }

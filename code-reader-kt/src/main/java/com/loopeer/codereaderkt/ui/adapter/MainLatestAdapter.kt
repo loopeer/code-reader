@@ -3,7 +3,6 @@ package com.loopeer.codereaderkt.ui.adapter
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.text.format.DateUtils
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.GridView
@@ -29,12 +28,10 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
     private var mAllSubscription: CompositeSubscription
 
     init {
-        Log.d("MainLatestAdapterLog", " init")
         mAllSubscription = CompositeSubscription()
     }
 
     override fun setData(data: List<Repo>) {
-        Log.d("MainLatestAdapterLog", " setData")
         val list = ArrayList<Repo>()
         list.add(Repo())//这一句的作用是什么:数据库中取出文件数据要多一条来显示顶部菜单
         list.addAll(data)
@@ -43,9 +40,7 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
 
 
     override fun bindView(var1: Repo, var2: Int, var3: RecyclerView.ViewHolder?) {
-        Log.d("MainLatestAdapterLog", "bindView" + var3)
         if (var3 is RepoViewHolder) {
-            Log.d("MainLatestAdapterLog", "bindView : RepoView")
             val viewHolder: RepoViewHolder = var3
             val subscription = viewHolder.bind(var1)
             if (subscription != null) {
@@ -60,7 +55,6 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
             viewHolder.mActionSyncView.setOnClickListener { /*view -> Navigator.startDownloadRepoService(context, var1)*/ }
         }
         if (var3 is MainHeaderHolder) {
-            Log.d("MainLatestAdapterLog", "bindView : HeaderView")
             val viewHolder = var3
             viewHolder.bind()
         }
@@ -92,7 +86,6 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
-        Log.d("MainLatestAdapterLog", " onCreateViewHolder")
         val inflater = layoutInflater
         val view: View
         return when (viewType) {
@@ -195,7 +188,6 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
 
         fun bind() {
             val items = ArrayList<MainHeaderItem>()
-            Log.d("MainHeaderViewHolderLog", "bind")
             items.add(MainHeaderItem(R.drawable.ic_github, R.string.header_item_github_search,
                     itemView.context.getString(R.string.header_item_github_search_link)))
             items.add(MainHeaderItem(R.drawable.ic_trending, R.string.header_item_trending
