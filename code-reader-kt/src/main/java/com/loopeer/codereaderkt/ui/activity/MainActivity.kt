@@ -58,10 +58,8 @@ class MainActivity : BaseActivity() {
 
         mRecyclerView = findViewById(R.id.view_recycler) as RecyclerView
         mAnimatorRecyclerContent = findViewById(R.id.animator_recycler_content) as ViewAnimator
-
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             //获取权限
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {

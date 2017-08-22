@@ -49,14 +49,13 @@ class LoginActivity : BaseActivity(), Checker.CheckObserver {
         binding.editLoginAccount.addTextChangedListener(object : TextWatcherImpl() {
             override fun afterTextChanged(editable: Editable) {
                 super.afterTextChanged(editable)
-                mLoginChecker!!.setUsername(editable.toString())
+                mLoginChecker!!.username=editable.toString()
             }
         })
         binding.editLoginPassword.addTextChangedListener(object : TextWatcherImpl() {
             override fun afterTextChanged(editable: Editable) {
                 super.afterTextChanged(editable)
-                mLoginChecker!!.setPassword(
-                        editable.toString())
+                mLoginChecker!!.password = editable.toString()
             }
         })
 

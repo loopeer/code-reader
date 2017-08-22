@@ -59,7 +59,7 @@ open class BaseFragment : Fragment() {
         if (!TextUtils.isEmpty(message)) {
             mProgressLoading!!.setMessage(message)
         } else {
-            mProgressLoading!!.setMessage(null)
+            mProgressLoading!!.setMessage("")
         }
         progressShow = true
         mProgressLoading!!.show()
@@ -89,7 +89,7 @@ open class BaseFragment : Fragment() {
         if (!TextUtils.isEmpty(message)) {
             mUnBackProgressLoading!!.setMessage(message)
         } else {
-            mUnBackProgressLoading!!.setMessage(null)
+            mUnBackProgressLoading!!.setMessage("")
         }
         mUnBackProgressLoading!!.show()
     }
