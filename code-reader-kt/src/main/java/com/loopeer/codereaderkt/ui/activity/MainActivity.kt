@@ -1,6 +1,8 @@
 package com.loopeer.codereaderkt.ui.activity
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -27,6 +29,7 @@ import com.loopeer.codereaderkt.ui.decoration.DividerItemDecorationMainList
 import com.loopeer.codereaderkt.ui.loader.ILoadHelper
 import com.loopeer.codereaderkt.ui.loader.RecyclerLoader
 import com.loopeer.codereaderkt.utils.RxBus
+import com.loopeer.directorychooser.FileNod
 import com.loopeer.directorychooser.NavigatorChooser
 import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension
 import rx.android.schedulers.AndroidSchedulers
@@ -34,8 +37,6 @@ import rx.android.schedulers.AndroidSchedulers
 
 class MainActivity : BaseActivity() {
 
-    //clean后MainActivity总是报一些奇怪的错，稍改一点（无论有关与否）即可重新运行，很奇怪
-    //一改style也会带来一些问题
     private val TAG = "MainActivity"
     private val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000
     private lateinit var binding: ActivityMainBinding
@@ -52,7 +53,6 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
 
         Navigator().startDownloadRepoService(this, DownloadRepoService.DOWNLOAD_PROGRESS)
 
@@ -73,7 +73,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_repo_add, menu)
         menuInflater.inflate(R.menu.menu_settings, menu)
         menuInflater.inflate(R.menu.menu_github, menu)
@@ -91,6 +91,7 @@ class MainActivity : BaseActivity() {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
+        setUpView()
         registerSubscription(
                 RxBus.getInstance().toObservable()
                         .filter({ o -> o is DownloadFailDeleteEvent })
@@ -99,7 +100,6 @@ class MainActivity : BaseActivity() {
                         .doOnNext({ mMainLatestAdapter.deleteRepo(it) })
                         .subscribe()
         )
-        setUpView()
     }
 
     override fun onResume() {
@@ -142,7 +142,26 @@ class MainActivity : BaseActivity() {
         mMainLatestAdapter.updateData(repos)
     }
 
+    fun onFabClick(view: View) {
+        doSelectFile()
+    }
 
+    private fun doSelectFile() {
+        NavigatorChooser.startDirectoryFileChooserActivity(this)
+        //点击fab打开文件列表activity
+    }
+
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            NavigatorChooser.DIRECTORY_FILE_SELECT_CODE -> if (resultCode == Activity.RESULT_OK) {
+                val node = data.getSerializableExtra(NavigatorChooser.EXTRA_FILE_NODE) as FileNod
+                val repo = Repo().parse(node)
+                repo.id = CoReaderDbHelper.getInstance(this).insertRepo(repo).toString()
+                Navigator().startCodeReadActivity(this@MainActivity, repo)
+            }
+        }
+    }
 
     override fun onPause() {
         super.onPause()
@@ -161,12 +180,4 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun onFabClick(view:View) {
-        doSelectFile()
-    }
-
-    private fun doSelectFile() {
-        NavigatorChooser.startDirectoryFileChooserActivity(this)
-        //点击fab打开文件列表activity
-    }
 }
