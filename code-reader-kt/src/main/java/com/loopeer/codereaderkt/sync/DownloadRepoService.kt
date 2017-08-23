@@ -83,6 +83,7 @@ class DownloadRepoService : Service() {
         CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
                 .updateRepoUnzipProgress(id, 1f, true)
         RxBus.getInstance().send(DownloadProgressEvent(id, true))
+
 /*
         Observable.create({ subscriber ->
             var cursor: Cursor? = null
