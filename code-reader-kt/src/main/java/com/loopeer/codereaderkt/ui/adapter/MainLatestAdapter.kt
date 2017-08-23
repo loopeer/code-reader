@@ -3,7 +3,6 @@ package com.loopeer.codereaderkt.ui.adapter
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.text.format.DateUtils
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.GridView
@@ -46,7 +45,7 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
             viewHolder.mProgressRelativeLayout.setOnClickListener {
 
                 if (!var1.isDownloading() && !var1.isUnzip)
-                                   Navigator().startCodeReadActivity(context, var1)
+                    Navigator().startCodeReadActivity(context, var1)
             }
             viewHolder.mActionDeleteView.setOnClickListener { doRepoDelete(var3) }//怎么让它们滑动显现出来
             viewHolder.mActionSyncView.setOnClickListener { Navigator().startDownloadRepoService(context, var1) }
@@ -153,8 +152,8 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
                     .doOnNext({ repo.downloadId = 0 })
                     .subscribe()
         }
+
         override fun getActionWidth(): Float {
-            Log.d("getActionWidth",""+mActionContainer.width.toFloat())
             return mActionContainer.width.toFloat()
         }//滑动时用到这个方法！有滑动事件，但是不显示,这里没错
 //        override fun getActionWidth(): Float = mActionContainer.width.toFloat()

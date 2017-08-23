@@ -11,6 +11,7 @@ import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.ui.view.AddRepoChecker;
 import com.loopeer.codereader.ui.view.Checker;
 import com.loopeer.codereader.ui.view.TextWatcherImpl;
+import com.loopeer.codereader.utils.DownloadUrlParser;
 import com.loopeer.codereader.utils.FileCache;
 
 import butterknife.BindView;
@@ -59,14 +60,18 @@ public class AddRepoActivity extends BaseActivity implements Checker.CheckObserv
     @SuppressWarnings("unused")
     public void onClick() {
         hideSoftInputMethod();
-        Repo repo = new Repo(
-                mAddRepoChecker.repoName.trim()
-                , FileCache.getInstance().getRepoAbsolutePath(mAddRepoChecker.repoName)
-                , mAddRepoChecker.repoDownloadUrl.trim()
-                , true
-                , 0);
-        Navigator.startDownloadNewRepoService(this, repo);
-        this.finish();
+        if (!DownloadUrlParser.parseGithubUrlAndDownload(this, mAddRepoChecker.repoDownloadUrl.trim())) {
+            showMessage(getString(R.string.repo_download_url_parse_error));
+        } else {
+            Repo repo = new Repo(
+                    mAddRepoChecker.repoName.trim()
+                    , FileCache.getInstance().getRepoAbsolutePath(mAddRepoChecker.repoName)
+                    , mAddRepoChecker.repoDownloadUrl.trim()
+                    , true
+                    , 0);
+            Navigator.startDownloadNewRepoService(this, repo);
+            this.finish();
+        }
     }
 }
 

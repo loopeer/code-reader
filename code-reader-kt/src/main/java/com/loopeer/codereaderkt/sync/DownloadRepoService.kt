@@ -9,7 +9,6 @@ import android.database.Cursor
 import android.net.Uri
 import android.os.Handler
 import android.os.IBinder
-import android.util.Log
 import com.loopeer.codereaderkt.CodeReaderApplication
 import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
@@ -41,7 +40,7 @@ class DownloadRepoService : Service() {
     private val TAG = "DownloadRepoService"
 
     private val DOWNLOAD_CONTENT_URI = Uri.parse("content://downloads/my_downloads")//下载路径
-    val MEDIA_TYPE_ZIP = "application/zip"
+    private val MEDIA_TYPE_ZIP = "application/zip"
     private lateinit var mDownloadingRepos: HashMap<Long, Repo>
     private var mProgressSubscription: Subscription? = null
     private lateinit var mDownloadChangeObserver: DownloadChangeObserver
@@ -63,7 +62,6 @@ class DownloadRepoService : Service() {
     private fun parseIntent(intent: Intent) {
         val inn = intent //因为kotlin中in关键字的缘故，不能用‘in’做变量
         val type = inn.getIntExtra(Navigator.EXTRA_DOWNLOAD_SERVICE_TYPE, 0)//下载状态
-        Log.d("DownloadRepoServiceLog ", " type: " + type)
         val repo = inn.getSerializableExtra(Navigator.EXTRA_REPO) as Repo?//这里会崩溃
         val id: Long = inn.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0)
         when (type) {
@@ -89,8 +87,7 @@ class DownloadRepoService : Service() {
         RxBus.getInstance().send(DownloadProgressEvent(id, true))
         //下载链接错误时会崩溃，原版本就有的问题
 
-        Log.d("DownloadRepoServiceCompleteLog ", " id: "+id)
-       Observable.create(Observable.OnSubscribe<Void>{ subscriber ->
+        Observable.create(Observable.OnSubscribe<Void> { subscriber ->
             var cursor: Cursor? = null
             try {
                 val manager = this@DownloadRepoService.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
@@ -131,10 +128,8 @@ class DownloadRepoService : Service() {
         })
                 .onErrorResumeNext(Observable.empty())
                 .subscribeOn(Schedulers.io())
-                .doOnError { e -> Log.d(TAG, e.toString()) }
                 .doOnCompleted { this.checkTaskEmptyToFinish() }
                 .subscribe()
-
 
 
     }
