@@ -76,7 +76,7 @@ class CodeReadActivity : BaseActivity(), DirectoryNavDelegate.FileClickListener,
         super.onSaveInstanceState(outState)
         outState.putSerializable(Navigator.EXTRA_DIRETORY_ROOT, mDirectoryNode)
         outState.putSerializable(Navigator.EXTRA_DIRETORY_SELECTING, mSelectedNode)
-        outState.putSerializable(Navigator.EXTRA_DIRETORY_ROOT_NODE_INSTANCE, mDirectoryNavDelegate.getDirectoryNodeInstance())
+        outState.putSerializable(Navigator.EXTRA_DIRETORY_ROOT_NODE_INSTANCE, mDirectoryNavDelegate.directoryNodeInstance)
     }
 
     override fun onBackPressed() {
