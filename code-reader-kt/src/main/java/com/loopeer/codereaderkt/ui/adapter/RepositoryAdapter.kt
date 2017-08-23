@@ -67,7 +67,9 @@ class RepositoryAdapter(context: Context) : RecyclerViewAdapter<Repository>(cont
             mTxtFullName.text = repository.fullName
             mTxtDescription.text = repository.description
 
-            itemView.setOnClickListener { view -> Navigator().startWebActivity(context, repository.htmlUrl!!) }
+            itemView.setOnClickListener { view ->
+                Navigator().startWebActivity(context, repository.htmlUrl!!)
+            }
         }
     }
 }
