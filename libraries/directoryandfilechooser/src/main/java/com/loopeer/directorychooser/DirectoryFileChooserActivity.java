@@ -79,6 +79,7 @@ public class DirectoryFileChooserActivity extends AppCompatActivity implements D
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            setResult(RESULT_CANCELED,new Intent());
             this.finish();
             return true;
         }

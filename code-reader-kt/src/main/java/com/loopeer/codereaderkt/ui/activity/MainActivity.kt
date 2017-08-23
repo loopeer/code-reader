@@ -150,7 +150,6 @@ class MainActivity : BaseActivity() {
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        //回调时会崩溃
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             NavigatorChooser.DIRECTORY_FILE_SELECT_CODE -> if (resultCode == Activity.RESULT_OK) {
