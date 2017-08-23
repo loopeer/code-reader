@@ -8,12 +8,12 @@ class AddRepoChecker(checkObserver: Checker.CheckObserver) : Checker(checkObserv
 
     var repoName:String?=null
     set(value) {
-        this.repoName = value
+        field = value
         mCheckObserver.check(isEnable)
     }
     var repoDownloadUrl: String?=null
     set(value) {
-        this.repoDownloadUrl = value
+        field = value
         mCheckObserver.check(isEnable)
     }
 }
