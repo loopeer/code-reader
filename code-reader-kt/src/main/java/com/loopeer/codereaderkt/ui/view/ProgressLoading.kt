@@ -17,7 +17,7 @@ open class ProgressLoading(context: Context, theme: Int) : Dialog(context, theme
 
     private lateinit var mWindow: Window
 
-    private var mMessage: CharSequence? = null
+    private lateinit var mMessage: CharSequence
     private var mShowProgress = true
 
     init {

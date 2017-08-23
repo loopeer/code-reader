@@ -45,7 +45,7 @@ class MainActivity : BaseActivity() {
     private lateinit var mMainLatestAdapter: MainLatestAdapter
 
     private lateinit var mItemTouchHelper: ItemTouchHelperExtension
-    lateinit var mCallback: ItemTouchHelperExtension.Callback
+    private lateinit var mCallback: ItemTouchHelperExtension.Callback
 
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAnimatorRecyclerContent: ViewAnimator
@@ -114,7 +114,7 @@ class MainActivity : BaseActivity() {
         mRecyclerView.addItemDecoration(DividerItemDecorationMainList(this,
                 DividerItemDecoration.VERTICAL_LIST, resources.getDimensionPixelSize(R.dimen.repo_list_divider_start), -1, -1))
         mItemTouchHelper = createItemTouchHelper()
-        mItemTouchHelper.attachToRecyclerView(mRecyclerView)//应该是这里没有执行>执行了也出现点击事件,但是画面没有出现
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView)//执行了也出现点击事件,但是右侧画面没有出现
     }
 
     private fun createItemTouchHelper(): ItemTouchHelperExtension {
@@ -150,7 +150,7 @@ class MainActivity : BaseActivity() {
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        //方法回掉时会崩溃
+        //回调时会崩溃
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             NavigatorChooser.DIRECTORY_FILE_SELECT_CODE -> if (resultCode == Activity.RESULT_OK) {
