@@ -44,9 +44,9 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
                 mAllSubscription.add(subscription)
             }
             viewHolder.mProgressRelativeLayout.setOnClickListener {
-                //可以监听到这里
-                /*if (!var1.isDownloading() && !var1.isUnzip)
-                                   Navigator().startCodeReadActivity(context, var1)*/
+//                可以监听到这里
+                if (!var1.isDownloading() && !var1.isUnzip)
+                                   Navigator().startCodeReadActivity(context, var1)
             }
             viewHolder.mActionDeleteView.setOnClickListener { doRepoDelete(var3) }//怎么让它们滑动显现出来
             viewHolder.mActionSyncView.setOnClickListener { Navigator().startDownloadRepoService(context, var1) }

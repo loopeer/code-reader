@@ -147,7 +147,8 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
         mBinding.webCodeRead.loadDataWithBaseURL(null, string, "text/html", "utf-8", null)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+
+
     fun openFile(node: DirectoryNode) {
         mOpenFileAfterLoadFinish = true
         mNode = node

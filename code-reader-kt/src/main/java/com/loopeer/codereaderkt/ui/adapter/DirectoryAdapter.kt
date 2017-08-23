@@ -80,7 +80,7 @@ class DirectoryAdapter(context: Context, private val mFileClickListener: Directo
     override fun bindView(var1: DirectoryNode, var2: Int, var3: RecyclerView.ViewHolder) {
         if (var3 is DirectoryViewHolder) {
             var3.bind(var1)
-            val clickListener = {
+            val clickListener = View.OnClickListener{
                 if (var1.isDirectory) {
                     var1.openChild = !var1.openChild
                     updateData(adaptNodes())
@@ -171,4 +171,4 @@ class DirectoryAdapter(context: Context, private val mFileClickListener: Directo
     }
 }
 
-private fun View.setOnClickListener(clickListener: () -> Unit) {}
+
