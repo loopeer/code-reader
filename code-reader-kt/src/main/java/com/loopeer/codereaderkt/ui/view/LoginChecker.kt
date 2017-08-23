@@ -6,12 +6,12 @@ class LoginChecker(checkObserver: Checker.CheckObserver) : Checker(checkObserver
 
     var username: String?=null
     set(value) {
-        this.username = value
+        field=value
         mCheckObserver.check(isEnable)
     }
     var password: String?=null
     set(value) {
-        this.password = password
+        field=value
         mCheckObserver.check(isEnable)
     }
 
