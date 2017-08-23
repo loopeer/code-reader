@@ -33,6 +33,6 @@
 
     </LinearLayout>
 
-    <include layout="@layout/view_list_repo_item_content"/>
+    <include layout="@layout/view_list_repo_item_content" />
 </FrameLayout>
 

@@ -638,6 +638,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
                     case END:
                         targetTranslateY = 0;
                         targetTranslateX = Math.signum(mDx) * getSwipeWidth();
+                        Log.d("itouchLog","targetTranslateX "+targetTranslateX);
                         break;
                     case UP:
                     case DOWN:
@@ -724,6 +725,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
 
     private float getSwipeWidth() {
         if (mSelected instanceof Extension) {
+            Log.d("itouchLog"," getSwipeWidth "+((Extension) mSelected).getActionWidth());
             return ((Extension) mSelected).getActionWidth();
         }
         return mRecyclerView.getWidth();

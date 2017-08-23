@@ -4,19 +4,15 @@ import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Toast
-
 import com.loopeer.codereaderkt.model.DirectoryNode
 import com.loopeer.codereaderkt.ui.adapter.DirectoryAdapter
 import com.loopeer.codereaderkt.utils.FileCache
 import com.loopeer.codereaderkt.utils.FileTypeUtils
-
-import java.io.File
-
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
-import rx.functions.Action1
 import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
+import java.io.File
 
 class DirectoryNavDelegate(private val mRecyclerView: RecyclerView, private val mFileClickListener: FileClickListener) {
 
@@ -29,14 +25,12 @@ class DirectoryNavDelegate(private val mRecyclerView: RecyclerView, private val 
         fun onFileOpenEnd()
     }
 
-    private val mDirectoryAdapter: DirectoryAdapter
-    private val mContext: Context
-    private var mLoadFileCallback: LoadFileCallback? = null
+    private val mDirectoryAdapter: DirectoryAdapter = DirectoryAdapter(mRecyclerView.context, mFileClickListener)
+    private val mContext: Context = mRecyclerView.context
+    private lateinit var mLoadFileCallback: LoadFileCallback
     private val mAllSubscription = CompositeSubscription()
 
     init {
-        mContext = mRecyclerView.context
-        mDirectoryAdapter = DirectoryAdapter(mRecyclerView.context, mFileClickListener)
         setUpRecyclerView()
     }
 
@@ -61,7 +55,7 @@ class DirectoryNavDelegate(private val mRecyclerView: RecyclerView, private val 
     }
 
     fun updateData(directoryNode: DirectoryNode) {
-        mLoadFileCallback!!.onFileOpenStart()
+        mLoadFileCallback.onFileOpenStart()
         mAllSubscription.add(
             Observable.fromCallable {
                 val node: DirectoryNode
@@ -74,16 +68,16 @@ class DirectoryNavDelegate(private val mRecyclerView: RecyclerView, private val 
             }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(Action1<DirectoryNode> { mDirectoryAdapter.nodeRoot=it})
-                .doOnNext(Action1<DirectoryNode> { this.checkOpenFirstFile(it) })
+                .doOnNext({ mDirectoryAdapter.nodeRoot=it})
+                .doOnNext({ this.checkOpenFirstFile(it) })
                 .doOnError { e -> Toast.makeText(mContext, e.message, Toast.LENGTH_SHORT).show() }
                 .onErrorResumeNext(Observable.empty<DirectoryNode>())
-                .doOnCompleted { mLoadFileCallback!!.onFileOpenEnd() }
+                .doOnCompleted { mLoadFileCallback.onFileOpenEnd() }
                 .subscribe())
     }
 
     private fun checkOpenFirstFile(node: DirectoryNode) {
-        if (node.isDirectory && node.pathNodes != null) {
+        if (node.isDirectory) {
             var haveOpen = false
             for (n in node.pathNodes) {
                 if (FileTypeUtils.isMdFileType(n.name) && n.name.equals("readme.md", ignoreCase = true)) {
