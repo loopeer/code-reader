@@ -26,7 +26,7 @@ class CodeReadActivity : BaseActivity(), DirectoryNavDelegate.FileClickListener,
     internal var mContainer: FrameLayout? = null
 
     private lateinit var mFragment: CodeReadFragment
-    private lateinit var mDirectoryNode: DirectoryNode
+    private var mDirectoryNode: DirectoryNode?=null
     private lateinit var mSelectedNode: DirectoryNode
 
     private lateinit var mDirectoryNavDelegate: DirectoryNavDelegate
@@ -58,7 +58,7 @@ class CodeReadActivity : BaseActivity(), DirectoryNavDelegate.FileClickListener,
             mDirectoryNode = savedInstanceState.getSerializable(Navigator.EXTRA_DIRETORY_ROOT) as DirectoryNode
             mSelectedNode = savedInstanceState.getSerializable(Navigator.EXTRA_DIRETORY_SELECTING) as DirectoryNode
             val rootNodeInstance = savedInstanceState.getSerializable(Navigator.EXTRA_DIRETORY_ROOT_NODE_INSTANCE) as DirectoryNode
-            mFragment.updateRootNode(mDirectoryNode)
+            mFragment.updateRootNode(mDirectoryNode!!)
             mDirectoryNavDelegate.resumeDirectoryState(rootNodeInstance)
             doOpenFile(mSelectedNode)
             return
@@ -66,10 +66,10 @@ class CodeReadActivity : BaseActivity(), DirectoryNavDelegate.FileClickListener,
         val intent = intent
         val repo = intent.getSerializableExtra(Navigator.EXTRA_REPO) as Repo
         CoReaderDbHelper.getInstance(this).updateRepoLastModify(java.lang.Long.valueOf(repo.id),
-                System.currentTimeMillis())
+            System.currentTimeMillis())
         mDirectoryNode = repo.toDirectoryNode()
-        mFragment.updateRootNode(mDirectoryNode)
-        mDirectoryNavDelegate.updateData(mDirectoryNode)
+        mFragment.updateRootNode(mDirectoryNode!!)
+        mDirectoryNavDelegate.updateData(mDirectoryNode!!)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -113,7 +113,7 @@ class CodeReadActivity : BaseActivity(), DirectoryNavDelegate.FileClickListener,
     }
 
     override fun doOpenFile(node: DirectoryNode?) {
-        title = if (node == null) mDirectoryNode.name else node.name
+        title = if (node == null) mDirectoryNode?.name else node.name
         mSelectedNode = node!!
         loadCodeData(node)
     }
@@ -128,10 +128,10 @@ class CodeReadActivity : BaseActivity(), DirectoryNavDelegate.FileClickListener,
     }
 
     private fun createFragment(node: DirectoryNode) {
-        mFragment = CodeReadFragment().newInstance(node, mDirectoryNode)
+        mFragment = CodeReadFragment.newInstance(node, mDirectoryNode)
         mFragment.arguments = intent.extras
         supportFragmentManager.beginTransaction()
-                .add(R.id.container_code_read, mFragment).commit()
+            .add(R.id.container_code_read, mFragment).commit()
     }
 
     override fun onFileOpenStart() {
