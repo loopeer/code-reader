@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ViewAnimator
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/animator_recycler_content"
     android:layout_width="match_parent"
@@ -12,20 +11,20 @@
         android:id="@+id/view_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
     <TextView
         android:id="@android:id/empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="@string/empty_text"
-        android:textColor="?android:textColorTertiary"
-        android:layout_gravity="center"/>
+        android:textColor="?android:textColorTertiary" />
 
     <android.support.v4.widget.ContentLoadingProgressBar
         android:id="@android:id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
 </ViewAnimator>
