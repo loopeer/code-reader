@@ -3,6 +3,7 @@ package com.loopeer.codereaderkt.ui.activity
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.text.Editable
+import android.view.View
 import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.databinding.ActivityAddRepoBinding
@@ -39,13 +40,14 @@ class AddRepoActivity : BaseActivity(), Checker.CheckObserver {
         })
     }
 
-    fun onDownClick() {
+    fun onDownClick(view: View) {
         hideSoftInputMethod()
 
         val repo = Repo(
                 mAddRepoChecker!!.repoName!!.trim { it <= ' ' }, FileCache().getInstance().getRepoAbsolutePath(mAddRepoChecker!!.repoName!!), mAddRepoChecker!!.repoDownloadUrl!!.trim { it <= ' ' }, true, 0)
         Navigator().startDownloadNewRepoService(this, repo)
         this.finish()
+//        Toast.makeText(this,"asdad",Toast.LENGTH_SHORT).show()
     }
 
     override fun check(b: Boolean) {
