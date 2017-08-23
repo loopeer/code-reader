@@ -40,7 +40,8 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
     private val TAG = "CodeReadFragment"
 
     private lateinit var mBinding: FragmentCodeReadBinding
-    private var mToolbar: Toolbar? = null
+    private lateinit var mToolbar: Toolbar
+
 
     private var mNode: DirectoryNode? = null
     private var mRootNode: DirectoryNode? = null
@@ -51,16 +52,19 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
 
     private var mOrientationChange: Boolean = false
 
-    fun newInstance(node: DirectoryNode, root: DirectoryNode): CodeReadFragment {
-        val codeReadFragment = CodeReadFragment()
-        codeReadFragment.mNode = node
-        codeReadFragment.mRootNode = root
-        return codeReadFragment
+
+    companion object {
+        fun newInstance(node: DirectoryNode?, root: DirectoryNode?): CodeReadFragment {
+            val codeReadFragment = CodeReadFragment()
+            codeReadFragment.mNode = node
+            codeReadFragment.mRootNode = root
+            return codeReadFragment
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        mToolbar = container!!.findViewById(R.id.toolbar)
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_code_read, container, false)
+        mToolbar=mBinding.root.findViewById(R.id.toolbar)!!
         return mBinding.root
     }
 
@@ -102,7 +106,7 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
 
         }
         if (Build.VERSION.SDK_INT >= 11) {
-            ({ mBinding.webCodeRead.settings.displayZoomControls = false } as Runnable).run()
+            (Runnable { mBinding.webCodeRead.settings.displayZoomControls = false }).run()
         }
         openFile()
     }
@@ -111,10 +115,10 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
             return
 
-        val params = mToolbar!!.getLayoutParams() as AppBarLayout.LayoutParams
+        val params = mToolbar.getLayoutParams() as AppBarLayout.LayoutParams
         params.height = (DeviceUtils.dpToPx(activity, 56f) + DeviceUtils.statusBarHeight).toInt()
-        mToolbar!!.setLayoutParams(params)
-        mToolbar!!.setPadding(0, DeviceUtils.statusBarHeight, 0, 0)
+        mToolbar.setLayoutParams(params)
+        mToolbar.setPadding(0, DeviceUtils.statusBarHeight, 0, 0)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
