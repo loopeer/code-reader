@@ -5,6 +5,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.database.ContentObserver
+import android.database.Cursor
 import android.net.Uri
 import android.os.Handler
 import android.os.IBinder
@@ -17,11 +18,14 @@ import com.loopeer.codereaderkt.event.DownloadFailDeleteEvent
 import com.loopeer.codereaderkt.event.DownloadProgressEvent
 import com.loopeer.codereaderkt.event.DownloadRepoMessageEvent
 import com.loopeer.codereaderkt.model.Repo
+import com.loopeer.codereaderkt.utils.FileCache
 import com.loopeer.codereaderkt.utils.RxBus
+import com.loopeer.codereaderkt.utils.Unzip
 import rx.Observable
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.io.File
 
 
 class DownloadRepoService : Service() {
@@ -85,8 +89,8 @@ class DownloadRepoService : Service() {
         RxBus.getInstance().send(DownloadProgressEvent(id, true))
         //下载链接错误时会崩溃，原版本就有的问题
 
-
-/*        Observable.create({ subscriber ->
+        Log.d("DownloadRepoServiceCompleteLog ", " id: "+id)
+       Observable.create(Observable.OnSubscribe<Void>{ subscriber ->
             var cursor: Cursor? = null
             try {
                 val manager = this@DownloadRepoService.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
@@ -124,13 +128,13 @@ class DownloadRepoService : Service() {
             } finally {
                 cursor!!.close()
             }
-        } as Observable.OnSubscribe<*>)
+        })
                 .onErrorResumeNext(Observable.empty())
                 .subscribeOn(Schedulers.io())
                 .doOnError { e -> Log.d(TAG, e.toString()) }
                 .doOnCompleted { this.checkTaskEmptyToFinish() }
                 .subscribe()
-*/
+
 
 
     }
