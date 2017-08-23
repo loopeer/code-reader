@@ -13,7 +13,7 @@ class FileCache {
     companion object {
         private val EXTERNAL_STORAGE_PERMISSION = "android.permission.WRITE_EXTERNAL_STORAGE"
         private var instance: FileCache? = null
-        private val cachePath = Environment.getExternalStorageDirectory().toString() + "/CodeReader/repo/"
+        private val cachePath = Environment.getExternalStorageDirectory().toString() + "/CodeReaderKt/repo/"
         private var cacheDir: File? = null
         val cacheDirPath = "/repo/"
 
