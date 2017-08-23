@@ -63,6 +63,7 @@ dependencies {
 
     provided 'com.google.auto.value:auto-value:' + auto_value
     provided 'com.jakewharton.auto.value:auto-value-annotations:1.2-update1'
+    compile 'com.jakewharton:butterknife-annotations:8.2.1'
 }
 repositories {
     mavenCentral()

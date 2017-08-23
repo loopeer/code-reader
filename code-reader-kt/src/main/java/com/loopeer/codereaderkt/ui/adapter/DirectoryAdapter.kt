@@ -1,6 +1,8 @@
 package com.loopeer.codereaderkt.ui.adapter
 
 import android.content.Context
+import android.databinding.DataBindingUtil
+import android.databinding.ViewDataBinding
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -8,8 +10,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.loopeer.codereaderkt.R
+import com.loopeer.codereaderkt.databinding.ListItemCodeReadRepoHeaderBinding
+import com.loopeer.codereaderkt.databinding.ListItemDirectoryBinding
 import com.loopeer.codereaderkt.model.DirectoryNode
 import com.loopeer.codereaderkt.ui.view.DirectoryNavDelegate
+import com.loopeer.codereaderkt.ui.viewHolder.DataBindingViewHolder
 import java.util.*
 
 
@@ -83,7 +88,7 @@ class DirectoryAdapter(context: Context, private val mFileClickListener: Directo
                     mFileClickListener.doOpenFile(var1)
                 }
             }
-            var3.itemView.setOnClickListener(clickListener)
+            var3.mBinding.root.setOnClickListener(clickListener)
         }
         (var3 as? CodeReadRepoHeaderViewHolder)?.bind(mNodeRoot)
 
@@ -91,15 +96,14 @@ class DirectoryAdapter(context: Context, private val mFileClickListener: Directo
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = layoutInflater
-        val view: View
         when (viewType) {
             R.layout.list_item_code_read_repo_header -> {
-                view = inflater.inflate(R.layout.list_item_code_read_repo_header, parent, false)
-                return CodeReadRepoHeaderViewHolder(view)
+                var mBingding=DataBindingUtil.inflate<ListItemCodeReadRepoHeaderBinding>(inflater,R.layout.list_item_code_read_repo_header, parent, false)
+                return CodeReadRepoHeaderViewHolder(mBingding)
             }
             else -> {
-                view = inflater.inflate(R.layout.list_item_directory, parent, false)
-                return DirectoryViewHolder(view)
+                var mBingding=DataBindingUtil.inflate<ListItemDirectoryBinding>(inflater,R.layout.list_item_directory, parent, false)
+                return DirectoryViewHolder(mBingding)
             }
         }
     }
@@ -118,51 +122,51 @@ class DirectoryAdapter(context: Context, private val mFileClickListener: Directo
         return if (position == 0) mNodeRoot else super.getItem(position - 1)
     }
 
-    internal inner class DirectoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-//        @BindView(R.id.text_directory_name)
-        var mTextDirectoryName: TextView? = null
-//        @BindView(R.id.img_directory_open_close)
-        var mImgOpenClose: ImageView? = null
+    internal inner class DirectoryViewHolder(mBinding: ListItemDirectoryBinding) : RecyclerView.ViewHolder(mBinding.root) {
+        var mBinding:ListItemDirectoryBinding
 
         lateinit var mNode: DirectoryNode
 
         init {
-//            ButterKnife.bind(this, itemView)
+            this.mBinding=mBinding
         }
 
         fun bind(pathNode: DirectoryNode) {
             mNode = pathNode
-            mTextDirectoryName!!.text = pathNode.displayName
+            mBinding.textDirectoryName.text = pathNode.displayName
             val params = itemView.layoutParams as RecyclerView.LayoutParams
             params.leftMargin = 20 * pathNode.depth
-            mImgOpenClose!!.isSelected = mNode.openChild
+            mBinding.imgDirectoryOpenClose.isSelected = mNode.openChild
             var drawableId = R.drawable.ic_directory_file
             if (pathNode.isDirectory) {
                 drawableId = R.drawable.ic_directory_path
-                mImgOpenClose!!.visibility = if (pathNode.pathNodes.isEmpty()) View.INVISIBLE else View.VISIBLE
+                mBinding.imgDirectoryOpenClose!!.visibility = if (pathNode.pathNodes.isEmpty()) View.INVISIBLE else View.VISIBLE
             } else {
-                mImgOpenClose!!.visibility = View.INVISIBLE
+                mBinding.imgDirectoryOpenClose.visibility = View.INVISIBLE
             }
             val drawable = ContextCompat.getDrawable(itemView.context, drawableId)
-            mTextDirectoryName!!.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+            mBinding.textDirectoryName.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
         }
 
     }
 
-    internal inner class CodeReadRepoHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-//        @BindView(R.id.img_code_read_repo_type)
-        var mImgRepoType: ImageView? = null
-//        @BindView(R.id.text_code_read_repo_name)
-        var mTextRepoName: TextView? = null
 
+
+
+    internal inner class CodeReadRepoHeaderViewHolder(mBinding: ListItemCodeReadRepoHeaderBinding) : RecyclerView.ViewHolder(mBinding.root){
+
+        var mBinding:ListItemCodeReadRepoHeaderBinding
         init {
-//            ButterKnife.bind(this, itemView)
+            this.mBinding=mBinding
         }
 
         fun bind(directoryNode: DirectoryNode) {
-            mImgRepoType!!.setImageResource(if (directoryNode.isDirectory) R.drawable.ic_repo_white else R.drawable.ic_document_white)
-            mTextRepoName!!.text = directoryNode.name
+            if(directoryNode!=null){
+                mBinding.imgCodeReadRepoType?.setImageResource(if (directoryNode.isDirectory) R.drawable.ic_repo_white else R.drawable.ic_document_white)
+                mBinding.textCodeReadRepoName?.text = directoryNode.name
+            }
+
         }
     }
 }
