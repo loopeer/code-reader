@@ -44,7 +44,7 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
                 mAllSubscription.add(subscription)
             }
             viewHolder.mProgressRelativeLayout.setOnClickListener {
-//                可以监听到这里
+
                 if (!var1.isDownloading() && !var1.isUnzip)
                                    Navigator().startCodeReadActivity(context, var1)
             }

@@ -116,7 +116,7 @@ open class Navigator {
         context.startActivity(intent)
     }
 
-    fun startCodeReadActivity(context: Context, repo: Repo) {
+    fun startCodeReadActivity(context: Context, repo: Repo?) {
         val intent = Intent(context, CodeReadActivity::class.java)
         intent.putExtra(EXTRA_REPO, repo)
         context.startActivity(intent)

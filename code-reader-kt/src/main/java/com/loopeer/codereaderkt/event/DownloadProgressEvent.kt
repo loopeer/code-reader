@@ -3,7 +3,7 @@ package com.loopeer.codereaderkt.event
 
 class DownloadProgressEvent {
 
-    public lateinit var repoId: String
+    public var repoId: String = ""
     public var downloadId: Long = 0
     public var factor: Float = 0.0f
     public var isUnzip: Boolean = false

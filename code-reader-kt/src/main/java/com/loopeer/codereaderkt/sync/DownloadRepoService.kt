@@ -59,7 +59,7 @@ class DownloadRepoService : Service() {
     private fun parseIntent(intent: Intent) {
         val inn = intent //因为kotlin中in关键字的缘故，不能用‘in’做变量
         val type = inn.getIntExtra(Navigator.EXTRA_DOWNLOAD_SERVICE_TYPE, 0)//下载状态
-        Log.d("DownloadRepoServiceLog "," type: "+type)
+        Log.d("DownloadRepoServiceLog ", " type: " + type)
         val repo = inn.getSerializableExtra(Navigator.EXTRA_REPO) as Repo?//这里会崩溃
         val id: Long = inn.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0)
         when (type) {
@@ -84,7 +84,6 @@ class DownloadRepoService : Service() {
                 .updateRepoUnzipProgress(id, 1f, true)
         RxBus.getInstance().send(DownloadProgressEvent(id, true))
         //下载链接错误时会崩溃，原版本就有的问题
-
 
 
 /*        Observable.create({ subscriber ->
@@ -129,9 +128,10 @@ class DownloadRepoService : Service() {
                 .onErrorResumeNext(Observable.empty())
                 .subscribeOn(Schedulers.io())
                 .doOnError { e -> Log.d(TAG, e.toString()) }
-                .doOnCompleted(Action0 { this.checkTaskEmptyToFinish() })
+                .doOnCompleted { this.checkTaskEmptyToFinish() }
                 .subscribe()
 */
+
 
     }
 
