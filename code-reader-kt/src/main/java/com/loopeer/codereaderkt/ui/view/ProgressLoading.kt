@@ -12,10 +12,10 @@ import com.loopeer.codereaderkt.R
 
 open class ProgressLoading(context: Context, theme: Int) : Dialog(context, theme) {
 
-    private var mProgressView: View? = null
-    private var mMessageTextView: TextView? = null
+    private lateinit var mProgressView: View
+    private lateinit var mMessageTextView: TextView
 
-    private var mWindow: Window? = null
+    private lateinit var mWindow: Window
 
     private var mMessage: CharSequence? = null
     private var mShowProgress = true
@@ -26,10 +26,10 @@ open class ProgressLoading(context: Context, theme: Int) : Dialog(context, theme
 
     private fun initialize(context: Context, theme: Int) {
         mWindow = window
-        mWindow!!.requestFeature(Window.FEATURE_NO_TITLE)
-        mWindow!!.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
+        mWindow.requestFeature(Window.FEATURE_NO_TITLE)
+        mWindow.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
         setContentView(R.layout.progress_loading)
-        mMessageTextView = (R.id.text_message) as TextView
+        mMessageTextView = findViewById(R.id.text_message)
         mProgressView = findViewById(R.id.progress)
     }
 
@@ -38,7 +38,7 @@ open class ProgressLoading(context: Context, theme: Int) : Dialog(context, theme
         return this
     }
 
-    fun updateMessage(msg: CharSequence): ProgressLoading {
+    private fun updateMessage(msg: CharSequence): ProgressLoading {
         mMessage = msg
         show()
         return this
@@ -57,18 +57,18 @@ open class ProgressLoading(context: Context, theme: Int) : Dialog(context, theme
     override fun show() {
         if (mMessageTextView != null) {
             if (TextUtils.isEmpty(mMessage)) {
-                mMessageTextView!!.visibility = View.GONE
+                mMessageTextView.visibility = View.GONE
             } else {
-                mMessageTextView!!.visibility = View.VISIBLE
-                mMessageTextView!!.text = mMessage
+                mMessageTextView.visibility = View.VISIBLE
+                mMessageTextView.text = mMessage
             }
         }
 
         if (mProgressView != null) {
             if (mShowProgress) {
-                mProgressView!!.visibility = View.VISIBLE
+                mProgressView.visibility = View.VISIBLE
             } else {
-                mProgressView!!.visibility = View.GONE
+                mProgressView.visibility = View.GONE
             }
         }
         super.show()
