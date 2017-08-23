@@ -83,9 +83,11 @@ class DownloadRepoService : Service() {
         CoReaderDbHelper.getInstance(CodeReaderApplication.getAppContext())
                 .updateRepoUnzipProgress(id, 1f, true)
         RxBus.getInstance().send(DownloadProgressEvent(id, true))
+        //下载链接错误时会崩溃，原版本就有的问题
 
-/*
-        Observable.create({ subscriber ->
+
+
+/*        Observable.create({ subscriber ->
             var cursor: Cursor? = null
             try {
                 val manager = this@DownloadRepoService.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
