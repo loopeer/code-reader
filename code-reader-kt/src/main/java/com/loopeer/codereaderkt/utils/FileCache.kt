@@ -32,7 +32,7 @@ class FileCache {
         return createFilePath(File(filePath))
     }
 
-    fun createFilePath(file: File): File {
+    private fun createFilePath(file: File): File {
         if (!file.exists()) {
             file.mkdirs()//mkdir()和mkdirs区别 前者只会建立一级目录，后者可建多级
         }
@@ -46,29 +46,23 @@ class FileCache {
         return instance as FileCache
     }
 
-    fun hasSDCard(): Boolean {
-        return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
-        //是否存在SD卡
-    }
+    fun hasSDCard(): Boolean = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
+    //是否存在SD卡
 
     fun getFileDirectoryNode(): DirectoryNode? {
-        var file = File(cacheDir, "cardStackView")
+        val file = File(cacheDir, "cardStackView")
         if (file.listFiles() == null || file.listFiles().isEmpty()) return null
         return getFileDirectory(file)
     }
 
-    fun getCacheDir(): File? {
-        return cacheDir
-    }
+    fun getCacheDir(): File? = cacheDir
 
     fun getRepoAbsolutePath(repoName: String): String =
             getCacheDir()!!.path + File.separator + repoName
 
 
     fun getFileDirectory(file: File): DirectoryNode? {
-        if (file == null)
-            return null
-        var directoryNode = DirectoryNode()
+        val directoryNode = DirectoryNode()
         directoryNode.name = file.name
         directoryNode.absolutePath = file.absolutePath
         if (file.isDirectory){
@@ -76,7 +70,7 @@ class FileCache {
             directoryNode.pathNodes = ArrayList<DirectoryNode>()
             for (c in file.listFiles()){
                 if (c.name.startsWith(".")||c.name.startsWith("_")) continue
-                var childNode = getFileDirectory(c)
+                val childNode = getFileDirectory(c)
                 (directoryNode.pathNodes as ArrayList<DirectoryNode>).add(childNode!!)
             }
             if (!directoryNode.pathNodes.isEmpty()){
@@ -86,8 +80,8 @@ class FileCache {
         return directoryNode
     }
 
-    fun hasExternalStoragePermission(context: Context): Boolean {
-        var perm: Int = context.checkCallingOrSelfPermission(EXTERNAL_STORAGE_PERMISSION)
+    private fun hasExternalStoragePermission(context: Context): Boolean {
+        val perm: Int = context.checkCallingOrSelfPermission(EXTERNAL_STORAGE_PERMISSION)
         return perm == PackageManager.PERMISSION_GRANTED//是否已经获取sd卡读写权限
     }
 
