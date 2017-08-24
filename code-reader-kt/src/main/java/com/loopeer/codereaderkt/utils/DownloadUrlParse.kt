@@ -51,7 +51,7 @@ object DownloadUrlParser {
         return null
     }
 
-    fun getRemoteRepoZipFileName(repoName: String): File =
+    @JvmStatic fun getRemoteRepoZipFileName(repoName: String): File =
             File(FileCache().getInstance().getCacheDir(), getRepoNameZip(repoName))
 
     private fun getRepoNameZip(name: String): String = name + ZIP_SUFFIX

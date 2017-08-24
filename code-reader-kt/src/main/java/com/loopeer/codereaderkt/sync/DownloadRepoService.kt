@@ -141,7 +141,7 @@ class DownloadRepoService : Service() {
     }
 
     private fun downloadFile(repo: Repo) {
-        val dataFetcher: RemoteRepoFetcher = RemoteRepoFetcher(this, repo.netDownloadUrl, repo.name)
+        val dataFetcher = RemoteRepoFetchers(this, repo.netDownloadUrl, repo.name)
         val downloadId: Long = dataFetcher.download()
         repo.downloadId = downloadId
         mDownloadingRepos.put(downloadId, repo)

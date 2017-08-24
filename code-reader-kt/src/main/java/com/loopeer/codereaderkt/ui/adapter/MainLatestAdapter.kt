@@ -22,18 +22,17 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.subscriptions.CompositeSubscription
 
 
-class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
+class MainLatestAdapter(context: Context) : RecyclerViewAdapters<Repo>(context) {
 
     private val TAG = "MainLatestAdapter"
     private var mAllSubscription: CompositeSubscription = CompositeSubscription()
 
-    override fun setData(data: List<Repo>) {
+    override fun setData(data: List<Repo>?) {
         val list = ArrayList<Repo>()
         list.add(Repo())
-        list.addAll(data)
+        list.addAll(data!!)
         super.setData(list)
     }
-
 
     override fun bindView(var1: Repo, var2: Int, var3: RecyclerView.ViewHolder?) {
         if (var3 is RepoViewHolder) {

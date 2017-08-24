@@ -2,23 +2,19 @@ package com.loopeer.codereaderkt.ui.adapter
 
 import android.content.Context
 import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.databinding.ListItemCodeReadRepoHeaderBinding
 import com.loopeer.codereaderkt.databinding.ListItemDirectoryBinding
 import com.loopeer.codereaderkt.model.DirectoryNode
 import com.loopeer.codereaderkt.ui.view.DirectoryNavDelegate
-import com.loopeer.codereaderkt.ui.viewHolder.DataBindingViewHolder
 import java.util.*
 
 
-class DirectoryAdapter(context: Context, private val mFileClickListener: DirectoryNavDelegate.FileClickListener) : RecyclerViewAdapter<DirectoryNode>(context) {
+class DirectoryAdapter(context: Context, private val mFileClickListener: DirectoryNavDelegate.FileClickListener) : RecyclerViewAdapters<DirectoryNode>(context) {
 
     private lateinit var mNodeRoot: DirectoryNode
 
@@ -77,7 +73,7 @@ class DirectoryAdapter(context: Context, private val mFileClickListener: Directo
         }
     }
 
-    override fun bindView(var1: DirectoryNode, var2: Int, var3: RecyclerView.ViewHolder) {
+    override fun bindView(var1: DirectoryNode, var2: Int, var3: RecyclerView.ViewHolder?) {
         if (var3 is DirectoryViewHolder) {
             var3.bind(var1)
             val clickListener = View.OnClickListener{
