@@ -13,7 +13,7 @@ import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.model.Repository
 
 
-class RepositoryAdapter(context: Context) : RecyclerViewAdapter<Repository>(context) {
+class RepositoryAdapter(context: Context) : RecyclerViewAdapters<Repository>(context) {
 
     private var mHasMore: Boolean = false
 
@@ -21,12 +21,12 @@ class RepositoryAdapter(context: Context) : RecyclerViewAdapter<Repository>(cont
         mHasMore = hasMore
     }
 
-    override fun bindView(repository: Repository, position: Int, viewHolder: RecyclerView.ViewHolder) {
+    override fun bindView(repository: Repository, position: Int, viewHolder: RecyclerView.ViewHolder?) {
         (viewHolder as? RepositoryViewHolder)?.bind(repository, position)
     }
 
-    override fun getItem(position: Int): Repository? =
-            if (isFooterPositon(position)) null else super.getItem(position)
+    override fun getItem(position: Int): Repository =
+            if (isFooterPositon(position)) null!! else super.getItem(position)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
