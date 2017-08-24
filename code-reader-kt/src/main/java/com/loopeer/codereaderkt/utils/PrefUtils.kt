@@ -11,7 +11,7 @@ object PrefUtils {
     val PREF_MENLO_FONT = "pref_menlo_font"
     val PREF_THEME = "pref_theme"
 
-    fun getPrefFontSize(context: Context): Float {
+    @JvmStatic fun getPrefFontSize(context: Context): Float {
         val sp = PreferenceManager.getDefaultSharedPreferences(context)
         return sp.getFloat(PREF_FONT_SIZE, 12f)
     }

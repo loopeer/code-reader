@@ -62,6 +62,7 @@ class SimpleWebActivity : BaseActivity(), SearchView.OnQueryTextListener {
                 return true
             }
         }
+
         binding.webContent.webChromeClient = WebChromeClient()
     }
 
