@@ -12,7 +12,8 @@ object HtmlParser {
         while (true) {
             try {
                 val inputStream = context.assets.open("code.html")
-                var localObject: Any = ByteArray(inputStream.available())
+                var i =inputStream.available()
+                var localObject: Any = ByteArray(i)
                 inputStream.read(localObject as ByteArray)
                 inputStream.close()
                 localObject = String(localObject)
@@ -37,11 +38,11 @@ object HtmlParser {
                         .replace("!JS_FIX_HSCROLL!", temp)
                 temp = "<link type='text/css' rel='stylesheet' href='style_menlo.css'/>"
                 return jsFile
-                        .replace("!STYLE_MENLO!", if (PrefUtils.getPrefMenlofont(context)) temp else "")
-                        .replace("!THEME!", PrefUtils.getPrefTheme(context))
-                        .replace("!CODE!", paramString1)
+                    .replace("!STYLE_MENLO!", if (PrefUtils.getPrefMenlofont(context)) temp else "")
+                    .replace("!THEME!", PrefUtils.getPrefTheme(context))
+                    .replace("!CODE!", paramString1)
 
-                        .replace("!WINDOW_BACK_GROUND_COLOR!", ColorUtils.getColorString(context, R.color.code_read_background_color))
+                    .replace("!WINDOW_BACK_GROUND_COLOR!", ColorUtils.getColorString(context, R.color.code_read_background_color))
             } catch (e: IOException) {
                 throw RuntimeException(e)
             } finally {

@@ -174,56 +174,53 @@ public class CodeReadFragment extends BaseFullscreenFragment implements NestedSc
     }
 
     protected void openCodeFile() {
-        Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-                InputStream stream = null;
-                try {
-                    stream = new FileInputStream(mNode.absolutePath);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                if (stream == null) {
-                    subscriber.onCompleted();
-                    return;
-                }
-                final InputStream finalStream = stream;
-                String[] names = mNode.name.split("\\.");
-                String jsFile = BrushMap.getJsFileForExtension(names[names.length - 1]);
-                if (jsFile == null) {
-                    jsFile = "Txt";
-                }
-                StringBuilder sb = new StringBuilder();
-                StringBuilder localStringBuilder = new StringBuilder();
-                try {
-                    BufferedReader localBufferedReader = new BufferedReader(
-                            new InputStreamReader(finalStream, "UTF-8"));
-                    for (; ; ) {
-                        String str = localBufferedReader.readLine();
-                        if (str == null) {
-                            break;
-                        }
-                        localStringBuilder.append(str);
-                        localStringBuilder.append("\n");
-                    }
-
-                    localBufferedReader.close();
-                    sb.append("<pre class='brush: ");
-                    sb.append(jsFile.toLowerCase());
-                    sb.append(";'>");
-                    sb.append(TextUtils.htmlEncode(localStringBuilder.toString()));
-                    sb.append("</pre>");
-                    subscriber.onNext(HtmlParser.buildHtmlContent(getActivity(), sb.toString()
-                            , jsFile, mNode.name));
-                } catch (OutOfMemoryError e) {
-                    subscriber.onError(e);
-                } catch (FileNotFoundException e) {
-                    subscriber.onError(e);
-                } catch (IOException e) {
-                    subscriber.onError(e);
-                }
-                subscriber.onCompleted();
+        Observable.create((Observable.OnSubscribe<String>) subscriber -> {
+            InputStream stream = null;
+            try {
+                stream = new FileInputStream(mNode.absolutePath);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
+            if (stream == null) {
+                subscriber.onCompleted();
+                return;
+            }
+            final InputStream finalStream = stream;
+            String[] names = mNode.name.split("\\.");
+            String jsFile = BrushMap.getJsFileForExtension(names[names.length - 1]);
+            if (jsFile == null) {
+                jsFile = "Txt";
+            }
+            StringBuilder sb = new StringBuilder();
+            StringBuilder localStringBuilder = new StringBuilder();
+            try {
+                BufferedReader localBufferedReader = new BufferedReader(
+                        new InputStreamReader(finalStream, "UTF-8"));
+                for (; ; ) {
+                    String str = localBufferedReader.readLine();
+                    if (str == null) {
+                        break;
+                    }
+                    localStringBuilder.append(str);
+                    localStringBuilder.append("\n");
+                }
+
+                localBufferedReader.close();
+                sb.append("<pre class='brush: ");
+                sb.append(jsFile.toLowerCase());
+                sb.append(";'>");
+                sb.append(TextUtils.htmlEncode(localStringBuilder.toString()));
+                sb.append("</pre>");
+                subscriber.onNext(HtmlParser.buildHtmlContent(getActivity(), sb.toString()
+                        , jsFile, mNode.name));
+            } catch (OutOfMemoryError e) {
+                subscriber.onError(e);
+            } catch (FileNotFoundException e) {
+                subscriber.onError(e);
+            } catch (IOException e) {
+                subscriber.onError(e);
+            }
+            subscriber.onCompleted();
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

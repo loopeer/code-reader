@@ -84,13 +84,13 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
         mBinding.webCodeRead.settings.setSupportZoom(true)
         mBinding.webCodeRead.settings.builtInZoomControls = true
         mBinding.webCodeRead.webViewClient = object : WebViewClient() {
-            override fun onPageStarted(view: WebView, url: String, favicon: Bitmap) {
+            override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
                 mCodeContentLoader!!.showContent()
             }
 
-            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                Navigator().startWebActivity(context, url)
+            override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
+                url?.let { Navigator().startWebActivity(context, it) }
                 return true
             }
 
@@ -117,11 +117,12 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
 
         val params = mToolbar.getLayoutParams() as AppBarLayout.LayoutParams
         params.height = (DeviceUtils.dpToPx(activity, 56f) + DeviceUtils.statusBarHeight).toInt()
-        mToolbar.setLayoutParams(params)
+        mToolbar.layoutParams = params
         mToolbar.setPadding(0, DeviceUtils.statusBarHeight, 0, 0)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+
+    @TargetApi(Build.VERSION_CODES.M)
     private fun openFile() {
         mCodeContentLoader!!.showProgress()
         if (mBinding.webCodeRead == null) {
@@ -177,18 +178,23 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
             }
             val sb = StringBuilder()
             val localStringBuilder = StringBuilder()
+            var localBufferedReader:BufferedReader?=null
             try {
-                val localBufferedReader = BufferedReader(
-                        InputStreamReader(finalStream, "UTF-8"))
+                localBufferedReader = BufferedReader(
+                    InputStreamReader(finalStream, "UTF-8"))
+                var str:String?
                 while (true) {
-                    val str = localBufferedReader.readLine() ?: break
-                    localStringBuilder.append(str)
-                    localStringBuilder.append("\n")
+                    str = localBufferedReader.readLine()
+                    if(str!=null){
+                        localStringBuilder.append(str)
+                        localStringBuilder.append("\n")
+                    }else{
+                        break
+                    }
                 }
-
                 localBufferedReader.close()
                 sb.append("<pre class='brush: ")
-                sb.append(jsFile!!.toLowerCase())
+                sb.append(jsFile.toLowerCase())
                 sb.append(";'>")
                 sb.append(TextUtils.htmlEncode(localStringBuilder.toString()))
                 sb.append("</pre>")
@@ -199,6 +205,8 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
                 subscriber.onError(e)
             } catch (e: IOException) {
                 subscriber.onError(e)
+            }finally {
+                localBufferedReader?.close()
             }
 
             subscriber.onCompleted()
