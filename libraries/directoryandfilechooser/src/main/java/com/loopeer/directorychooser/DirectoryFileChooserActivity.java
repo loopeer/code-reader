@@ -181,7 +181,9 @@ public class DirectoryFileChooserActivity extends AppCompatActivity implements D
     @Override
     public void onBackPressed() {
         if (mSelectedNodeStack.isEmpty()) {
-            super.onBackPressed();
+//            super.onBackPressed();
+            setResult(RESULT_CANCELED,new Intent());
+            this.finish();
         } else {
             popSelectedStack();
         }
