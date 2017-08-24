@@ -3,6 +3,7 @@ package com.loopeer.codereaderkt.ui.view
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.widget.Toast
 import com.loopeer.codereaderkt.model.DirectoryNode
 import com.loopeer.codereaderkt.ui.adapter.DirectoryAdapter
@@ -10,6 +11,7 @@ import com.loopeer.codereaderkt.utils.FileCache
 import com.loopeer.codereaderkt.utils.FileTypeUtils
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
+import rx.observables.AsyncOnSubscribe
 import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
 import java.io.File
@@ -57,9 +59,10 @@ class DirectoryNavDelegate(private val mRecyclerView: RecyclerView, private val 
     fun updateData(directoryNode: DirectoryNode) {
         mLoadFileCallback.onFileOpenStart()
         mAllSubscription.add(
-            Observable.fromCallable {
+            Observable.fromCallable{
                 val node: DirectoryNode
-                if (directoryNode.isDirectory) {
+                var isDirectory=directoryNode.isDirectory
+                if (isDirectory) {
                     node = FileCache().getFileDirectory(File(directoryNode.absolutePath!!))!!
                 } else {
                     node = directoryNode
@@ -69,8 +72,10 @@ class DirectoryNavDelegate(private val mRecyclerView: RecyclerView, private val 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext({ mDirectoryAdapter.nodeRoot=it})
-                .doOnNext({ this.checkOpenFirstFile(it) })
-                .doOnError { e -> Toast.makeText(mContext, e.message, Toast.LENGTH_SHORT).show() }
+                .doOnNext({ checkOpenFirstFile(it) })
+                .doOnError {
+                    e -> Toast.makeText(mContext, e.message, Toast.LENGTH_SHORT).show()
+                }
                 .onErrorResumeNext(Observable.empty<DirectoryNode>())
                 .doOnCompleted { mLoadFileCallback.onFileOpenEnd() }
                 .subscribe())
@@ -79,7 +84,7 @@ class DirectoryNavDelegate(private val mRecyclerView: RecyclerView, private val 
     private fun checkOpenFirstFile(node: DirectoryNode) {
         if (node.isDirectory) {
             var haveOpen = false
-            for (n in node.pathNodes) {
+            for (n in node.pathNodes!!) {
                 if (FileTypeUtils.isMdFileType(n.name) && n.name.equals("readme.md", ignoreCase = true)) {
                     mFileClickListener.doOpenFile(n)
                     haveOpen = true

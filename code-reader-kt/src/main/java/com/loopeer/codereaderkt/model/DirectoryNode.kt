@@ -4,7 +4,7 @@ package com.loopeer.codereaderkt.model
 class DirectoryNode: BaseModel {
 
     lateinit var name: String
-    lateinit var pathNodes: List<DirectoryNode>
+    var pathNodes: List<DirectoryNode>?=null
     var isDirectory: Boolean = false
     var openChild: Boolean = false
     var depth: Int = 0

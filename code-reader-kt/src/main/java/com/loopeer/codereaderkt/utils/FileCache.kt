@@ -73,7 +73,7 @@ class FileCache {
                 val childNode = getFileDirectory(c)
                 (directoryNode.pathNodes as ArrayList<DirectoryNode>).add(childNode!!)
             }
-            if (!directoryNode.pathNodes.isEmpty()){
+            if (!directoryNode!!.pathNodes?.isEmpty()!!){
 //                Collections.sort(directoryNode.pathNodes)
             }
         }

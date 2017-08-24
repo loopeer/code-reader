@@ -117,7 +117,8 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
 
         val params = mToolbar.getLayoutParams() as AppBarLayout.LayoutParams
         params.height = (DeviceUtils.dpToPx(activity, 56f) + DeviceUtils.statusBarHeight).toInt()
-        mToolbar.layoutParams = params
+        mToolbar.
+            layoutParams = params
         mToolbar.setPadding(0, DeviceUtils.statusBarHeight, 0, 0)
     }
 
@@ -205,7 +206,10 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
                 subscriber.onError(e)
             } catch (e: IOException) {
                 subscriber.onError(e)
-            }finally {
+            }catch(e:Exception){
+                subscriber.onError(e)
+            }
+            finally {
                 localBufferedReader?.close()
             }
 
@@ -214,7 +218,9 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext { o -> mBinding.webCodeRead.loadDataWithBaseURL("file:///android_asset/", o, "text/html", "UTF-8", "") }
-                .doOnError { e -> mCodeContentLoader!!.showEmpty(e.message!!) }
+                .doOnError {
+                    e -> mCodeContentLoader!!.showEmpty(e.message!!)
+                }
                 .onErrorResumeNext(Observable.empty())
                 .subscribe()
     }
