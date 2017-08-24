@@ -7,7 +7,7 @@ import com.facebook.stetho.Stetho
 import com.loopeer.codereaderkt.utils.ThemeUtils
 
 
-class CodeReaderApplications : Application() {
+class CodeReaderApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -22,7 +22,7 @@ class CodeReaderApplications : Application() {
     }
 
     companion object {
-        lateinit var instance: CodeReaderApplications
+        lateinit var instance: CodeReaderApplication
             private set
         lateinit var appContext: Context
             private set

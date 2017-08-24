@@ -3,7 +3,7 @@ package com.loopeer.codereaderkt.utils
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Environment
-import com.loopeer.codereaderkt.CodeReaderApplications
+import com.loopeer.codereaderkt.CodeReaderApplication
 import com.loopeer.codereaderkt.model.DirectoryNode
 import java.io.File
 import java.util.*
@@ -21,10 +21,10 @@ class FileCache {
 
 
     init {
-        cacheDir = if (hasSDCard() && hasExternalStoragePermission(CodeReaderApplications.appContext)) {
+        cacheDir = if (hasSDCard() && hasExternalStoragePermission(CodeReaderApplication.appContext)) {
             createFilePath(cachePath)
         } else {
-            createFilePath("${CodeReaderApplications.appContext.cacheDir}$cacheDirPath")//字符串拼接
+            createFilePath("${CodeReaderApplication.appContext.cacheDir}$cacheDirPath")//字符串拼接
         }
     }
 
