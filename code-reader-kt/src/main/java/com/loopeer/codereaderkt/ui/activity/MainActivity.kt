@@ -60,7 +60,6 @@ class MainActivity : BaseActivity() {
         mAnimatorRecyclerContent = findViewById(R.id.animator_recycler_content) as ViewAnimator
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            //获取权限
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             } else {
@@ -114,7 +113,7 @@ class MainActivity : BaseActivity() {
         mRecyclerView.addItemDecoration(DividerItemDecorationMainList(this,
                 DividerItemDecoration.VERTICAL_LIST, resources.getDimensionPixelSize(R.dimen.repo_list_divider_start), -1, -1))
         mItemTouchHelper = createItemTouchHelper()
-        mItemTouchHelper.attachToRecyclerView(mRecyclerView)//执行了也出现点击事件,但是右侧画面没有出现
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView)
     }
 
     private fun createItemTouchHelper(): ItemTouchHelperExtension {
@@ -146,7 +145,6 @@ class MainActivity : BaseActivity() {
 
     private fun doSelectFile() {
         NavigatorChooser.startDirectoryFileChooserActivity(this)
-        //点击fab打开文件列表activity
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {

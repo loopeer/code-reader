@@ -29,7 +29,7 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
 
     override fun setData(data: List<Repo>) {
         val list = ArrayList<Repo>()
-        list.add(Repo())//这一句的作用是什么:数据库中取出文件数据要多一条来显示顶部菜单
+        list.add(Repo())
         list.addAll(data)
         super.setData(list)
     }
@@ -47,7 +47,7 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
                 if (!var1.isDownloading() && !var1.isUnzip)
                     Navigator().startCodeReadActivity(context, var1)
             }
-            viewHolder.mActionDeleteView.setOnClickListener { doRepoDelete(var3) }//怎么让它们滑动显现出来
+            viewHolder.mActionDeleteView.setOnClickListener { doRepoDelete(var3) }
             viewHolder.mActionSyncView.setOnClickListener { Navigator().startDownloadRepoService(context, var1) }
         }
         if (var3 is MainHeaderHolder) {
@@ -153,10 +153,7 @@ class MainLatestAdapter(context: Context) : RecyclerViewAdapter<Repo>(context) {
                     .subscribe()
         }
 
-        override fun getActionWidth(): Float {
-            return mActionContainer.width.toFloat()
-        }//滑动时用到这个方法！有滑动事件，但是不显示,这里没错
-//        override fun getActionWidth(): Float = mActionContainer.width.toFloat()
+        override fun getActionWidth(): Float = mActionContainer.width.toFloat()
     }
 
 
