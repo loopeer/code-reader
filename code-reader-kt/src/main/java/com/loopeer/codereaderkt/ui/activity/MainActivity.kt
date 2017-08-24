@@ -14,7 +14,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ViewAnimator
-import com.loopeer.codereaderkt.CodeReaderApplications
+import com.loopeer.codereaderkt.CodeReaderApplication
 import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.databinding.ActivityMainBinding
@@ -37,7 +37,6 @@ import rx.android.schedulers.AndroidSchedulers
 
 class MainActivity : BaseActivity() {
 
-    //下载不显示进度条
     //trending中多个下载会发生数组越界错误（原版本就有）
     //登陆会toast未知消息（原版本）
     //下载界面下载的命名和链接默认名出现两个文件，前者为空；（原版本中只出现前者，也为空）
@@ -129,7 +128,7 @@ class MainActivity : BaseActivity() {
     private fun createCallback(): ItemTouchHelperExtension.Callback = ItemTouchHelperCallback()
 
     private fun loadLocalData() {
-        val repos = CoReaderDbHelper.getInstance(CodeReaderApplications.appContext).readRepos()
+        val repos = CoReaderDbHelper.getInstance(CodeReaderApplication.appContext).readRepos()
         setUpContent(repos)
     }
 

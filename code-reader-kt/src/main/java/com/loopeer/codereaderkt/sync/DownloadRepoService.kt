@@ -9,7 +9,8 @@ import android.database.Cursor
 import android.net.Uri
 import android.os.Handler
 import android.os.IBinder
-import com.loopeer.codereaderkt.CodeReaderApplications
+import android.util.Log
+import com.loopeer.codereaderkt.CodeReaderApplication
 import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.db.CoReaderDbHelper
@@ -82,10 +83,9 @@ class DownloadRepoService : Service() {
     }
 
     private fun doRepoDownloadComplete(id: Long) {
-        CoReaderDbHelper.getInstance(CodeReaderApplications.appContext)
+        CoReaderDbHelper.getInstance(CodeReaderApplication.appContext)
                 .updateRepoUnzipProgress(id, 1f, true)
         RxBus.getInstance().send(DownloadProgressEvent(id, true))
-        //下载链接错误时会崩溃，原版本就有的问题
 
         Observable.create(Observable.OnSubscribe<Void> { subscriber ->
             var cursor: Cursor? = null
@@ -108,10 +108,10 @@ class DownloadRepoService : Service() {
                         val decomp = Unzip(zipFile.path, fileCache.getCacheDir()!!.getPath() + File.separator + name, applicationContext)
                         decomp.DecompressZip()
                         if (zipFile.exists()) zipFile.delete()
-                        CoReaderDbHelper.getInstance(CodeReaderApplications.appContext)
+                        CoReaderDbHelper.getInstance(CodeReaderApplication.appContext)
                                 .updateRepoUnzipProgress(id, 1f, false)
                         CoReaderDbHelper.getInstance(
-                                CodeReaderApplications.appContext).resetRepoDownloadId(mDownloadingRepos[id]!!.downloadId)
+                                CodeReaderApplication.appContext).resetRepoDownloadId(mDownloadingRepos[id]!!.downloadId)
                         RxBus.getInstance().send(DownloadProgressEvent(id, false))
                         RxBus.getInstance().send(DownloadRepoMessageEvent(
                                 getString(R.string.repo_download_complete, mDownloadingRepos[id]!!.name)))
@@ -216,8 +216,9 @@ class DownloadRepoService : Service() {
                 }
                 if (repo.factor < 0) repo.factor = 0f
                 if (repo.factor >= 0) {
-                    CoReaderDbHelper.getInstance(CodeReaderApplications.appContext)
+                    CoReaderDbHelper.getInstance(CodeReaderApplication.appContext)
                             .updateRepoDownloadProgress(repo.downloadId, repo.factor)
+                    Log.d("DownloadrepoServiceLog",""+repo.factor)
                     RxBus.getInstance().send(DownloadProgressEvent(repo.id!!,
                             repo.downloadId, repo.factor, repo.isUnzip))
                 }

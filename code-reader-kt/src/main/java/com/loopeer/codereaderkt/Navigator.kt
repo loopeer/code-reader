@@ -26,33 +26,33 @@ open class Navigator {
     }
 
 
-    public fun startMainActivity(context: Context) {
+    fun startMainActivity(context: Context) {
         val intent = Intent(context, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         context.startActivity(intent)
     }
 
-    public fun startLoginActivity(context: Context) {
+    fun startLoginActivity(context: Context) {
         val intent = Intent(context, LoginActivity::class.java)
         context.startActivity(intent)
     }
 
-    public fun startSettingActivity(context: Context) {
+    fun startSettingActivity(context: Context) {
         val intent = Intent(context, SettingActivity::class.java)
         context.startActivity(intent)
     }
 
-    public fun startAddRepoActivity(context: Context) {
+    fun startAddRepoActivity(context: Context) {
         val intent = Intent(context, AddRepoActivity::class.java)
         context.startActivity(intent)
     }
 
-    public fun startAboutActivity(context: Context) {
+    fun startAboutActivity(context: Context) {
         val intent = Intent(context, AboutActivity::class.java)
         context.startActivity(intent)
     }
 
-    public fun startWebActivity(context: Context, url: String) {
+    fun startWebActivity(context: Context, url: String) {
         val intent = Intent(context, SimpleWebActivity::class.java)
         intent.putExtra(EXTRA_WEB_URL, url)
         context.startActivity(intent)
