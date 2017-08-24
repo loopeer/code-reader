@@ -4,13 +4,13 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.loopeer.codereaderkt.CodeReaderApplication
+import com.loopeer.codereaderkt.CodeReaderApplications
 import com.loopeer.codereaderkt.model.Repo
 import java.util.*
 
 //从Trending中下载多个时会发生数组越界错误
 class CoReaderDbHelper private constructor(context: Context)
-    : SQLiteOpenHelper(CodeReaderApplication.getAppContext(), DATABASE_NAME, null, DATABASE_VERSION) {
+    : SQLiteOpenHelper(CodeReaderApplications.appContext, DATABASE_NAME, null, DATABASE_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(DbRepoModel.CREATE_TABLE)
