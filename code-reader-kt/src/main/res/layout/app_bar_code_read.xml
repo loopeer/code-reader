@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.loopeer.codereader.ui.activity.CodeReadActivity">
+    tools:context="com.loopeer.codereaderkt.ui.activity.CodeReadActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

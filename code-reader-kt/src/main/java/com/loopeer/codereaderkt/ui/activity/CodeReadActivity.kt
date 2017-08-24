@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.FrameLayout
+import android.widget.Toast
 import com.loopeer.codereaderkt.Navigator
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.databinding.ActivityCodeReadBinding
@@ -99,8 +100,9 @@ class CodeReadActivity : BaseActivity(), DirectoryNavDelegate.FileClickListener,
             return true
         }
         if (id == android.R.id.home) {
-            if (!binding.drawerLayout!!.isDrawerOpen(GravityCompat.START))
-                binding.drawerLayout!!.openDrawer(GravityCompat.START)
+            if (!binding.drawerLayout.isDrawerOpen(GravityCompat.START))
+                Toast.makeText(this,"open",Toast.LENGTH_SHORT).show()
+                binding.drawerLayout.openDrawer(GravityCompat.START)
             return true
         }
         return super.onOptionsItemSelected(item)

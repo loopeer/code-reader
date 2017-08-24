@@ -40,28 +40,32 @@ class DirectoryAdapter(context: Context, private val mFileClickListener: Directo
     private fun createShowNodes(nodes: ArrayList<DirectoryNode>, i: Int, nodeRoot: DirectoryNode, sb: StringBuilder) {
         var i = i
         ++i
-        if (!nodeRoot.pathNodes.isEmpty()) {
-            if (nodes.size != 0 && nodeRoot.pathNodes.size == 1 && nodeRoot.pathNodes[0].isDirectory) {
+        if (!nodeRoot.pathNodes?.isEmpty()!!) {
+            if (nodes.size != 0 && nodeRoot.pathNodes?.size == 1 && nodeRoot.pathNodes!![0].isDirectory) {
                 nodeRoot.openChild = true
                 nodes.removeAt(nodes.size - 1)
                 --i
-                val node = nodeRoot.pathNodes[0]
-                node.depth = i
+                val node = nodeRoot.pathNodes?.get(0)
+                node?.depth = i
                 sb.append(".")
-                sb.append(node.name)
-                node.displayName = sb.toString()
-                nodes.add(node)
-                if (node.openChild || node.pathNodes.size == 1 && node.pathNodes[0].isDirectory) {
+                sb.append(node?.name)
+                node?.displayName = sb.toString()
+                node?.let { nodes.add(it) }
+                if (node!!.openChild || node.pathNodes != null
+                        && node.pathNodes?.size == 1
+                        && node.pathNodes!![0].isDirectory) {
                     createShowNodes(nodes, i, node, sb)
                 }
             } else {
-                for (node in nodeRoot.pathNodes) {
+                for (node in nodeRoot.pathNodes!!) {
                     if (sb.length > 0) sb.delete(0, sb.length)
                     node.depth = i
                     sb.append(node.name)
                     node.displayName = sb.toString()
                     nodes.add(node)
-                    if (node.openChild || node.pathNodes.size == 1 && node.pathNodes[0].isDirectory) {
+                    if (node.openChild || node.pathNodes != null
+                            && node.pathNodes?.size == 1
+                            && node.pathNodes!![0].isDirectory) {
                         createShowNodes(nodes, i, node, sb)
                     }
                 }
@@ -90,11 +94,11 @@ class DirectoryAdapter(context: Context, private val mFileClickListener: Directo
         val inflater = layoutInflater
         when (viewType) {
             R.layout.list_item_code_read_repo_header -> {
-                val mBingding=DataBindingUtil.inflate<ListItemCodeReadRepoHeaderBinding>(inflater,R.layout.list_item_code_read_repo_header, parent, false)
+                var mBingding=DataBindingUtil.inflate<ListItemCodeReadRepoHeaderBinding>(inflater,R.layout.list_item_code_read_repo_header, parent, false)
                 return CodeReadRepoHeaderViewHolder(mBingding)
             }
             else -> {
-                val mBingding=DataBindingUtil.inflate<ListItemDirectoryBinding>(inflater,R.layout.list_item_directory, parent, false)
+                var mBingding=DataBindingUtil.inflate<ListItemDirectoryBinding>(inflater,R.layout.list_item_directory, parent, false)
                 return DirectoryViewHolder(mBingding)
             }
         }
@@ -125,7 +129,7 @@ class DirectoryAdapter(context: Context, private val mFileClickListener: Directo
             var drawableId = R.drawable.ic_directory_file
             if (pathNode.isDirectory) {
                 drawableId = R.drawable.ic_directory_path
-                mBinding.imgDirectoryOpenClose!!.visibility = if (pathNode.pathNodes.isEmpty()) View.INVISIBLE else View.VISIBLE
+                mBinding.imgDirectoryOpenClose!!.visibility = if (pathNode.pathNodes?.isEmpty()!!) View.INVISIBLE else View.VISIBLE
             } else {
                 mBinding.imgDirectoryOpenClose.visibility = View.INVISIBLE
             }

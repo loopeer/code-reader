@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.loopeer.codereaderkt.ui.view.DrawerLayout
+    <com.loopeer.codereaderkt.ui.view.DrawerLayout2
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -31,5 +31,5 @@
 
         </com.loopeer.codereaderkt.ui.view.NestHorizontalScrollView>
 
-    </com.loopeer.codereaderkt.ui.view.DrawerLayout>
+    </com.loopeer.codereaderkt.ui.view.DrawerLayout2>
 </layout>
