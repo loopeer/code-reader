@@ -2,7 +2,7 @@ package com.loopeer.codereaderkt.api
 
 import android.app.Application
 import com.loopeer.codereaderkt.BuildConfig
-import com.loopeer.codereaderkt.CodeReaderApplication
+import com.loopeer.codereaderkt.CodeReaderApplications
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -18,7 +18,7 @@ open class ApiService {
 
 
     private fun getClient(): OkHttpClient {
-        return createOkHttpClient(CodeReaderApplication.getInstance()!!)
+        return createOkHttpClient(CodeReaderApplications.instance)
     }
 
     val retrofit: Retrofit
