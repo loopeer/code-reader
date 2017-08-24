@@ -25,8 +25,8 @@ class RepositoryAdapter(context: Context) : RecyclerViewAdapters<Repository>(con
         (viewHolder as? RepositoryViewHolder)?.bind(repository, position)
     }
 
-    override fun getItem(position: Int): Repository =
-            if (isFooterPositon(position)) null!! else super.getItem(position)
+    override fun getItem(position: Int): Repository? =
+            if (isFooterPositon(position)) null else super.getItem(position)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
