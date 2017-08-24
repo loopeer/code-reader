@@ -21,27 +21,26 @@ class RepositoryAdapter(context: Context) : RecyclerViewAdapters<Repository>(con
         mHasMore = hasMore
     }
 
-    override fun bindView(repository: Repository, position: Int, viewHolder: RecyclerView.ViewHolder?) {
-        (viewHolder as? RepositoryViewHolder)?.bind(repository, position)
+    override fun bindView(var1: Repository, var2: Int, var3: RecyclerView.ViewHolder?) {
+        (var3 as? RepositoryViewHolder)?.bind(var1, var2)
     }
 
     override fun getItem(position: Int): Repository? =
             if (isFooterPositon(position)) null else super.getItem(position)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        when (viewType) {
-            R.layout.view_footer_loading -> {
-                val view = LayoutInflater.from(context).inflate(R.layout.view_footer_loading, parent, false)
-                return object : RecyclerView.ViewHolder(view) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+            when (viewType) {
+                R.layout.view_footer_loading -> {
+                    val view = LayoutInflater.from(context).inflate(R.layout.view_footer_loading, parent, false)
+                    object : RecyclerView.ViewHolder(view) {
 
+                    }
+                }
+                else -> {
+                    val view = LayoutInflater.from(context).inflate(R.layout.list_item_repository, parent, false)
+                    RepositoryViewHolder(view)
                 }
             }
-            else -> {
-                val view = LayoutInflater.from(context).inflate(R.layout.list_item_repository, parent, false)
-                return RepositoryViewHolder(view)
-            }
-        }
-    }
 
     private fun isFooterPositon(position: Int): Boolean =
             mHasMore && position == itemCount - 1

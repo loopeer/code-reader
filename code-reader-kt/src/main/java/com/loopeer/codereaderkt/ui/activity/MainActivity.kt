@@ -41,7 +41,7 @@ class MainActivity : BaseActivity() {
     //trending中多个下载会发生数组越界错误（原版本就有）
     //登陆会toast未知消息（原版本）
     //下载界面下载的命名和链接默认名hi出现两个文件，前者为空；（原版本中只出现前者，也为空）
-    //搜索结果页面下滑至页底即强退
+    //从本地文件选择界面无选择退出会崩溃
 
     private val TAG = "MainActivity"
     private val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000
