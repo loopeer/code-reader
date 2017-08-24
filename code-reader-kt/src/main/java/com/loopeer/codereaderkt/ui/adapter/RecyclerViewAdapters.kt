@@ -24,12 +24,14 @@ abstract class RecyclerViewAdapters<T>(val context: Context) : RecyclerView.Adap
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = this.getItem(position)
-        this.bindView(data, position, holder)
+        if (data != null) {
+            this.bindView(data, position, holder)
+        }
     }
 
     abstract fun bindView(var1: T, var2: Int, var3: RecyclerView.ViewHolder?)
 
-    open fun getItem(position: Int): T = this.mData[position]
+    open fun getItem(position: Int): T ? = this.mData[position]
 
     override fun getItemCount(): Int = this.mData.size
 }

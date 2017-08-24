@@ -51,9 +51,7 @@ class DirectoryAdapter(context: Context, private val mFileClickListener: Directo
                 sb.append(node.name)
                 node.displayName = sb.toString()
                 nodes.add(node)
-                if (node.openChild || node.pathNodes != null
-                        && node.pathNodes.size == 1
-                        && node.pathNodes[0].isDirectory) {
+                if (node.openChild || node.pathNodes.size == 1 && node.pathNodes[0].isDirectory) {
                     createShowNodes(nodes, i, node, sb)
                 }
             } else {
@@ -63,9 +61,7 @@ class DirectoryAdapter(context: Context, private val mFileClickListener: Directo
                     sb.append(node.name)
                     node.displayName = sb.toString()
                     nodes.add(node)
-                    if (node.openChild || node.pathNodes != null
-                            && node.pathNodes.size == 1
-                            && node.pathNodes[0].isDirectory) {
+                    if (node.openChild || node.pathNodes.size == 1 && node.pathNodes[0].isDirectory) {
                         createShowNodes(nodes, i, node, sb)
                     }
                 }
@@ -94,11 +90,11 @@ class DirectoryAdapter(context: Context, private val mFileClickListener: Directo
         val inflater = layoutInflater
         when (viewType) {
             R.layout.list_item_code_read_repo_header -> {
-                var mBingding=DataBindingUtil.inflate<ListItemCodeReadRepoHeaderBinding>(inflater,R.layout.list_item_code_read_repo_header, parent, false)
+                val mBingding=DataBindingUtil.inflate<ListItemCodeReadRepoHeaderBinding>(inflater,R.layout.list_item_code_read_repo_header, parent, false)
                 return CodeReadRepoHeaderViewHolder(mBingding)
             }
             else -> {
-                var mBingding=DataBindingUtil.inflate<ListItemDirectoryBinding>(inflater,R.layout.list_item_directory, parent, false)
+                val mBingding=DataBindingUtil.inflate<ListItemDirectoryBinding>(inflater,R.layout.list_item_directory, parent, false)
                 return DirectoryViewHolder(mBingding)
             }
         }
@@ -110,22 +106,15 @@ class DirectoryAdapter(context: Context, private val mFileClickListener: Directo
         } else R.layout.list_item_directory
     }
 
-    override fun getItemCount(): Int {
-        return if (super.getItemCount() == 0) 0 else super.getItemCount() + 1
-    }
+    override fun getItemCount(): Int =
+            if (super.getItemCount() == 0) 0 else super.getItemCount() + 1
 
-    override fun getItem(position: Int): DirectoryNode {
-        return if (position == 0) mNodeRoot else super.getItem(position - 1)
-    }
+    override fun getItem(position: Int): DirectoryNode? =
+            if (position == 0) mNodeRoot else super.getItem(position - 1)
 
-    internal inner class DirectoryViewHolder(mBinding: ListItemDirectoryBinding) : RecyclerView.ViewHolder(mBinding.root) {
-        var mBinding:ListItemDirectoryBinding
+    internal inner class DirectoryViewHolder(var mBinding: ListItemDirectoryBinding) : RecyclerView.ViewHolder(mBinding.root) {
 
         lateinit var mNode: DirectoryNode
-
-        init {
-            this.mBinding=mBinding
-        }
 
         fun bind(pathNode: DirectoryNode) {
             mNode = pathNode
@@ -158,10 +147,8 @@ class DirectoryAdapter(context: Context, private val mFileClickListener: Directo
         }
 
         fun bind(directoryNode: DirectoryNode) {
-            if(directoryNode!=null){
-                mBinding.imgCodeReadRepoType?.setImageResource(if (directoryNode.isDirectory) R.drawable.ic_repo_white else R.drawable.ic_document_white)
-                mBinding.textCodeReadRepoName?.text = directoryNode.name
-            }
+            mBinding.imgCodeReadRepoType?.setImageResource(if (directoryNode.isDirectory) R.drawable.ic_repo_white else R.drawable.ic_document_white)
+            mBinding.textCodeReadRepoName?.text = directoryNode.name
 
         }
     }
