@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
+import android.view.View
 import com.loopeer.codereaderkt.R
 import com.loopeer.codereaderkt.api.ServiceFactory
 import com.loopeer.codereaderkt.api.service.GithubService
@@ -30,10 +31,10 @@ class LoginActivity : BaseActivity(), Checker.CheckObserver {
 
     lateinit var binding: ActivityLoginBinding
 
-    internal lateinit var mGithubService: GithubService
+    private lateinit var mGithubService: GithubService
 
-    val TOKEN_NOTE = "CodeReader APP Token"
-    val SCOPES = arrayOf("public_repo", "repo", "user", "gist")
+    private val TOKEN_NOTE = "CodeReader APP Token"
+    private val SCOPES = arrayOf("public_repo", "repo", "user", "gist")
 
     private var mLoginChecker: LoginChecker? = null
     private var mBase64Str: String? = null
@@ -49,7 +50,7 @@ class LoginActivity : BaseActivity(), Checker.CheckObserver {
         binding.editLoginAccount.addTextChangedListener(object : TextWatcherImpl() {
             override fun afterTextChanged(editable: Editable) {
                 super.afterTextChanged(editable)
-                mLoginChecker!!.username=editable.toString()
+                mLoginChecker!!.username = editable.toString()
             }
         })
         binding.editLoginPassword.addTextChangedListener(object : TextWatcherImpl() {
@@ -110,8 +111,8 @@ class LoginActivity : BaseActivity(), Checker.CheckObserver {
         )
     }
 
-    fun onSignInClick(){
-        Log.d("LoginActivityLog","click")
+    fun onSignInClick(view: View) {
+        Log.d("LoginActivityLog", "click")
         val username = binding.editLoginAccount.text.toString()
         val password = binding.editLoginPassword.text.toString()
         mBase64Str = "Basic " + Base64.encode(username + ':' + password)

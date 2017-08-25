@@ -40,7 +40,7 @@ class CodeReadActivity : BaseActivity(), DirectoryNavDelegate.FileClickListener,
         setupStatusBar()
 
         mDirectoryNavDelegate = DirectoryNavDelegate(binding.directoryView, this)
-        mDirectoryNavDelegate?.setLoadFileCallback(this)
+        mDirectoryNavDelegate.setLoadFileCallback(this)
         createFragment(DirectoryNode())
         parseIntent(savedInstanceState)
     }
@@ -60,7 +60,7 @@ class CodeReadActivity : BaseActivity(), DirectoryNavDelegate.FileClickListener,
             mSelectedNode = savedInstanceState.getSerializable(Navigator.EXTRA_DIRETORY_SELECTING) as DirectoryNode
             val rootNodeInstance = savedInstanceState.getSerializable(Navigator.EXTRA_DIRETORY_ROOT_NODE_INSTANCE) as DirectoryNode
             mFragment.updateRootNode(mDirectoryNode!!)
-            mDirectoryNavDelegate?.resumeDirectoryState(rootNodeInstance)
+            mDirectoryNavDelegate.resumeDirectoryState(rootNodeInstance)
             doOpenFile(mSelectedNode)
             return
         }
@@ -70,14 +70,14 @@ class CodeReadActivity : BaseActivity(), DirectoryNavDelegate.FileClickListener,
             System.currentTimeMillis())
         mDirectoryNode = repo.toDirectoryNode()
         mFragment.updateRootNode(mDirectoryNode!!)
-        mDirectoryNavDelegate?.updateData(mDirectoryNode!!)
+        mDirectoryNavDelegate.updateData(mDirectoryNode!!)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putSerializable(Navigator.EXTRA_DIRETORY_ROOT, mDirectoryNode)
         outState.putSerializable(Navigator.EXTRA_DIRETORY_SELECTING, mSelectedNode)
-        outState.putSerializable(Navigator.EXTRA_DIRETORY_ROOT_NODE_INSTANCE, mDirectoryNavDelegate?.directoryNodeInstance)
+        outState.putSerializable(Navigator.EXTRA_DIRETORY_ROOT_NODE_INSTANCE, mDirectoryNavDelegate.directoryNodeInstance)
     }
 
     override fun onBackPressed() {
@@ -110,7 +110,7 @@ class CodeReadActivity : BaseActivity(), DirectoryNavDelegate.FileClickListener,
 
     override fun onDestroy() {
         super.onDestroy()
-        mDirectoryNavDelegate?.clearSubscription()
+        mDirectoryNavDelegate.clearSubscription()
         //mDirectoryNavDelegate = null
     }
 
