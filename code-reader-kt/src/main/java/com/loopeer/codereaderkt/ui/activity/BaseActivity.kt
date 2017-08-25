@@ -166,7 +166,9 @@ open class BaseActivity : AppCompatActivity() {
 
     protected fun showMessage(message: String) {
         if (mCoordinatorContainer != null)
-            Snackbar.make(mCoordinatorContainer!!, message, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(mCoordinatorContainer!!, message, Snackbar.LENGTH_SHORT)
+                    .setAction(R.string.snackbar_action, {  })
+                    .show()
     }
 
 
