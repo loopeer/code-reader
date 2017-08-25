@@ -2,7 +2,6 @@ package com.loopeer.codereaderkt.ui.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PixelFormat
@@ -21,27 +20,16 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v4.os.ParcelableCompat
 import android.support.v4.os.ParcelableCompatCreatorCallbacks
+import android.support.v4.view.*
 import android.support.v4.view.AbsSavedState
-import android.support.v4.view.AccessibilityDelegateCompat
-import android.support.v4.view.GravityCompat
-import android.support.v4.view.KeyEventCompat
-import android.support.v4.view.MotionEventCompat
-import android.support.v4.view.ViewCompat
-import android.support.v4.view.ViewGroupCompat
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat
 import android.support.v4.widget.ViewDragHelper
 import android.util.AttributeSet
-import android.view.Gravity
-import android.view.KeyEvent
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
-import android.view.ViewParent
+import android.view.*
 import android.view.accessibility.AccessibilityEvent
-
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
-import java.util.ArrayList
+import java.util.*
 
 class DrawerLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : ViewGroup(context, attrs, defStyle), DrawerLayoutImpl {
 
@@ -1097,6 +1085,10 @@ class DrawerLayout @JvmOverloads constructor(context: Context, attrs: AttributeS
                         }
                         child.layout(childLeft, childTop, childLeft + childWidth,
                             childTop + childHeight)
+                    }
+                    else -> {
+                        child.layout(childLeft, lp.topMargin, childLeft + childWidth,
+                                lp.topMargin + childHeight)
                     }
                 }
 
