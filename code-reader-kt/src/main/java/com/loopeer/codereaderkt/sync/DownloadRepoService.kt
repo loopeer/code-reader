@@ -40,7 +40,7 @@ class DownloadRepoService : Service() {
 
     private val TAG = "DownloadRepoService"
 
-    private val DOWNLOAD_CONTENT_URI = Uri.parse("content://downloads/my_downloads")//下载路径
+    private val DOWNLOAD_CONTENT_URI = Uri.parse("content://downloads/my_downloads")
     private val MEDIA_TYPE_ZIP = "application/zip"
     private lateinit var mDownloadingRepos: HashMap<Long, Repo>
     private var mProgressSubscription: Subscription? = null
@@ -61,9 +61,9 @@ class DownloadRepoService : Service() {
     }
 
     private fun parseIntent(intent: Intent) {
-        val inn = intent //因为kotlin中in关键字的缘故，不能用‘in’做变量
-        val type = inn.getIntExtra(Navigator.EXTRA_DOWNLOAD_SERVICE_TYPE, 0)//下载状态
-        val repo = inn.getSerializableExtra(Navigator.EXTRA_REPO) as Repo?//这里会崩溃
+        val inn = intent
+        val type = inn.getIntExtra(Navigator.EXTRA_DOWNLOAD_SERVICE_TYPE, 0)
+        val repo = inn.getSerializableExtra(Navigator.EXTRA_REPO) as Repo?
         val id: Long = inn.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0)
         when (type) {
             DOWNLOAD_COMPLETE -> {
@@ -143,6 +143,10 @@ class DownloadRepoService : Service() {
     private fun downloadFile(repo: Repo) {
         val dataFetcher = RemoteRepoFetchers(this, repo.netDownloadUrl, repo.name)
         val downloadId: Long = dataFetcher.download()
+        if (downloadId <= 0) {
+            CoReaderDbHelper.getInstance(getApplicationContext()).deleteRepo(repo.id!!.toLong());
+            return;
+        }
         repo.downloadId = downloadId
         mDownloadingRepos.put(downloadId, repo)
         CoReaderDbHelper.getInstance(applicationContext).updateRepoDownloadId(downloadId, repo.id)

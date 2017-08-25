@@ -49,7 +49,7 @@ class RepositoryFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mViewRecycler = view.findViewById<RecyclerView>(R.id.view_recycler)
+        mViewRecycler = view.findViewById(R.id.view_recycler)
         setupRecyclerView()
     }
 
