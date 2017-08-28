@@ -173,7 +173,7 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
                 return@OnSubscribe
             }
             val finalStream = stream
-            val names = mNode?.name?.split("\\.")
+            val names = mNode?.name?.split("\\.".toRegex())?.dropLastWhile { it.isEmpty() }?.toTypedArray()
             var jsFile = BrushMap.getJsFileForExtension(names?.get(names.size - 1))
             if (jsFile == null) {
                 jsFile = "Txt"
@@ -213,7 +213,8 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext { o -> mBinding.webCodeRead.loadDataWithBaseURL("file:///android_asset/", o, "text/html", "UTF-8", "") }
-                .onErrorResumeNext(Observable.empty())
+
+            .onErrorResumeNext(Observable.empty())
                 .subscribe()
     }
 
