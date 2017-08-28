@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -115,7 +116,7 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
             return
 
-        val params = mToolbar.getLayoutParams() as AppBarLayout.LayoutParams
+        val params = mToolbar.layoutParams as AppBarLayout.LayoutParams
         params.height = (DeviceUtils.dpToPx(activity, 56f) + DeviceUtils.statusBarHeight).toInt()
         mToolbar.
             layoutParams = params
@@ -172,8 +173,8 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
                 return@OnSubscribe
             }
             val finalStream = stream
-            val names = mNode!!.name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            var jsFile = BrushMap.getJsFileForExtension(names[names.size - 1])
+            val names = mNode?.name?.split("\\.")
+            var jsFile = BrushMap.getJsFileForExtension(names?.get(names.size - 1))
             if (jsFile == null) {
                 jsFile = "Txt"
             }
@@ -193,7 +194,6 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
                         break
                     }
                 }
-                localBufferedReader.close()
                 sb.append("<pre class='brush: ")
                 sb.append(jsFile.toLowerCase())
                 sb.append(";'>")
@@ -204,28 +204,20 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
                 subscriber.onError(e)
             } catch (e: FileNotFoundException) {
                 subscriber.onError(e)
-            } catch (e: IOException) {
-                subscriber.onError(e)
-            }catch(e:Exception){
-                subscriber.onError(e)
             }
             finally {
                 localBufferedReader?.close()
             }
-
             subscriber.onCompleted()
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext { o -> mBinding.webCodeRead.loadDataWithBaseURL("file:///android_asset/", o, "text/html", "UTF-8", "") }
-                .doOnError {
-                    e -> mCodeContentLoader!!.showEmpty(e.message!!)
-                }
                 .onErrorResumeNext(Observable.empty())
                 .subscribe()
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+
     protected fun openMdShowFile() {
         registerSubscription(
                 Observable.create(Observable.OnSubscribe<String> { subscriber ->
@@ -264,14 +256,15 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
                         subscriber.onError(e)
                     } catch (e: FileNotFoundException) {
                         subscriber.onError(e)
-                    } catch (e: IOException) {
-                        subscriber.onError(e)
                     }
                 })
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext { s -> mBinding.webCodeRead.loadDataWithBaseURL("fake://", s, "text/html", "UTF-8", "") }
-                        .doOnError { e -> mCodeContentLoader!!.showEmpty(e.message!!) }
+                        .doOnError { e ->
+                            mCodeContentLoader?.showEmpty(e.message!!)
+                        }
+
                         .onErrorResumeNext(Observable.empty())
                         .subscribe()
         )
@@ -324,7 +317,7 @@ open class CodeReadFragment : BaseFullscreenFragment(), NestedScrollWebView.Scro
     }
 
     fun getCodeContentLoader(): ILoadHelper? {
-        return this!!.mCodeContentLoader
+        return this.mCodeContentLoader
     }
 
     private fun openFullScreen() {

@@ -81,8 +81,8 @@ class CodeReadActivity : BaseActivity(), DirectoryNavDelegate.FileClickListener,
     }
 
     override fun onBackPressed() {
-        if (binding.drawerLayout!!.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout!!.closeDrawer(GravityCompat.START)
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -101,7 +101,6 @@ class CodeReadActivity : BaseActivity(), DirectoryNavDelegate.FileClickListener,
         }
         if (id == android.R.id.home) {
             if (!binding.drawerLayout.isDrawerOpen(GravityCompat.START))
-                Toast.makeText(this,"open",Toast.LENGTH_SHORT).show()
                 binding.drawerLayout.openDrawer(GravityCompat.START)
             return true
         }
