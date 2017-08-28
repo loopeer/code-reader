@@ -175,6 +175,8 @@ public class BrushMap {
         list = new ArrayList();
         list.add("go");
         mapping.put("Go", list);
+        list.add("ino");
+        mapping.put("Arduino",list);
     }
 
     public static String getJsFileForExtension(String paramString) {

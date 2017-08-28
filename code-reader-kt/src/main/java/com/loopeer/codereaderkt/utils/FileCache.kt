@@ -68,12 +68,11 @@ class FileCache {
         if (file.isDirectory){
             directoryNode.isDirectory = true
             directoryNode.pathNodes = ArrayList<DirectoryNode>()
-            for (c in file.listFiles()){
-                if (c.name.startsWith(".")||c.name.startsWith("_")) continue
-                val childNode = getFileDirectory(c)
-                (directoryNode.pathNodes as ArrayList<DirectoryNode>).add(childNode!!)
-            }
-            if (!directoryNode!!.pathNodes?.isEmpty()!!){
+            file.listFiles()
+                    .filterNot { it.name.startsWith(".") }
+                    .map { getFileDirectory(it) }
+                    .forEach { (directoryNode.pathNodes as ArrayList<DirectoryNode>).add(it!!) }
+            if (!directoryNode.pathNodes?.isEmpty()!!){
 //                Collections.sort(directoryNode.pathNodes)
             }
         }

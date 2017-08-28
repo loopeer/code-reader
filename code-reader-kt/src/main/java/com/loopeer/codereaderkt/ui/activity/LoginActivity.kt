@@ -112,7 +112,6 @@ class LoginActivity : BaseActivity(), Checker.CheckObserver {
     }
 
     fun onSignInClick(view: View) {
-        Log.d("LoginActivityLog", "click")
         val username = binding.editLoginAccount.text.toString()
         val password = binding.editLoginPassword.text.toString()
         mBase64Str = "Basic " + Base64.encode(username + ':' + password)

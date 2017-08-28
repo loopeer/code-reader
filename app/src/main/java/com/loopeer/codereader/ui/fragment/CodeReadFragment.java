@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -227,6 +228,7 @@ public class CodeReadFragment extends BaseFullscreenFragment implements NestedSc
             if (jsFile == null) {
                 jsFile = "Txt";
             }
+            Log.d("jsFileLog",""+jsFile);
             StringBuilder sb = new StringBuilder();
             StringBuilder localStringBuilder = new StringBuilder();
             try {
