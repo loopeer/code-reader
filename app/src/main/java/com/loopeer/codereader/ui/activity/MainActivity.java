@@ -40,6 +40,7 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
+    //7.0下不能正常下载的问题
 
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000;
     @BindView(R.id.view_recycler)
