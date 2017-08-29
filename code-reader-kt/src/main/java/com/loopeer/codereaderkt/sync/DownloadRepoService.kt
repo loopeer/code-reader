@@ -87,7 +87,7 @@ class DownloadRepoService : Service() {
     private fun doRepoDownloadComplete(id: Long, location: String?) {
         CoReaderDbHelper.getInstance(CodeReaderApplication.appContext)
             .updateRepoUnzipProgress(id, 1f, true)
-        RxBus.getInstance().send(DownloadProgressEvent(id, true))
+        RxBus.instance?.send(DownloadProgressEvent(id, true))
 
         Observable.create(Observable.OnSubscribe<Void> { subscriber ->
             var cursor: Cursor? = null
@@ -119,8 +119,8 @@ class DownloadRepoService : Service() {
                                 .updateRepoUnzipProgress(id, 1f, false)
                             CoReaderDbHelper.getInstance(
                                 CodeReaderApplication.appContext).resetRepoDownloadId(mDownloadingRepos[id]!!.downloadId)
-                            RxBus.getInstance().send(DownloadProgressEvent(id, false))
-                            RxBus.getInstance().send(DownloadRepoMessageEvent(
+                            RxBus.instance?.send(DownloadProgressEvent(id, false))
+                            RxBus.instance?.send(DownloadRepoMessageEvent(
                                 getString(R.string.repo_download_complete, mDownloadingRepos[id]!!.name)))
                         }
                     }
@@ -156,8 +156,8 @@ class DownloadRepoService : Service() {
             .updateRepoUnzipProgress(id, 1f, false)
         CoReaderDbHelper.getInstance(
             CodeReaderApplication.appContext).resetRepoDownloadId(mDownloadingRepos[id]!!.downloadId)
-        RxBus.getInstance().send(DownloadProgressEvent(id, false))
-        RxBus.getInstance().send(DownloadRepoMessageEvent(
+        RxBus.instance?.send(DownloadProgressEvent(id, false))
+        RxBus.instance?.send(DownloadRepoMessageEvent(
             getString(R.string.repo_download_complete, mDownloadingRepos[id]!!.name)))
     }
 
@@ -178,7 +178,7 @@ class DownloadRepoService : Service() {
         repo.downloadId = downloadId
         mDownloadingRepos.put(downloadId, repo)
         CoReaderDbHelper.getInstance(applicationContext).updateRepoDownloadId(downloadId, repo.id)
-        RxBus.getInstance().send(DownloadRepoMessageEvent(getString(R.string.repo_download_start, repo.name)))
+        RxBus.instance?.send(DownloadRepoMessageEvent(getString(R.string.repo_download_start, repo.name)))
         checkDownloadProgress()
     }
 
@@ -234,11 +234,9 @@ class DownloadRepoService : Service() {
                 if (status == DownloadManager.STATUS_FAILED
                     && MEDIA_TYPE_ZIP != mediaType
                     && reason == DownloadManager.ERROR_UNKNOWN) {
-                    RxBus.getInstance()
-                        .send(DownloadRepoMessageEvent(
+                    RxBus.instance?.send(DownloadRepoMessageEvent(
                             getString(R.string.repo_download_fail, repo.name)))
-                    RxBus.getInstance()
-                        .send(DownloadFailDeleteEvent(repo))
+                    RxBus.instance?.send(DownloadFailDeleteEvent(repo))
                     CoReaderDbHelper.getInstance(context).deleteRepo(java.lang.Long.parseLong(repo.id))
                 } else if (status != DownloadManager.STATUS_SUCCESSFUL) {
                     val dl_progress = 1f * bytes_downloaded / bytes_total
@@ -251,7 +249,7 @@ class DownloadRepoService : Service() {
                     CoReaderDbHelper.getInstance(CodeReaderApplication.appContext)
                         .updateRepoDownloadProgress(repo.downloadId, repo.factor)
                     Log.d("DownloadrepoServiceLog", "" + repo.factor)
-                    RxBus.getInstance().send(DownloadProgressEvent(repo.id!!,
+                    RxBus.instance?.send(DownloadProgressEvent(repo.id!!,
                         repo.downloadId, repo.factor, repo.isUnzip))
                 }
                 cursor.close()

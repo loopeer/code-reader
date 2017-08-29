@@ -20,8 +20,8 @@ class RemoteRepoFetchers(private val mContext: Context, private val mUrl: String
         try {
             request = DownloadManager.Request(downloadUri);
         } catch ( e:IllegalArgumentException) {
-            RxBus.getInstance().send(DownloadRepoMessageEvent(mContext.getString(R.string.repo_download_url_parse_error)));
-            return -1;
+            RxBus.instance?.send(DownloadRepoMessageEvent(mContext.getString(R.string.repo_download_url_parse_error)));
+            return -1
         }
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
         request.setVisibleInDownloadsUi(false)
