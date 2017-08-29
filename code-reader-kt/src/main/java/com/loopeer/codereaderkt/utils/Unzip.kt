@@ -56,7 +56,6 @@ class Unzip
             zin.close()
             zin = null
         } catch (e: Exception) {
-            Log.i("mlx","zip:$e")
             throw RuntimeException(e)
         } finally {
             if (tmp != null) {

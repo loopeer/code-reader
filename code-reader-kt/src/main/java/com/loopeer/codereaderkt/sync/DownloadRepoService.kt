@@ -132,7 +132,6 @@ class DownloadRepoService : Service() {
                 mDownloadingRepos.remove(id)
                 subscriber.onCompleted()
             } catch (e: Exception) {
-//                Log.i("mlx","zip:$e")
                 subscriber.onError(e)
             } finally {
                 cursor!!.close()
