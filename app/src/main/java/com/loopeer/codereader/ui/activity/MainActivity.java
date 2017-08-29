@@ -40,7 +40,13 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
-    //7.0下不能正常下载的问题
+    //TODO 下载项目的逻辑 kt版下载了两种
+    //TODO 7.0fab动画
+    //TODO 7.0不能解压
+    //TODO 8.0不能下载
+    //TODO 文件状态识别出错
+    //TODO 下载页面的下载链接检查和可下载链接不匹配
+
 
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000;
     @BindView(R.id.view_recycler)
