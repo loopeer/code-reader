@@ -4,7 +4,7 @@ import android.text.TextUtils
 
 class AddRepoChecker(checkObserver: Checker.CheckObserver) : Checker(checkObserver) {
     override val isEnable: Boolean
-        get() = !TextUtils.isEmpty(repoName) && !TextUtils.isEmpty(repoDownloadUrl) //To change initializer of created properties use File | Settings | File Templates.
+        get() = !TextUtils.isEmpty(repoDownloadUrl) //To change initializer of created properties use File | Settings | File Templates.
 
     var repoName:String?=null
     set(value) {
