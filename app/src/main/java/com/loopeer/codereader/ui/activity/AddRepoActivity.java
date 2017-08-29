@@ -2,6 +2,7 @@ package com.loopeer.codereader.ui.activity;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -11,6 +12,7 @@ import com.loopeer.codereader.model.Repo;
 import com.loopeer.codereader.ui.view.AddRepoChecker;
 import com.loopeer.codereader.ui.view.Checker;
 import com.loopeer.codereader.ui.view.TextWatcherImpl;
+import com.loopeer.codereader.utils.DownloadUrlParser;
 import com.loopeer.codereader.utils.FileCache;
 
 import butterknife.BindView;
@@ -60,13 +62,21 @@ public class AddRepoActivity extends BaseActivity implements Checker.CheckObserv
     public void onClick() {
         hideSoftInputMethod();
 
-        Repo repo = new Repo(
-                mAddRepoChecker.repoName.trim()
-                , FileCache.getInstance().getRepoAbsolutePath(mAddRepoChecker.repoName)
-                , mAddRepoChecker.repoDownloadUrl.trim()
-                , true
-                , 0);
-        Navigator.startDownloadNewRepoService(this, repo);
+        if (TextUtils.isEmpty(mAddRepoChecker.repoName)) {
+            //未填写文件名则默认为项目原名
+            if (!TextUtils.isEmpty(mAddRepoChecker.repoDownloadUrl.trim())
+                    && !DownloadUrlParser.parseGithubUrlAndDownload(AddRepoActivity.this, mAddRepoChecker.repoDownloadUrl.trim())) {
+                showMessage(getString(R.string.repo_download_url_parse_error));
+            }
+        } else {
+            Repo repo = new Repo(
+                    mAddRepoChecker.repoName.trim()
+                    , FileCache.getInstance().getRepoAbsolutePath(mAddRepoChecker.repoName)
+                    , mAddRepoChecker.repoDownloadUrl.trim()
+                    , true
+                    , 0);
+            Navigator.startDownloadNewRepoService(this, repo);
+        }
 //        this.finish();
 
     }

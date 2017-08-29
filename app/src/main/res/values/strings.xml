@@ -48,7 +48,7 @@
     <string name="web_url_input_hint">Please input url</string>
 
     <!-- add repo -->
-    <string name="add_repo_name_hint">Repo Name</string>
+    <string name="add_repo_name_hint">Repo Name，Is The Default Name If Not Input </string>
     <string name="add_repo_url_hint">Repo Download Url</string>
     <string name="add_repo_btn">Download</string>
     <string name="error_invalid_email">This email address is invalid</string>

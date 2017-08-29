@@ -22,6 +22,6 @@ public class AddRepoChecker extends Checker {
 
     @Override
     public boolean isEnable() {
-        return !TextUtils.isEmpty(repoName) && !TextUtils.isEmpty(repoDownloadUrl);
+        return  !TextUtils.isEmpty(repoDownloadUrl);
     }
 }

@@ -48,7 +48,7 @@
     <string name="web_url_input_hint">请输入网址</string>
 
     <!-- add repo -->
-    <string name="add_repo_name_hint">本地项目保存名称</string>
+    <string name="add_repo_name_hint">本地项目保存名称,不填写则为默认名</string>
     <string name="add_repo_url_hint">项目的下载链接</string>
     <string name="add_repo_btn">下载</string>
 
