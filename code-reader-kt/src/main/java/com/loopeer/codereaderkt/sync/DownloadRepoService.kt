@@ -103,7 +103,10 @@ class DownloadRepoService : Service() {
                 if (cursor.moveToNext()) {
                     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
                         val fileUri = cursor.getString(fileUriId)
-                        unZipByUri(id, Uri.parse(fileUri), location)
+                        val status = cursor.getLong(statusColumnId)
+                        if(status == DownloadManager.STATUS_SUCCESSFUL.toLong()) {
+                            unZipByUri(id, Uri.parse(fileUri), location)
+                        }
                     } else {
                         val status = cursor.getLong(statusColumnId)
                         val path = cursor.getString(localFilenameColumnId)
@@ -129,6 +132,7 @@ class DownloadRepoService : Service() {
                 mDownloadingRepos.remove(id)
                 subscriber.onCompleted()
             } catch (e: Exception) {
+//                Log.i("mlx","zip:$e")
                 subscriber.onError(e)
             } finally {
                 cursor!!.close()
@@ -151,7 +155,8 @@ class DownloadRepoService : Service() {
         fileCache.deleteFilesByDirectory(File(location))
         val decomp = Unzip(fileInputStream, location, applicationContext)
         decomp.DecompressZip()
-        if (zipFile.exists()) zipFile.delete()
+        if (zipFile.exists())
+            zipFile.delete()
         CoReaderDbHelper.getInstance(CodeReaderApplication.appContext)
             .updateRepoUnzipProgress(id, 1f, false)
         CoReaderDbHelper.getInstance(

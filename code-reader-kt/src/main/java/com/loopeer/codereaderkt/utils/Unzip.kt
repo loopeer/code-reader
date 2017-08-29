@@ -1,6 +1,8 @@
 package com.loopeer.codereaderkt.utils
 
 import android.content.Context
+import android.util.Log
+import rx.exceptions.Exceptions
 
 import java.io.BufferedOutputStream
 import java.io.File
@@ -20,7 +22,7 @@ class Unzip
  * @param location Fully-qualified path to folder where files should be written.
  * *                 Path must have a trailing slash.
  */
-(private val mfin: FileInputStream?, private val mLocation: String?, private val mContext: Context) {
+(private val mfin: FileInputStream, private val mLocation: String?, private val mContext: Context) {
     private val mBuffer: ByteArray
 
     init {
@@ -33,24 +35,17 @@ class Unzip
         var fout: OutputStream? = null
         val outputDir = File(mLocation)
         var tmp: File? = null
-        if (mfin == null) {
-            return
-        }
         try {
             zin = ZipInputStream(mfin)
-            var ze: ZipEntry
+            var ze: ZipEntry?
             while (true) {
-                if( zin.nextEntry==null){
-                    break
-                }
-                ze=zin?.nextEntry
+                ze=zin.nextEntry ?: break
                 if (ze.isDirectory) {
                     dirChecker(ze)
                 } else {
                     tmp = File.createTempFile("decomp", ".tmp", outputDir)
                     fout = BufferedOutputStream(FileOutputStream(tmp!!))
                     DownloadFile.copyStream(zin, fout, mBuffer, BUFFER_SIZE, null, 0.0, null)
-
                     zin.closeEntry()
                     fout.close()
                     fout = null
@@ -60,7 +55,8 @@ class Unzip
             }
             zin.close()
             zin = null
-        } catch (e: IOException) {
+        } catch (e: Exception) {
+            Log.i("mlx","zip:$e")
             throw RuntimeException(e)
         } finally {
             if (tmp != null) {
