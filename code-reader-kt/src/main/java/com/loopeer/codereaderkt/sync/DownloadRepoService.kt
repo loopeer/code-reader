@@ -7,6 +7,7 @@ import android.content.Intent
 import android.database.ContentObserver
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
@@ -26,6 +27,7 @@ import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.io.File
+import java.io.FileInputStream
 
 
 class DownloadRepoService : Service() {
@@ -52,7 +54,7 @@ class DownloadRepoService : Service() {
         mDownloadingRepos = HashMap()
         mDownloadChangeObserver = DownloadChangeObserver()
         contentResolver.registerContentObserver(DOWNLOAD_CONTENT_URI, true,
-                mDownloadChangeObserver)
+            mDownloadChangeObserver)
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -67,7 +69,7 @@ class DownloadRepoService : Service() {
         val id: Long = inn.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0)
         when (type) {
             DOWNLOAD_COMPLETE -> {
-                doRepoDownloadComplete(id)
+                doRepoDownloadComplete(id, mDownloadingRepos[id]?.absolutePath)
             }
             DOWNLOAD_REPO -> {
                 downloadFile(repo!!)
@@ -82,9 +84,9 @@ class DownloadRepoService : Service() {
 
     }
 
-    private fun doRepoDownloadComplete(id: Long) {
+    private fun doRepoDownloadComplete(id: Long, location: String?) {
         CoReaderDbHelper.getInstance(CodeReaderApplication.appContext)
-                .updateRepoUnzipProgress(id, 1f, true)
+            .updateRepoUnzipProgress(id, 1f, true)
         RxBus.getInstance().send(DownloadProgressEvent(id, true))
 
         Observable.create(Observable.OnSubscribe<Void> { subscriber ->
@@ -92,31 +94,37 @@ class DownloadRepoService : Service() {
             try {
                 val manager = this@DownloadRepoService.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
                 val baseQuery = DownloadManager.Query()
-                        .setFilterById(id)
+                    .setFilterById(id)
                 cursor = manager.query(baseQuery)
                 val statusColumnId = cursor!!.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS)
                 val localFilenameColumnId = cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_LOCAL_FILENAME)
                 val descName = cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_DESCRIPTION)
+                val fileUriId = cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_LOCAL_URI)
                 if (cursor.moveToNext()) {
-                    val status = cursor.getLong(statusColumnId)
-                    val path = cursor.getString(localFilenameColumnId)
-                    val name = cursor.getString(descName)
-                    if (status == DownloadManager.STATUS_SUCCESSFUL.toLong()) {
-                        val zipFile = File(path)
-                        val fileCache = FileCache().getInstance()
-                        fileCache.deleteFilesByDirectory(File(fileCache.getCacheDir()!!.getPath() + File.separator + name))
-                        val decomp = Unzip(zipFile.path, fileCache.getCacheDir()!!.getPath() + File.separator + name, applicationContext)
-                        decomp.DecompressZip()
-                        if (zipFile.exists()) zipFile.delete()
-                        CoReaderDbHelper.getInstance(CodeReaderApplication.appContext)
-                                .updateRepoUnzipProgress(id, 1f, false)
-                        CoReaderDbHelper.getInstance(
-                                CodeReaderApplication.appContext).resetRepoDownloadId(mDownloadingRepos[id]!!.downloadId)
-                        RxBus.getInstance().send(DownloadProgressEvent(id, false))
-                        RxBus.getInstance().send(DownloadRepoMessageEvent(
-                                getString(R.string.repo_download_complete, mDownloadingRepos[id]!!.name)))
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                        val fileUri = cursor.getString(fileUriId)
+                        unZipByUri(id, Uri.parse(fileUri), location)
                     } else {
+                        val status = cursor.getLong(statusColumnId)
+                        val path = cursor.getString(localFilenameColumnId)
+                        val name = cursor.getString(descName)
+                        if (status == DownloadManager.STATUS_SUCCESSFUL.toLong()) {
+                            val zipFile = File(path)
+                            val fileCache = FileCache().getInstance()
+                            fileCache.deleteFilesByDirectory(File(fileCache.getCacheDir()!!.getPath() + File.separator + name))
+                            val decomp = Unzip(FileInputStream(zipFile.path), fileCache.getCacheDir()!!.getPath() + File.separator + name, applicationContext)
+                            decomp.DecompressZip()
+                            if (zipFile.exists()) zipFile.delete()
+                            CoReaderDbHelper.getInstance(CodeReaderApplication.appContext)
+                                .updateRepoUnzipProgress(id, 1f, false)
+                            CoReaderDbHelper.getInstance(
+                                CodeReaderApplication.appContext).resetRepoDownloadId(mDownloadingRepos[id]!!.downloadId)
+                            RxBus.getInstance().send(DownloadProgressEvent(id, false))
+                            RxBus.getInstance().send(DownloadRepoMessageEvent(
+                                getString(R.string.repo_download_complete, mDownloadingRepos[id]!!.name)))
+                        }
                     }
+
                 }
                 mDownloadingRepos.remove(id)
                 subscriber.onCompleted()
@@ -126,13 +134,33 @@ class DownloadRepoService : Service() {
                 cursor!!.close()
             }
         })
-                .onErrorResumeNext(Observable.empty())
-                .subscribeOn(Schedulers.io())
-                .doOnCompleted { this.checkTaskEmptyToFinish() }
-                .subscribe()
+            .onErrorResumeNext(Observable.empty())
+            .subscribeOn(Schedulers.io())
+            .doOnCompleted { this.checkTaskEmptyToFinish() }
+            .subscribe()
 
 
     }
+
+    private fun unZipByUri(id: Long, fileUri: Uri?, location: String?) {
+        val parcelFileDescriptor = contentResolver.openFileDescriptor(fileUri, "r")
+        val fileDescriptor = parcelFileDescriptor.fileDescriptor
+        val fileInputStream = FileInputStream(fileDescriptor)
+        val zipFile = File(fileUri?.path)
+        val fileCache = FileCache().getInstance()
+        fileCache.deleteFilesByDirectory(File(location))
+        val decomp = Unzip(fileInputStream, location, applicationContext)
+        decomp.DecompressZip()
+        if (zipFile.exists()) zipFile.delete()
+        CoReaderDbHelper.getInstance(CodeReaderApplication.appContext)
+            .updateRepoUnzipProgress(id, 1f, false)
+        CoReaderDbHelper.getInstance(
+            CodeReaderApplication.appContext).resetRepoDownloadId(mDownloadingRepos[id]!!.downloadId)
+        RxBus.getInstance().send(DownloadProgressEvent(id, false))
+        RxBus.getInstance().send(DownloadRepoMessageEvent(
+            getString(R.string.repo_download_complete, mDownloadingRepos[id]!!.name)))
+    }
+
 
     private fun checkTaskEmptyToFinish() {
         if (mDownloadingRepos.isEmpty()) {
@@ -196,21 +224,21 @@ class DownloadRepoService : Service() {
                 val cursor = downloadManager.query(q)
                 cursor.moveToFirst()
                 val bytes_downloaded = cursor.getInt(cursor
-                        .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
+                    .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
                 val bytes_total = cursor.getInt(
-                        cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
+                    cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
 
                 val mediaType = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_MEDIA_TYPE))
                 val reason = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_REASON))
                 val status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
                 if (status == DownloadManager.STATUS_FAILED
-                        && MEDIA_TYPE_ZIP != mediaType
-                        && reason == DownloadManager.ERROR_UNKNOWN) {
+                    && MEDIA_TYPE_ZIP != mediaType
+                    && reason == DownloadManager.ERROR_UNKNOWN) {
                     RxBus.getInstance()
-                            .send(DownloadRepoMessageEvent(
-                                    getString(R.string.repo_download_fail, repo.name)))
+                        .send(DownloadRepoMessageEvent(
+                            getString(R.string.repo_download_fail, repo.name)))
                     RxBus.getInstance()
-                            .send(DownloadFailDeleteEvent(repo))
+                        .send(DownloadFailDeleteEvent(repo))
                     CoReaderDbHelper.getInstance(context).deleteRepo(java.lang.Long.parseLong(repo.id))
                 } else if (status != DownloadManager.STATUS_SUCCESSFUL) {
                     val dl_progress = 1f * bytes_downloaded / bytes_total
@@ -221,18 +249,18 @@ class DownloadRepoService : Service() {
                 if (repo.factor < 0) repo.factor = 0f
                 if (repo.factor >= 0) {
                     CoReaderDbHelper.getInstance(CodeReaderApplication.appContext)
-                            .updateRepoDownloadProgress(repo.downloadId, repo.factor)
-                    Log.d("DownloadrepoServiceLog",""+repo.factor)
+                        .updateRepoDownloadProgress(repo.downloadId, repo.factor)
+                    Log.d("DownloadrepoServiceLog", "" + repo.factor)
                     RxBus.getInstance().send(DownloadProgressEvent(repo.id!!,
-                            repo.downloadId, repo.factor, repo.isUnzip))
+                        repo.downloadId, repo.factor, repo.isUnzip))
                 }
                 cursor.close()
             }
             subscriber.onCompleted()
         })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
     }
 
     private fun removeDownloadingRepo(id: Long) {

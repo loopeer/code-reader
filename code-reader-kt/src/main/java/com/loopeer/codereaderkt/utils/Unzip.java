@@ -14,7 +14,7 @@ import java.util.zip.ZipInputStream;
 public class Unzip {
     private static final int BUFFER_SIZE = 8192;
 
-    private String mZipFile;
+    private FileInputStream mfin;
     private String mLocation;
     private byte[] mBuffer;
     private Context mContext;
@@ -22,12 +22,12 @@ public class Unzip {
     /**
      * Constructor.
      *
-     * @param zipFile  Fully-qualified path to .zip file
+     * @param fin  Fully-qualified path to .zip file
      * @param location Fully-qualified path to folder where files should be written.
      *                 Path must have a trailing slash.
      */
-    public Unzip(String zipFile, String location, Context context) {
-        mZipFile = zipFile;
+    public Unzip(FileInputStream fin, String location, Context context) {
+        mfin=fin;
         mLocation = location;
         mBuffer = new byte[BUFFER_SIZE];
         mContext = context;
@@ -35,14 +35,15 @@ public class Unzip {
     }
 
     public void DecompressZip() {
-        FileInputStream fin = null;
         ZipInputStream zin = null;
         OutputStream fout = null;
         File outputDir = new File(mLocation);
         File tmp = null;
+        if(mfin==null){
+            return;
+        }
         try {
-            fin = new FileInputStream(mZipFile);
-            zin = new ZipInputStream(fin);
+            zin = new ZipInputStream(mfin);
             ZipEntry ze;
             while ((ze = zin.getNextEntry()) != null) {
                 if (ze.isDirectory()) {
@@ -86,9 +87,9 @@ public class Unzip {
                     ;
                 }
             }
-            if (fin != null) {
+            if (mfin != null) {
                 try {
-                    fin.close();
+                    mfin.close();
                 } catch (Exception ignore) {
                     ;
                 }
