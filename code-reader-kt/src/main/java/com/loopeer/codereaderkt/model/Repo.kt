@@ -5,7 +5,8 @@ import com.loopeer.directorychooser.FileNod
 
 
 class Repo() : BaseModel() {
-    var name: String ?= null
+
+    var name: String? = null
     var lastModify: Long = 0
     var absolutePath: String? = null
     var netDownloadUrl: String? = null
@@ -13,10 +14,12 @@ class Repo() : BaseModel() {
     var downloadId: Long = 0
     var factor: Float = 0.toFloat()
     var isUnzip: Boolean = false
-init {
 
-}
-    constructor(name: String, absolutePath: String, netDownloadUrl: String, isFolder: Boolean, downloadId: Long) : this() {
+    init {
+
+    }
+
+    constructor(name: String?, absolutePath: String?, netDownloadUrl: String?, isFolder: Boolean, downloadId: Long) : this() {
         this.name = name
         this.absolutePath = absolutePath
         this.netDownloadUrl = netDownloadUrl
@@ -24,9 +27,7 @@ init {
         this.downloadId = downloadId
     }
 
-    fun isDownloading(): Boolean {
-        return downloadId > 0
-    }
+    fun isDownloading(): Boolean = downloadId > 0
 
     fun parse(node: FileNod): Repo {
         val result = Repo()
@@ -44,13 +45,9 @@ init {
         return node
     }
 
-    fun isNetRepo(): Boolean {
-        return !TextUtils.isEmpty(netDownloadUrl)
-    }
+    fun isNetRepo(): Boolean = !TextUtils.isEmpty(netDownloadUrl)
 
-    fun isLocalRepo(): Boolean {
-        return !TextUtils.isEmpty(absolutePath)
-    }
+    fun isLocalRepo(): Boolean = !TextUtils.isEmpty(absolutePath)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

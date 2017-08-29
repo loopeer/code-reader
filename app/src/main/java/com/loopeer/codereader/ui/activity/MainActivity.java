@@ -44,7 +44,6 @@ public class MainActivity extends BaseActivity {
     //TODO 7.0不能解压
     //TODO 8.0不能下载
     //TODO 文件状态识别出错
-    //TODO addRepoActivity下载时必须完整链接才能下载
 
 
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1000;

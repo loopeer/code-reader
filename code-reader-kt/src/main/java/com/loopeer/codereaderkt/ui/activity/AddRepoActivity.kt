@@ -18,7 +18,7 @@ import com.loopeer.codereaderkt.utils.FileCache
 
 class AddRepoActivity : BaseActivity(), Checker.CheckObserver {
 
-    private var mAddRepoChecker: AddRepoChecker? = null
+    lateinit var mAddRepoChecker: AddRepoChecker
     private lateinit var binding: ActivityAddRepoBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,27 +31,27 @@ class AddRepoActivity : BaseActivity(), Checker.CheckObserver {
         binding.editAddRepoName.addTextChangedListener(object : TextWatcherImpl() {
             override fun afterTextChanged(editable: Editable) {
                 super.afterTextChanged(editable)
-                mAddRepoChecker!!.repoName = editable.toString()
+                mAddRepoChecker.repoName = editable.toString()
             }
         })
         binding.editAddRepoUrl.addTextChangedListener(object : TextWatcherImpl() {
             override fun afterTextChanged(editable: Editable) {
                 super.afterTextChanged(editable)
-                mAddRepoChecker!!.repoDownloadUrl = editable.toString()
+                mAddRepoChecker.repoDownloadUrl = editable.toString()
             }
         })
     }
 
     fun onDownClick(view: View) {
         hideSoftInputMethod()
-        if (TextUtils.isEmpty(mAddRepoChecker?.repoName)) run {
+        if (TextUtils.isEmpty(mAddRepoChecker.repoName)&&TextUtils.isEmpty(mAddRepoChecker.repoDownloadUrl)) run {
             //未填写文件名则默认为项目原名
-            if (!TextUtils.isEmpty(mAddRepoChecker?.repoDownloadUrl?.trim { it <= ' ' }) && !DownloadUrlParser.parseGithubUrlAndDownload(this@AddRepoActivity, mAddRepoChecker?.repoDownloadUrl?.trim { it <= ' ' }!!)) {
+            if (!TextUtils.isEmpty(mAddRepoChecker.repoDownloadUrl?.trim()) && !DownloadUrlParser.parseGithubUrlAndDownload(this@AddRepoActivity, mAddRepoChecker.repoDownloadUrl?.trim()!!)) {
                 showMessage(getString(R.string.repo_download_url_parse_error))
             }
         } else {
             val repo = Repo(
-                    mAddRepoChecker?.repoName?.trim { it <= ' ' }!!, FileCache().getInstance().getRepoAbsolutePath(mAddRepoChecker!!.repoName!!), mAddRepoChecker!!.repoDownloadUrl?.trim { it <= ' ' }!!, true, 0)
+                    mAddRepoChecker.repoName?.trim(), FileCache().getInstance().getRepoAbsolutePath(mAddRepoChecker.repoName!!), DownloadUrlParser.parseGithubDownloadUrl(mAddRepoChecker.repoDownloadUrl?.trim()!!), true, 0)
             Navigator().startDownloadNewRepoService(this, repo)
         }
     }

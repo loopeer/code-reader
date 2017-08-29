@@ -22,7 +22,7 @@ public class DownloadUrlParser {
         return true;
     }
 
-    private static String parseGithubDownloadUrl(String url) {
+    public static String parseGithubDownloadUrl(String url) {
         if (TextUtils.isEmpty(url)) return null;
         StringBuilder sb = new StringBuilder();
         String[] strings = url.split("/");

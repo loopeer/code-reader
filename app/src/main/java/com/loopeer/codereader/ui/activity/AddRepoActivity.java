@@ -72,7 +72,7 @@ public class AddRepoActivity extends BaseActivity implements Checker.CheckObserv
             Repo repo = new Repo(
                     mAddRepoChecker.repoName.trim()
                     , FileCache.getInstance().getRepoAbsolutePath(mAddRepoChecker.repoName)
-                    , mAddRepoChecker.repoDownloadUrl.trim()
+                    , DownloadUrlParser.parseGithubDownloadUrl(mAddRepoChecker.repoDownloadUrl.trim())
                     , true
                     , 0);
             Navigator.startDownloadNewRepoService(this, repo);
