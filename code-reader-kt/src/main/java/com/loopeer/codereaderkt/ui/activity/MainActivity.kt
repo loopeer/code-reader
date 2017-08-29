@@ -90,12 +90,12 @@ class MainActivity : BaseActivity() {
         super.onPostCreate(savedInstanceState)
         setUpView()
         registerSubscription(
-                RxBus.getInstance().toObservable()
-                        .filter({ o -> o is DownloadFailDeleteEvent })
-                        .map({ o -> (o as DownloadFailDeleteEvent).deleteRepo })
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnNext({ mMainLatestAdapter.deleteRepo(it) })
-                        .subscribe()
+                RxBus.instance?.toObservable()
+                        ?.filter({ o -> o is DownloadFailDeleteEvent })
+                        ?.map({ o -> (o as DownloadFailDeleteEvent).deleteRepo })
+                        ?.observeOn(AndroidSchedulers.mainThread())
+                        ?.doOnNext({ mMainLatestAdapter.deleteRepo(it) })
+                        ?.subscribe()!!
         )
     }
 

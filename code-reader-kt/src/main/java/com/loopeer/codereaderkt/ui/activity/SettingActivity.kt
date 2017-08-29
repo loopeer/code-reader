@@ -90,7 +90,7 @@ class SettingActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener, ThemeCh
         else
             AppCompatDelegate.MODE_NIGHT_YES)
 
-        RxBus.getInstance().send(ThemeRecreateEvent())
+        RxBus.instance?.send(ThemeRecreateEvent())
         PrefUtils.setPrefTheme(this, tag)
         //怎么能立即刷新主题？
     }

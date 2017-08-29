@@ -33,21 +33,21 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         registerSubscription(
-                RxBus.getInstance()
-                        .toObservable()
-                        .filter({ o -> o is DownloadRepoMessageEvent })
-                        .map({ o -> o as DownloadRepoMessageEvent })
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnNext({ o -> showMessage(o.message) })
-                        .subscribe())
+            RxBus.instance
+                ?.toObservable()
+                ?.filter({ o -> o is DownloadRepoMessageEvent })
+                ?.map({ o -> o as DownloadRepoMessageEvent })
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.doOnNext({ o -> showMessage(o.message) })
+                ?.subscribe()!!)
 
         registerSubscription(
-                RxBus.getInstance()
-                        .toObservable()
-                        .filter({ o -> o is ThemeRecreateEvent })
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnNext({ o -> recreate() })
-                        .subscribe())
+                RxBus.instance
+                        ?.toObservable()
+                        ?.filter({ o -> o is ThemeRecreateEvent })
+                        ?.observeOn(AndroidSchedulers.mainThread())
+                        ?.doOnNext({ o -> recreate() })
+                        ?.subscribe()!!)
         //打开app恢复下载
     }
 

@@ -15,7 +15,7 @@ class Unzip
 /**
  * Constructor.
 
- * @param fin  Fully-qualified path to .zip file
+ * @param mfin  Fully-qualified path to .zip file
  * *
  * @param location Fully-qualified path to folder where files should be written.
  * *                 Path must have a trailing slash.

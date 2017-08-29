@@ -16,9 +16,9 @@ class RemoteRepoFetchers(private val mContext: Context, private val mUrl: String
         val manager = mContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val downloadUri = Uri.parse(mUrl)
 
-        var request:DownloadManager.Request ?=  null
+        var request:DownloadManager.Request ?
         try {
-            request = DownloadManager.Request(downloadUri);
+            request = DownloadManager.Request(downloadUri)
         } catch ( e:IllegalArgumentException) {
             RxBus.instance?.send(DownloadRepoMessageEvent(mContext.getString(R.string.repo_download_url_parse_error)));
             return -1

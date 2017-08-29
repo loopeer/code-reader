@@ -66,7 +66,6 @@ public class Base64 {
       int inBuff = (numSigBytes > 0 ? ((source[srcOffset] << 24) >>> 8) : 0)
           | (numSigBytes > 1 ? ((source[srcOffset + 1] << 24) >>> 16) : 0)
           | (numSigBytes > 2 ? ((source[srcOffset + 2] << 24) >>> 24) : 0);
-
       switch (numSigBytes) {
       case 3:
         destination[destOffset] = ALPHABET[(inBuff >>> 18)];
