@@ -40,7 +40,6 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
-    //TODO 7.0fab动画
     //TODO 7.0不能解压
     //TODO 8.0不能下载
     //TODO 文件状态识别出错
