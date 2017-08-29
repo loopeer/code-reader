@@ -171,45 +171,7 @@ public class CodeReadFragment extends BaseFullscreenFragment implements NestedSc
     }
 
     protected void openCodeFile() {
-/*<<<<<<< HEAD
-        Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-                InputStream stream = null;
-                try {
-                    stream = new FileInputStream(mNode.absolutePath);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                if (stream == null) {
-                    subscriber.onCompleted();
-                    return;
-                }
-                final InputStream finalStream = stream;
-                String[] names = mNode.name.split("\\.");
-                String fileTypeName = names[names.length - 1];
-                if (BrushMap.isBlackFile(fileTypeName)) {
-                    subscriber.onError(new Throwable("Can not open this file!"));
-                    subscriber.onCompleted();
-                    return;
-                }
-                String jsFile = BrushMap.getJsFileForExtension(fileTypeName);
-                if (jsFile == null) {
-                    jsFile = "Txt";
-                }
-                StringBuilder sb = new StringBuilder();
-                StringBuilder localStringBuilder = new StringBuilder();
-                try {
-                    BufferedReader localBufferedReader = new BufferedReader(
-                            new InputStreamReader(finalStream, "UTF-8"));
-                    for (; ; ) {
-                        String str = localBufferedReader.readLine();
-                        if (str == null) {
-                            break;
-                        }
-                        localStringBuilder.append(str);
-                        localStringBuilder.append("\n");*/
-//=======
+
         Observable.create((Observable.OnSubscribe<String>) subscriber -> {
             InputStream stream = null;
             try {
@@ -236,7 +198,7 @@ public class CodeReadFragment extends BaseFullscreenFragment implements NestedSc
                     String str = localBufferedReader.readLine();
                     if (str == null) {
                         break;
-//>>>>>>> fix bug
+
                     }
                     localStringBuilder.append(str);
                     localStringBuilder.append("\n");
