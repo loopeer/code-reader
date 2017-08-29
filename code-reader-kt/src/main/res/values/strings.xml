@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Code-Readerkt</string>
+    <string name="app_name">CoReader-Kt</string>
 
     <string name="title_activity_code_read">CoReader</string>
     <string name="title_activity_add_repo">Download Repo</string>
