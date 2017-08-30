@@ -19,6 +19,22 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+
+    signingConfigs {
+        release {
+            Properties properties = new Properties()
+            FileInputStream fis = new FileInputStream("$project.rootDir/keystore.properties")
+            properties.load(fis)
+            fis.close()
+
+            keyAlias = properties.key_alias
+            storeFile = file(properties.store_file)
+
+            storePassword = properties.store_password
+            keyPassword = properties.key_password
+        }
+    }
+    
     buildTypes {
         release {
             minifyEnabled false
