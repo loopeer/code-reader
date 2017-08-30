@@ -1,8 +1,0 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-
-    <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
-        <item name="colorControlNormal">@android:color/white</item>
-        <item name="colorControlActivated">@color/colorAccent</item>
-    </style>
-
-</resources>
