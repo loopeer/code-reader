@@ -115,7 +115,7 @@
         </receiver>
 
         <provider
-            android:authorities="com.loopeer.codereaderkt.FileProvider"
+            android:authorities="com.loopeer.codereaderkt.fileProvider"
             android:name="android.support.v4.content.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
