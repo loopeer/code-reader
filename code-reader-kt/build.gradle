@@ -13,8 +13,8 @@ android {
         applicationId "com.loopeer.codereader"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode version_code as int
+        versionName version_name
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
