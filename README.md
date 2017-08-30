@@ -13,7 +13,7 @@ One Android App support mutil program language.C C# C++ java swift go php xml js
 ![](/screenshot/codereader_fir_download_qr.png)   
      
      
-[Download from release](https://github.com/loopeer/code-reader/releases/tag/V1.1.0)
+[Download from release](https://github.com/loopeer/code-reader/releases/tag/v1.1.0)
 
 Screenshot
 ====
