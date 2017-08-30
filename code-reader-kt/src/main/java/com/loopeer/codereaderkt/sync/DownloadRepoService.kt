@@ -45,7 +45,7 @@ class DownloadRepoService : Service() {
     private val DOWNLOAD_CONTENT_URI = Uri.parse("content://downloads/my_downloads")
     private val MEDIA_TYPE_ZIP = "application/zip"
     private lateinit var mDownloadingRepos: HashMap<Long, Repo>
-    private var mProgressSubscription: Subscription? = null
+    private lateinit var mProgressSubscription: Subscription
     private lateinit var mDownloadChangeObserver: DownloadChangeObserver
 
 
@@ -176,8 +176,8 @@ class DownloadRepoService : Service() {
         val dataFetcher = RemoteRepoFetchers(this, repo.netDownloadUrl, repo.name)
         val downloadId: Long = dataFetcher.download()
         if (downloadId <= 0) {
-            CoReaderDbHelper.getInstance(getApplicationContext()).deleteRepo(repo.id!!.toLong());
-            return;
+            CoReaderDbHelper.getInstance(applicationContext).deleteRepo(repo.id!!.toLong());
+            return
         }
         repo.downloadId = downloadId
         mDownloadingRepos.put(downloadId, repo)
@@ -189,25 +189,23 @@ class DownloadRepoService : Service() {
     private fun checkDownloadProgress() {
         if (mDownloadingRepos.isEmpty()) {
             val repos = CoReaderDbHelper.getInstance(this).readRepos()
-            for (repo in repos) {
-                if (repo.isDownloading()) {
-                    mDownloadingRepos.put(repo.downloadId, repo)
-                }
-            }
+            repos
+                    .filter { it.isDownloading() }
+                    .forEach { mDownloadingRepos.put(it.downloadId, it) }
         }
         if (mDownloadingRepos.isEmpty()) {
             stopSelf()
             return
         }
-        if (mProgressSubscription != null && !mProgressSubscription?.isUnsubscribed!!) {
-            mProgressSubscription?.unsubscribe()
+        if (!mProgressSubscription.isUnsubscribed) {
+            mProgressSubscription.unsubscribe()
         }
         mProgressSubscription = checkDownloadingProgress(this)
     }
 
     private fun clearDownloadProgressSubscription() {
-        if (mProgressSubscription != null && !mProgressSubscription?.isUnsubscribed!!) {
-            mProgressSubscription?.unsubscribe()
+        if (!mProgressSubscription.isUnsubscribed) {
+            mProgressSubscription.unsubscribe()
         }
     }
 
