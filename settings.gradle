@@ -1,4 +1,4 @@
-include ':app', ':code-reader-kt',
+include ':code-reader-kt',
         ':libraries:itemtouchhelperextension',
         ':libraries:directoryandfilechooser',
         ':libraries:markdownj'
