@@ -55,6 +55,7 @@ class DownloadRepoService : Service() {
         mDownloadChangeObserver = DownloadChangeObserver()
         contentResolver.registerContentObserver(DOWNLOAD_CONTENT_URI, true,
             mDownloadChangeObserver)
+        mProgressSubscription = checkDownloadingProgress(this)
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {

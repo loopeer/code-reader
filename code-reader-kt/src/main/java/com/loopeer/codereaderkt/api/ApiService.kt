@@ -9,6 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -24,20 +25,20 @@ open class ApiService {
     val retrofit: Retrofit
         get() {
             if (mRetrofit == null) {
-//                try {
+                try {
                     mRetrofit = Retrofit.Builder()
                             .client(getClient())
                             .addConverterFactory(GsonConverterFactory.create())
                             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                             .baseUrl(API_URL)
                             .build()
-                /*} catch (e: NullPointerException) {
+                } catch (e: NullPointerException) {
                     throw MissingResourceException("Define your endpoint in api_url string resource.", javaClass.name, "api_url")
-                }*/
+                }
 
             }
 
-            return mRetrofit!!
+            return this.mRetrofit!!
         }
 
     companion object {
@@ -54,7 +55,7 @@ open class ApiService {
                 return sInstance!!
             }
 
-        internal val DISK_CACHE_SIZE = 50 * 1024 * 1024 // 50MB
+        private val DISK_CACHE_SIZE = 50 * 1024 * 1024 // 50MB
 
         internal fun createOkHttpClient(app: Application): OkHttpClient {
             val httpClient = OkHttpClient.Builder()
@@ -73,9 +74,7 @@ open class ApiService {
             return httpClient.build()
         }
 
-        fun <T> create(service: Class<T>): T {
-            return instance.retrofit.create(service)
-        }
+        fun <T> create(service: Class<T>): T = instance.retrofit.create(service)
     }
 
 }
