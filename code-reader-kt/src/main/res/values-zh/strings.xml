@@ -51,6 +51,12 @@
     <string name="add_repo_name_hint">本地项目保存名称,不填写则为默认名</string>
     <string name="add_repo_url_hint">项目的下载链接</string>
     <string name="add_repo_btn">下载</string>
+    <string name="error_invalid_email">此电子邮件地址无效</string>
+    <string name="error_invalid_password">密码长度过短</string>
+    <string name="error_incorrect_password">此密码不正确</string>
+    <string name="error_field_required">这是必填栏</string>
+    <string name="permission_rationale">"联系人权限需要提供电子邮件"
+    </string>
 
     <!-- settings -->
     <string name="setting_font_size">字体大小</string>

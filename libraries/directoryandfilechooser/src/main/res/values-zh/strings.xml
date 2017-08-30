@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">目录和文件选择</string>
+
+    <string name="select_file">文件选择</string>
+    <string name="empty_text">没有内容</string>
+    <string name="menu_search">搜索</string>
+</resources>
