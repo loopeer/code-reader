@@ -30,13 +30,7 @@ Base on [markdownj](https://github.com/myabc/markdownj).Add many github styles.
 ### Search repo in github
 ![](/screenshot/codereader_search.gif)   
 ### Add repo to download
-![](/screenshot/codereader_add.gif)
-
-Collaborators 
-====
-[kKumaJ](https://github.com/kKumaJ)  
-[yanxinit](https://github.com/yanxinit)  
-[ToDou](https://github.com/ToDou)   
+![](/screenshot/codereader_add.gif)  
 
 Contact: 
 ====
